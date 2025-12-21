@@ -1,4 +1,4 @@
-# MediLog - frontend
+# MediLog
 
 메디로그 (Ai 건강 비서)
 
