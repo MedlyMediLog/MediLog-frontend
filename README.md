@@ -6,4 +6,5 @@
 - Next.js (App Router)
 - TypeScript
 - Tailwind CSS
+- React Query
 
