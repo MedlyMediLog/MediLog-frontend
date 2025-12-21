@@ -1,11 +1,10 @@
-# MediLog (Ai 건강 비서)
+# MediLog
 
-메디로그 - 프론트엔드
+메디로그 (Ai 건강 비서)
 
 ## Stack
 - Next.js (App Router)
 - TypeScript
 - Tailwind CSS
+- React Query
 
-## Env
-- NEXT_PUBLIC_API_BASE_URL
