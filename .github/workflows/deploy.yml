@@ -18,9 +18,29 @@ jobs:
           command_timeout: 30m
           script: |
             set -e
-            cd ~/MediLog-frontend || (cd ~ && git clone https://github.com/MedlyMediLog/MediLog-frontend.git && cd MediLog-frontend)
-            git pull origin dev
-            npm install
+
+            # 1) repo 준비 (없으면 clone)
+            if [ ! -d "$HOME/MediLog-frontend/.git" ]; then
+              cd ~
+              rm -rf MediLog-frontend
+              git clone https://github.com/MedlyMediLog/MediLog-frontend.git
+            fi
+
+            cd ~/MediLog-frontend
+
+            # 2) 배포 서버는 원격(dev)과 완전히 동일하게 맞춤
+            git fetch origin dev
+            git reset --hard origin/dev
+            git clean -fd
+
+            # 3) 의존성 설치 (lock 있으면 ci가 더 안정적)
+            if [ -f package-lock.json ]; then
+              npm ci
+            else
+              npm install
+            fi
+
+            # 4) 빌드 + 재시작
             npm run build
             pm2 restart medilog-front || pm2 start npm --name medilog-front -- start
             pm2 save
