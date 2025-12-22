@@ -2,7 +2,7 @@ name: Deploy to EC2 (Next.js)
 
 on:
   push:
-    branches: ["dev"]  # dev push 시 자동 배포
+    branches: ["dev"]
 
 jobs:
   deploy:
@@ -12,7 +12,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 소스코드를 EC2의 임시 폴더로 전송
       - name: Upload source to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -23,7 +22,6 @@ jobs:
           source: "./"
           target: "/tmp/medilog-frontend"
 
-      # EC2에서 반영 + 설치 + 빌드 + PM2 reload
       - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -34,12 +32,16 @@ jobs:
           script: |
             set -e
 
+            # ✅ nvm 환경 로드 (non-interactive shell에서 npm 못 찾는 문제 해결)
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm use 20
+
             APP_DIR="/var/www/medilog-frontend/MediLog-frontend"
             TMP_DIR="/tmp/medilog-frontend"
 
             mkdir -p "$APP_DIR"
 
-            # 소스 덮어쓰기 (서버에 있는 .env.production 은 유지)
             rsync -a --delete \
               --exclude=node_modules \
               --exclude=.next \
@@ -49,11 +51,9 @@ jobs:
 
             cd "$APP_DIR"
 
-            # 의존성 설치/빌드
             npm ci
             npm run build
 
-            # PM2 재시작 (없으면 start)
             if pm2 list | grep -q "medilog-frontend"; then
               pm2 reload medilog-frontend --update-env
             else
