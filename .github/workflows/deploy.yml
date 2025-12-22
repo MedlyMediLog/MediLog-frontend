@@ -1,15 +1,15 @@
-name: Deploy Frontend
+name: Deploy Frontend to EC2
 
 on:
   push:
-    branches: [dev]
+    branches: [main]   # main 쓰면 main으로
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy via SSH
+      - name: Deploy on EC2 via SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -17,50 +17,28 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           command_timeout: 45m
           script: |
-            set -euo pipefail
-            set -x
+            set -e
 
-            echo "=== $(date) : START ==="
-            whoami
-            hostname
-            pwd
+            cd /home/ubuntu/MediLog-frontend
 
-            echo "=== $(date) : PREPARE REPO ==="
-            if [ ! -d "$HOME/MediLog-frontend/.git" ]; then
-              cd ~
-              rm -rf MediLog-frontend
-              git clone https://github.com/MedlyMediLog/MediLog-frontend.git
-            fi
-
-            cd ~/MediLog-frontend
-
-            echo "=== $(date) : GIT SYNC ==="
+            echo "[DEPLOY] git fetch & reset..."
             git fetch origin dev
             git reset --hard origin/dev
             git clean -fd
-            git rev-parse --short HEAD
 
-            echo "=== $(date) : NODE/NPM ==="
-            node -v
-            npm -v
-
-            echo "=== $(date) : INSTALL ==="
-            # 설치 로그가 안 찍히는 걸 방지 + 불필요한 네트워크 작업 줄이기
-            npm config set fund false
-            npm config set audit false
+            echo "[DEPLOY] install deps..."
             if [ -f package-lock.json ]; then
               npm ci --no-progress
             else
               npm install --no-progress
             fi
 
-            echo "=== $(date) : BUILD ==="
-            export CI=true
+            echo "[DEPLOY] build..."
             export NEXT_TELEMETRY_DISABLED=1
             npm run build
 
-            echo "=== $(date) : PM2 RESTART ==="
-            pm2 restart medilog-front || pm2 start npm --name medilog-front -- start
+            echo "[DEPLOY] restart pm2..."
+            pm2 restart medilog-front || pm2 start npm --name "medilog-front" -- start
             pm2 save
 
-            echo "=== $(date) : DONE ==="
+            echo "[DEPLOY] done."
