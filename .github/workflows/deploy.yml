@@ -1,0 +1,63 @@
+name: Deploy to EC2 (Next.js)
+
+on:
+  push:
+    branches: ["dev"]  # dev push 시 자동 배포
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 소스코드를 EC2의 임시 폴더로 전송
+      - name: Upload source to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_PORT || 22 }}
+          source: "./"
+          target: "/tmp/medilog-frontend"
+
+      # EC2에서 반영 + 설치 + 빌드 + PM2 reload
+      - name: Deploy on EC2
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_PORT || 22 }}
+          script: |
+            set -e
+
+            APP_DIR="/var/www/medilog-frontend/MediLog-frontend"
+            TMP_DIR="/tmp/medilog-frontend"
+
+            mkdir -p "$APP_DIR"
+
+            # 소스 덮어쓰기 (서버에 있는 .env.production 은 유지)
+            rsync -a --delete \
+              --exclude=node_modules \
+              --exclude=.next \
+              --exclude=.git \
+              --exclude=.env.production \
+              "$TMP_DIR/" "$APP_DIR/"
+
+            cd "$APP_DIR"
+
+            # 의존성 설치/빌드
+            npm ci
+            npm run build
+
+            # PM2 재시작 (없으면 start)
+            if pm2 list | grep -q "medilog-frontend"; then
+              pm2 reload medilog-frontend --update-env
+            else
+              pm2 start "npm run start -- -p 3000" --name medilog-frontend
+            fi
+
+            pm2 save
