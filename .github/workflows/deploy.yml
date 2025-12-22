@@ -2,7 +2,7 @@ name: Deploy Frontend to EC2
 
 on:
   push:
-    branches: [main]   # main 쓰면 main으로
+    branches: [dev]   # main 쓰면 main으로
 
 jobs:
   deploy:
