@@ -28,7 +28,7 @@ export default function LandingPage() {
 
       {/* Footer / Quick links */}
       <footer className="w-full px-[40px] py-[30px] gap-[10px] flex flex-col">
-        <div className="flex gap-[40px] w-full flex-col">
+        <div className="flex gap-[40px] w-full flex-col ">
         <div className="w-[246px] flex flex-col">
         {/* 소개 제품 찾기*/}
           <div className="flex justify-between">

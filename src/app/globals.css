@@ -31,6 +31,9 @@
   --text-b3: 14px;
   --text-b4: 13px;
   --text-b5: 12px;
+
+  --breakpoint-desktop: 1380px;
+  --breakpoint-mobile: 740px;
 }
 
 /* 2) PC version 자동 변경 Display만 변경) */
