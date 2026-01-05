@@ -24,6 +24,7 @@
   --text-h2: 24px;
   --text-h3: 22px;
   --text-h4: 20px;
+  --text-h5: 16px;
 
   /* Body (pc/mobile 동일) */
   --text-b1: 18px;
@@ -31,6 +32,9 @@
   --text-b3: 14px;
   --text-b4: 13px;
   --text-b5: 12px;
+
+  --breakpoint-desktop: 1380px;
+  --breakpoint-mobile: 740px;
 }
 
 /* 2) PC version 자동 변경 Display만 변경) */
@@ -58,19 +62,19 @@
   }
 
   /* Display */
-  .text-d1 {
+  .typo-d1 {
     font-size: var(--text-d1);
     font-weight: var(--font-w-bold);
     line-height: var(--leading-default);
     letter-spacing: var(--tracking-tight);
   }
-  .text-d2 {
+  .typo-d2 {
     font-size: var(--text-d2);
     font-weight: var(--font-w-bold);
     line-height: var(--leading-default);
     letter-spacing: var(--tracking-tight);
   }
-  .text-d3 {
+  .typo-d3 {
     font-size: var(--text-d3);
     font-weight: var(--font-w-bold);
     line-height: var(--leading-default);
@@ -78,57 +82,63 @@
   }
 
   /* Head */
-  .text-h1 {
+  .typo-h1 {
     font-size: var(--text-h1);
     font-weight: var(--font-w-bold);
     line-height: var(--leading-default);
     letter-spacing: var(--tracking-tight);
   }
-  .text-h2 {
+  .typo-h2 {
     font-size: var(--text-h2);
     font-weight: var(--font-w-bold);
     line-height: var(--leading-default);
     letter-spacing: var(--tracking-tight);
   }
-  .text-h3 {
+  .typo-h3 {
     font-size: var(--text-h3);
     font-weight: var(--font-w-bold);
     line-height: var(--leading-default);
     letter-spacing: var(--tracking-tight);
   }
-  .text-h4 {
+  .typo-h4 {
     font-size: var(--text-h4);
+    font-weight: var(--font-w-medium);
+    line-height: var(--leading-default);
+    letter-spacing: var(--tracking-tight);
+  }
+  .typo-h5 {
+    font-size: var(--text-h5);
     font-weight: var(--font-w-medium);
     line-height: var(--leading-default);
     letter-spacing: var(--tracking-tight);
   }
 
   /* Body */
-  .text-b1 {
+  .typo-b1 {
     font-size: var(--text-b1);
     font-weight: var(--font-w-medium);
     line-height: var(--leading-default);
     letter-spacing: var(--tracking-tight);
   }
-  .text-b2 {
+  .typo-b2 {
     font-size: var(--text-b2);
     font-weight: var(--font-w-regular);
     line-height: var(--leading-default);
     letter-spacing: var(--tracking-tight);
   }
-  .text-b3 {
+  .typo-b3 {
     font-size: var(--text-b3);
     font-weight: var(--font-w-regular);
     line-height: var(--leading-default);
     letter-spacing: var(--tracking-tight);
   }
-  .text-b4 {
+  .typo-b4 {
     font-size: var(--text-b4);
     font-weight: var(--font-w-regular);
     line-height: var(--leading-default);
     letter-spacing: var(--tracking-tight);
   }
-  .text-b5 {
+  .typo-b5 {
     font-size: var(--text-b5);
     font-weight: var(--font-w-regular);
     line-height: var(--leading-default);

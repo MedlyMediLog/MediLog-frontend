@@ -1,6 +1,5 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react";
 import './globals.css'
-import Footer from './_components/Footer'
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
