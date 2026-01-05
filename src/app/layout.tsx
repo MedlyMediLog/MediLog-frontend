@@ -15,10 +15,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {/* Main */}
           <main className="flex-1">
             {children}
+            <Footer/>
           </main>
+          
         </div>
 
-        <Footer />
+        
       </body>
     </html>
   )
