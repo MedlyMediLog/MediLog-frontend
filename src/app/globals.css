@@ -24,6 +24,7 @@
   --text-h2: 24px;
   --text-h3: 22px;
   --text-h4: 20px;
+  --text-h5: 16px;
 
   /* Body (pc/mobile 동일) */
   --text-b1: 18px;
@@ -98,6 +99,12 @@
   }
   .text-h4 {
     font-size: var(--text-h4);
+    font-weight: var(--font-w-medium);
+    line-height: var(--leading-default);
+    letter-spacing: var(--tracking-tight);
+  }
+  .typo-h5 {
+    font-size: var(--text-h5);
     font-weight: var(--font-w-medium);
     line-height: var(--leading-default);
     letter-spacing: var(--tracking-tight);
