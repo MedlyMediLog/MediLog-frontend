@@ -162,8 +162,11 @@
     --text-d2: 44px;
     --text-d3: 36px;
 
-    
-      /* Background – Layer */
+    }
+  }
+
+  :root {
+     /* Background – Layer */
       --bg-layer-week: #edf2f6;
       --bg-layer-secondary: #dce4ed;
       --bg-layer-primary: #fbfdfd;
@@ -182,17 +185,17 @@
       --fg-danger-primary: #fc6a66;
       --fg-danger-primary-accent: #f03f37;
 
-      --fg-danger-second: #ffeca2;
-      --fg-danger-second-accent: #554019;
+      --fg-danger-secondary-week: #ffeca2;
+      --fg-danger-secondary-accent: #554019;
 
       /* Foreground – Info */
       --fg-info-primary-week: #7fb0f3;
       --fg-info-primary: #217cf9;
       --fg-info-primary-accent: #b4e1cb;
 
-      --fg-info-second: #b4e1cb;
-      --fg-info-second-accent: #0d584a;
-    }
+      --fg-info-secondary: #45c996;
+      --fg-info-secondary-accent: #0d584a;
+      --fg-info-secondary-week: #b4e1cb;
   }
 
 
@@ -350,13 +353,14 @@
     color: var(--fg-danger-primary-accent);
   }
 
-  .text-fg-danger-second {
+  .text-fg-danger-secondary {
     color: var(--fg-danger-second);
   }
 
-  .text-fg-danger-second-accent {
+  .text-fg-danger-secondary-accent {
     color: var(--fg-danger-second-accent);
   }
+
 
   /* Foreground – Info */
   .text-fg-info-primary-week {
@@ -371,11 +375,27 @@
     color: var(--fg-info-primary-accent);
   }
 
-  .text-fg-info-second {
+  .text-fg-info-secondary {
     color: var(--fg-info-second);
   }
 
-  .text-fg-info-second-accent {
+  .text-fg-info-secondary-accent {
     color: var(--fg-info-second-accent);
+  }
+
+  .text-fg-danger-secondary-accent {
+    color: var(--fg-danger-secondary-accent);
+  }
+
+  .text-fg-info-secondary-accent {
+    color: var(--fg-info-secondary-accent);
+  }
+
+  .bg-fg-info-secondary-week {
+    background-color: var(--fg-info-secondary-week)
+  }
+
+  .bg-fg-danger-secondary-week {
+    background-color: var(--fg-danger-secondary-week)
   }
 }
