@@ -77,13 +77,14 @@ export function SearchInput({
     )
   }
 
+  // ✅ 여기만 바뀜: 고정폭(w-[348px]) 제거 → 부모(FilterBar)가 min/max/width 컨트롤 가능
   const containerClass = [
     'flex items-center',
     'p-1',
     'gap-1',
     'rounded-full',
     'bg-layer-primary',
-    'w-[348px] max-w-[560px]',
+    'min-w-0 w-full',
     disabled ? 'opacity-60 cursor-not-allowed' : '',
     className,
   ].join(' ')
