@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 import "./globals.css"
 import Footer from "./_components/Footer"
-import SideBar from "./_components/SideBar"
+import SideBar from "./_components/common/SideBar/SideBar";
 import { ToastProvider } from "./_components/common/ToastProvider";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
