@@ -3,18 +3,21 @@
   box-sizing: border-box;
 }
 
-/* 형태=select */
+/* 형태=select (데스크탑) */
 .medly-filterbar--select {
   display: flex;
-  width: 798px;
+  width: 100%;
+  max-width: 798px;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
 }
 
 /* 형태=모바일 */
 .medly-filterbar--mobile {
   display: flex;
-  width: 472px;
+  width: 100%;
+  max-width: 472px; /* 피그마 기준 */
   align-items: center;
   gap: var(--Number-12, 12px);
 }
@@ -22,7 +25,8 @@
 /* 형태=검색중 */
 .medly-filterbar--searching {
   display: flex;
-  width: 330px;
+  width: 100%;
+  max-width: 560px; /* searching은 검색창이 커질 수 있으니 상한만 둠 */
   align-items: center;
   gap: var(--Number-12, 12px);
 }
@@ -36,12 +40,26 @@
   border-radius: var(--Number-gap-12, 12px);
 }
 
-/* 모바일/검색중 안의 필터링 (width 334, flex-shrink 0) */
+/* ✅ 모바일/검색중 칩 영역:
+   - 영역 자체는 부모 폭에 맞게 줄어듦
+   - 내부는 가로 스크롤(스와이프) 가능
+   - 스크롤바는 숨김 */
 .medly-filtergroup--fixed {
   display: flex;
-  width: 334px;
+  flex: 1 1 auto;
+  min-width: 0;            /* 중요: flex 아이템이 줄어들 수 있게 */
   align-items: center;
-  flex-shrink: 0;
+  gap: 8px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  /* 스크롤바 숨김 (크롬/사파리/엣지) */
+  scrollbar-width: none;   /* Firefox */
+}
+.medly-filtergroup--fixed::-webkit-scrollbar {
+  display: none;
 }
 
 /* 칩 */
@@ -55,6 +73,7 @@
   background: var(--Color-gray-100, #e9eff6);
   color: var(--Color-Role-fg-basic-primary, #101828);
   white-space: nowrap;
+  flex: 0 0 auto; /* 중요: 칩이 줄바꿈/축소되지 않게 */
 }
 
 .medly-chip--active {

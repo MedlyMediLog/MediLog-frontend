@@ -41,16 +41,20 @@ function Chip({
   active,
   children,
   onClick,
+  disabled,
 }: {
   active: boolean
   children: React.ReactNode
   onClick: () => void
+  disabled?: boolean
 }) {
   return (
     <button
       type="button"
       className={`medly-chip ${active ? 'medly-chip--active' : ''}`}
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
+      aria-pressed={active}
     >
       {children}
     </button>
@@ -80,6 +84,7 @@ export function FilterBar({
               key={opt.value}
               active={opt.value === selectedValue}
               onClick={() => onSelect(opt.value)}
+              disabled={disabled}
             >
               {opt.label}
             </Chip>
@@ -105,20 +110,23 @@ export function FilterBar({
   if (variant === 'mobile') {
     return (
       <div className={`medly-filterbar medly-filterbar--mobile ${className}`}>
-        {/* ✅ 피그마: 아이콘만 */}
-        <SearchInput
-          variant="mobile"
-          disabled={disabled}
-          onSubmit={disabled ? undefined : onIconClick}
-        />
+        {/* ✅ 피그마: 아이콘만 (search.png) */}
+        <div style={{ flex: '0 0 auto' }}>
+          <SearchInput
+            variant="mobile"
+            disabled={disabled}
+            onSubmit={disabled ? undefined : onIconClick}
+          />
+        </div>
 
-        {/* ✅ 피그마: width 334 / flex-shrink 0 */}
-        <div className="medly-filtergroup medly-filtergroup--fixed">
+        {/* ✅ 칩 영역만 가로 스와이프 */}
+        <div className="medly-filtergroup medly-filtergroup--fixed" aria-label="필터 선택">
           {options.map((opt) => (
             <Chip
               key={opt.value}
               active={opt.value === selectedValue}
               onClick={() => onSelect(opt.value)}
+              disabled={disabled}
             >
               {opt.label}
             </Chip>
@@ -144,13 +152,14 @@ export function FilterBar({
         />
       </div>
 
-      {/* ✅ 피그마: width 334 / flex-shrink 0 */}
-      <div className="medly-filtergroup medly-filtergroup--fixed">
+      {/* ✅ 칩 영역만 가로 스와이프 */}
+      <div className="medly-filtergroup medly-filtergroup--fixed" aria-label="필터 선택">
         {options.map((opt) => (
           <Chip
             key={opt.value}
             active={opt.value === selectedValue}
             onClick={() => onSelect(opt.value)}
+            disabled={disabled}
           >
             {opt.label}
           </Chip>
