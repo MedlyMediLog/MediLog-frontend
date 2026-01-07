@@ -1,11 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
-import { FilterBar } from './FilterBar';
+import type { Meta, StoryObj } from '@storybook/react'
+import React from 'react'
+import { FilterBar, type FilterBarProps } from './FilterBar'
 
 const meta: Meta<typeof FilterBar> = {
-  title: 'common/FilterBar',
+  title: 'COMMON/FilterBar',
   component: FilterBar,
   args: {
+    variant: 'select',
     options: [
       { label: '전체', value: 'all' },
       { label: '임산부', value: 'pregnant' },
@@ -15,74 +16,61 @@ const meta: Meta<typeof FilterBar> = {
     selectedValue: 'all',
     searchValue: '',
     searchPlaceholder: '제조사/브랜드명으로 검색해보세요.',
-    ariaLabelSearch: '검색어 입력',
+    disabled: false,
   },
   argTypes: {
-    variant: {
-      control: 'radio',
-      options: ['select', 'mobile', 'searching'],
-    },
+    variant: { control: 'radio', options: ['select', 'mobile', 'searching'] },
+    onSelect: { action: 'select' },
+    onSearchChange: { action: 'searchChange' },
+    onSearchSubmit: { action: 'searchSubmit' },
+    onIconClick: { action: 'iconClick' },
   },
-};
-
-export default meta;
-type Story = StoryObj<typeof FilterBar>;
-
-/** ✅ Hook은 “컴포넌트”에서만 사용 */
-function SelectStateful(args: React.ComponentProps<typeof FilterBar>) {
-  const [selected, setSelected] = useState(args.selectedValue);
-  const [q, setQ] = useState(args.searchValue ?? '');
-
-  return (
-    <FilterBar
-      {...args}
-      selectedValue={selected}
-      onSelect={setSelected}
-      searchValue={q}
-      onSearchChange={setQ}
-    />
-  );
 }
+export default meta
 
-function MobileStateful(args: React.ComponentProps<typeof FilterBar>) {
-  const [selected, setSelected] = useState(args.selectedValue);
+type Story = StoryObj<typeof FilterBar>
 
-  return (
-    <FilterBar
-      {...args}
-      selectedValue={selected}
-      onSelect={setSelected}
-      onIconClick={() => alert('아이콘 클릭')}
-    />
-  );
-}
-
-function SearchingStateful(args: React.ComponentProps<typeof FilterBar>) {
-  const [selected, setSelected] = useState(args.selectedValue);
-  const [q, setQ] = useState(args.searchValue ?? '');
+/** ✅ Hook은 컴포넌트에서만 */
+function Controlled(args: FilterBarProps & { initialSearch?: string }) {
+  const [selected, setSelected] = React.useState(args.selectedValue)
+  const [q, setQ] = React.useState(args.initialSearch ?? (args.searchValue ?? ''))
 
   return (
-    <FilterBar
-      {...args}
-      selectedValue={selected}
-      onSelect={setSelected}
-      searchValue={q}
-      onSearchChange={setQ}
-    />
-  );
+    <div style={{ padding: 40, display: 'flex', justifyContent: 'center' }}>
+      <FilterBar
+        {...args}
+        selectedValue={selected}
+        onSelect={(v) => {
+          args.onSelect?.(v)
+          setSelected(v)
+        }}
+        searchValue={q}
+        onSearchChange={(v) => {
+          args.onSearchChange?.(v)
+          setQ(v)
+        }}
+        onSearchSubmit={() => {
+          args.onSearchSubmit?.()
+        }}
+        onIconClick={() => {
+          args.onIconClick?.()
+        }}
+      />
+    </div>
+  )
 }
 
 export const Select: Story = {
   args: { variant: 'select' },
-  render: (args) => <SelectStateful {...args} />,
-};
+  render: (args) => <Controlled {...args} />,
+}
 
 export const Mobile: Story = {
   args: { variant: 'mobile' },
-  render: (args) => <MobileStateful {...args} />,
-};
+  render: (args) => <Controlled {...args} />,
+}
 
 export const Searching: Story = {
-  args: { variant: 'searching', searchValue: '아' },
-  render: (args) => <SearchingStateful {...args} />,
-};
+  args: { variant: 'searching' },
+  render: (args) => <Controlled {...args} initialSearch="오메가3" />,
+}

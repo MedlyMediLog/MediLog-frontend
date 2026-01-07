@@ -1,4 +1,9 @@
-/* 전체 컨테이너(피그마: 형태=select) */
+/* 공통 */
+.medly-filterbar {
+  box-sizing: border-box;
+}
+
+/* 형태=select */
 .medly-filterbar--select {
   display: flex;
   width: 798px;
@@ -22,8 +27,7 @@
   gap: var(--Number-12, 12px);
 }
 
-/* ---------------------------------- */
-/* 필터링 영역(피그마: 형태=select 안 필터링) */
+/* 형태=select 안 필터링 */
 .medly-filtergroup {
   display: flex;
   padding: var(--Number-10, 10px) 0;
@@ -32,7 +36,7 @@
   border-radius: var(--Number-gap-12, 12px);
 }
 
-/* 모바일/검색중 안의 필터링(피그마: width 334, flex-shrink 0) */
+/* 모바일/검색중 안의 필터링 (width 334, flex-shrink 0) */
 .medly-filtergroup--fixed {
   display: flex;
   width: 334px;
@@ -40,82 +44,7 @@
   flex-shrink: 0;
 }
 
-/* ---------------------------------- */
-/* 검색창(피그마: select 안 검색창) */
-.medly-searchbox {
-  display: flex;
-  min-width: 260px;
-  max-width: 350px;
-  padding: 4px;
-  align-items: center;
-  gap: var(--Number-4, 4px);
-  flex: 1 0 0;
-
-  border-radius: var(--Number-round-Ultra, 999px);
-  border: 1px solid var(--Color-Role-bg-layer-stroke, #c1cad6);
-  background: var(--Color-Role-bg-layer-primary, #fbfdfd);
-}
-
-/* 모바일 검색창 */
-.medly-searchbox--mobile {
-  display: flex;
-  max-width: 560px;
-  padding: 4px;
-  align-items: center;
-  gap: 10px;
-
-  border-radius: var(--Number-round-Ultra, 999px);
-  border: 1px solid var(--Color-gray-300, #c1cad6);
-  background: var(--Color-Role-bg-layer-primary, #fbfdfd);
-}
-
-/* 검색중 검색창(피그마: min-width 330, max-width 560, flex: 1 0 0) */
-.medly-searchbox--searching {
-  display: flex;
-  min-width: 330px;
-  max-width: 560px;
-  padding: 4px;
-  align-items: center;
-  gap: var(--Number-4, 4px);
-  flex: 1 0 0;
-
-  border-radius: var(--Number-round-Ultra, 999px);
-  border: 1px solid var(--Color-gray-300, #c1cad6);
-  background: var(--Color-Role-bg-layer-primary, #fbfdfd);
-}
-
-/* ---------------------------------- */
-/* 돋보기 아이콘 버튼(모바일 형태에서 보이는 동그라미) */
-.medly-iconbutton {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  border: 1px solid var(--Color-gray-300, #c1cad6);
-  background: var(--Color-Role-bg-layer-primary, #fbfdfd);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-}
-
-/* ---------------------------------- */
-/* input */
-.medly-searchinput {
-  border: 0;
-  outline: 0;
-  background: transparent;
-  width: 100%;
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--Color-Role-fg-basic-primary, #101828);
-}
-
-.medly-searchinput::placeholder {
-  color: var(--Color-Role-fg-basic-week, #98a2b3);
-}
-
-/* ---------------------------------- */
-/* 칩(필터 버튼) */
+/* 칩 */
 .medly-chip {
   border: 0;
   cursor: pointer;
@@ -125,9 +54,10 @@
   line-height: 20px;
   background: var(--Color-gray-100, #e9eff6);
   color: var(--Color-Role-fg-basic-primary, #101828);
+  white-space: nowrap;
 }
 
 .medly-chip--active {
-  background: #1f2329; /* 피그마에서 검정 느낌 */
+  background: #1f2329;
   color: #ffffff;
 }

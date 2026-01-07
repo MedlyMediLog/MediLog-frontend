@@ -1,43 +1,50 @@
-import React from 'react';
-import './FilterBar.css';
+import React from 'react'
+import './FilterBar.css'
+import { SearchInput } from '../SearchInput'
+import type { SearchInputProps } from '../SearchInput'
 
-export type FilterBarVariant = 'select' | 'mobile' | 'searching';
+export type FilterBarVariant = 'select' | 'mobile' | 'searching'
 
 export type FilterOption = {
-  label: string;
-  value: string;
-};
+  label: string
+  value: string
+}
 
 export type FilterBarProps = {
   /** 피그마 형태: select / 모바일 / 검색중 */
-  variant: FilterBarVariant;
+  variant: FilterBarVariant
 
   /** 칩 목록 */
-  options: FilterOption[];
-  /** 선택된 value (단일 선택으로 구현했지만, 필요하면 배열로 바꿔도 됨) */
-  selectedValue: string;
-  onSelect: (value: string) => void;
+  options: FilterOption[]
+  /** 선택된 value (단일 선택) */
+  selectedValue: string
+  onSelect: (value: string) => void
 
-  /** 검색 UI가 필요한 형태에서 사용 */
-  searchValue?: string;
-  onSearchChange?: (value: string) => void;
-  searchPlaceholder?: string;
+  /** 검색 input value */
+  searchValue?: string
+  onSearchChange?: (value: string) => void
+  onSearchSubmit?: () => void
 
-  /** 모바일 형태에서 아이콘 버튼 클릭(필요 없으면 안 넣어도 됨) */
-  onIconClick?: () => void;
+  searchPlaceholder?: string
+  disabled?: boolean
 
-  /** 접근성 */
-  ariaLabelSearch?: string;
-};
+  /** 모바일(아이콘만) 클릭 */
+  onIconClick?: () => void
+
+  /** aria */
+  ariaLabelSearch?: SearchInputProps['aria-label']
+
+  className?: string
+}
 
 function Chip({
   active,
   children,
   onClick,
 }: {
-  active: boolean;
-  children: React.ReactNode;
-  onClick: () => void;
+  active: boolean
+  children: React.ReactNode
+  onClick: () => void
 }) {
   return (
     <button
@@ -47,36 +54,7 @@ function Chip({
     >
       {children}
     </button>
-  );
-}
-
-function SearchBox({
-  className,
-  value,
-  onChange,
-  placeholder,
-  ariaLabel,
-}: {
-  className: string;
-  value: string;
-  onChange: (v: string) => void;
-  placeholder: string;
-  ariaLabel: string;
-}) {
-  return (
-    <div className={className}>
-      <span aria-hidden="true" style={{ width: 20, height: 20, display: 'inline-flex', alignItems: 'center' }}>
-        🔍
-      </span>
-      <input
-        className="medly-searchinput"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        aria-label={ariaLabel}
-      />
-    </div>
-  );
+  )
 }
 
 export function FilterBar({
@@ -86,13 +64,16 @@ export function FilterBar({
   onSelect,
   searchValue = '',
   onSearchChange,
+  onSearchSubmit,
   searchPlaceholder = '제조사/브랜드명으로 검색해보세요.',
+  disabled = false,
   onIconClick,
   ariaLabelSearch = '검색어 입력',
+  className = '',
 }: FilterBarProps) {
   if (variant === 'select') {
     return (
-      <div className="medly-filterbar--select">
+      <div className={`medly-filterbar medly-filterbar--select ${className}`}>
         <div className="medly-filtergroup">
           {options.map((opt) => (
             <Chip
@@ -105,29 +86,33 @@ export function FilterBar({
           ))}
         </div>
 
-        <SearchBox
-          className="medly-searchbox"
-          value={searchValue}
-          onChange={(v) => onSearchChange?.(v)}
-          placeholder={searchPlaceholder}
-          ariaLabel={ariaLabelSearch}
-        />
+        {/* ✅ 피그마: min 260 / max 350 / flex 1 0 0 */}
+        <div style={{ flex: '1 0 0', minWidth: 260, maxWidth: 350 }}>
+          <SearchInput
+            variant="desktop"
+            value={searchValue}
+            onChange={(v) => onSearchChange?.(v)}
+            onSubmit={onSearchSubmit}
+            placeholder={searchPlaceholder}
+            disabled={disabled}
+            aria-label={ariaLabelSearch}
+          />
+        </div>
       </div>
-    );
+    )
   }
 
   if (variant === 'mobile') {
     return (
-      <div className="medly-filterbar--mobile">
-        <button
-          type="button"
-          className="medly-iconbutton"
-          onClick={onIconClick}
-          aria-label="검색 열기"
-        >
-          🔍
-        </button>
+      <div className={`medly-filterbar medly-filterbar--mobile ${className}`}>
+        {/* ✅ 피그마: 아이콘만 */}
+        <SearchInput
+          variant="mobile"
+          disabled={disabled}
+          onSubmit={disabled ? undefined : onIconClick}
+        />
 
+        {/* ✅ 피그마: width 334 / flex-shrink 0 */}
         <div className="medly-filtergroup medly-filtergroup--fixed">
           {options.map((opt) => (
             <Chip
@@ -140,20 +125,26 @@ export function FilterBar({
           ))}
         </div>
       </div>
-    );
+    )
   }
 
   // searching
   return (
-    <div className="medly-filterbar--searching">
-      <SearchBox
-        className="medly-searchbox--searching"
-        value={searchValue}
-        onChange={(v) => onSearchChange?.(v)}
-        placeholder={searchPlaceholder}
-        ariaLabel={ariaLabelSearch}
-      />
+    <div className={`medly-filterbar medly-filterbar--searching ${className}`}>
+      {/* ✅ 피그마: min 330 / max 560 / flex 1 0 0 */}
+      <div style={{ flex: '1 0 0', minWidth: 330, maxWidth: 560 }}>
+        <SearchInput
+          variant="desktop"
+          value={searchValue}
+          onChange={(v) => onSearchChange?.(v)}
+          onSubmit={onSearchSubmit}
+          placeholder={searchPlaceholder}
+          disabled={disabled}
+          aria-label={ariaLabelSearch}
+        />
+      </div>
 
+      {/* ✅ 피그마: width 334 / flex-shrink 0 */}
       <div className="medly-filtergroup medly-filtergroup--fixed">
         {options.map((opt) => (
           <Chip
@@ -166,5 +157,5 @@ export function FilterBar({
         ))}
       </div>
     </div>
-  );
+  )
 }
