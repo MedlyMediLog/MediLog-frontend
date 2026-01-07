@@ -1,6 +1,8 @@
 'use client'
 
 import * as React from 'react'
+import Image from 'next/image'
+import searchIcon from '@/assets/search.png'
 
 export type SearchInputVariant = 'desktop' | 'mobile'
 
@@ -24,24 +26,14 @@ export type SearchInputProps = {
 
 function SearchIcon({ className = '' }: { className?: string }) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
+    <Image
+      src={searchIcon}
+      alt=""
+      width={24}
+      height={24}
       className={className}
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        d="M21 21L16.66 16.66M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
-        stroke="#59636E"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+      priority={false}
+    />
   )
 }
 
@@ -77,14 +69,13 @@ export function SearchInput({
     )
   }
 
-  // ✅ 여기만 바뀜: 고정폭(w-[348px]) 제거 → 부모(FilterBar)가 min/max/width 컨트롤 가능
   const containerClass = [
     'flex items-center',
     'p-1',
     'gap-1',
     'rounded-full',
     'bg-layer-primary',
-    'min-w-0 w-full',
+    'w-[348px] max-w-[560px]',
     disabled ? 'opacity-60 cursor-not-allowed' : '',
     className,
   ].join(' ')
