@@ -28,7 +28,7 @@ export default function ProductSummarySection() {
             <div className="typo-b1 text-fg-basic-accent desktop:typo-h2">
               제품명 자리입니다 [“PRDUCT”]
             </div>
-            <Label variant="default" children={<div className='text-fg-basic-accent typo-b5'>분말/알약/액상/캡슐 제품</div>} />
+            <Label variant="default" ><div className='text-fg-basic-accent typo-b5'>분말/알약/액상/캡슐 제품</div></Label>
           </div>
 
         </div>
