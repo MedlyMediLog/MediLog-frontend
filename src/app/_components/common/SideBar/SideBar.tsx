@@ -25,7 +25,7 @@ export default function SideBar() {
       aria-label="Sidebar"
     >
       {/* 상단 토글 */}
-      <div className="py-4 px-5 h-20 w-full flex items-center justify-center">
+      <div className="py-4 px-5 h-20 w-full flex items-center justify-end">
         <button
           type="button"
           onClick={() => setIsOpen((v) => !v)}
