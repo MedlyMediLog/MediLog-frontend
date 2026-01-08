@@ -21,17 +21,17 @@ export default function ProductDetailPage() {
   return (
     <>
       {/* 전체 레이아웃 */}
-      <div className=" flex flex-col bg-[#edf2f6] relative">
+      <div className=" flex flex-col bg-gray-100 relative">
         {/* 상단바 */}
         <ProductDeatilHeader/>
         {/* 컨텐츠 영역 */}
-        <div className="w-full flex flex-col pt-[20px] pb-[60px] gap-[20px] desktop:pt-0 items-center">
+        <div className="w-full flex flex-col pt-5 pb-15 gap-5 desktop:pt-0 items-center">
           {/* 2열 레이아웃 */}
-          <div className="flex flex-col px-[20px] gap-[20px] desktop:flex-row desktop:gap-4">
+          <div className="flex flex-col px-5 gap-5 desktop:flex-row desktop:gap-4">
             <div>
                 <ProductSummarySection/>
             </div>
-            <div className='flex-col flex gap-5'>
+            <div className='flex-col flex gap-5 desktop:w-155'>
             
             <IngredientsSection/>
             {/* 일반 기능 설명 */}
