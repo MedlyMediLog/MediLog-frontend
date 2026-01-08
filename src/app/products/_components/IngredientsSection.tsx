@@ -35,50 +35,40 @@ export default function IngredientsSection() {
       </CardHeader>
 
       <CardContent className="flex w-full gap-2.5 items-center flex-wrap">
-        <Label variant="positive" children={<div className="typo-b5">나이아신</div>} />
-        <Label variant="positive" children={<div className="typo-b5">비오틴</div>} />
+        <Label variant="positive" ><div className="typo-b5">나이아신</div></Label>
+        <Label variant="positive" ><div className="typo-b5">비오틴</div></Label>
         <Label
           variant="positive"
-          children={<div className="typo-b5 text-fg-info-secondary-accent">비타민 B1</div>}
-        />
+          ><div className="typo-b5 text-fg-info-secondary-accent">비타민 B1</div></Label>
         <Label
           variant="default"
-          children={<div className="typo-b5 text-fg-basic-accent">비타민 B2</div>}
-        />
+          ><div className="typo-b5 text-fg-basic-accent">비타민 B2</div></Label>
         <Label
           variant="default"
-          children={<div className="typo-b5 text-fg-basic-accent">비타민 B6</div>}
-        />
+          ><div className="typo-b5 text-fg-basic-accent">비타민 B6</div></Label>
         <Label
           variant="default"
-          children={<div className="typo-b5 text-fg-basic-accent">비타민 C</div>}
-        />
+          ><div className="typo-b5 text-fg-basic-accent">비타민 C</div></Label>
         <Label
           variant="default"
-          children={<div className="typo-b5 text-fg-basic-accent">비타민 D</div>}
-        />
+          ><div className="typo-b5 text-fg-basic-accent">비타민 D</div></Label>
         <Label
           variant="default"
-          children={<div className="typo-b5 text-fg-basic-accent">비타민 E</div>}
-        />
+          ><div className="typo-b5 text-fg-basic-accent">비타민 E</div></Label>
         <Label
           variant="default"
-          children={<div className="typo-b5 text-fg-basic-accent">아연</div>}
-        />
+          >
+            <div className="typo-b5 text-fg-basic-accent">아연</div>
+          </Label>
         <Label
           variant="default"
-          children={<div className="typo-b5 text-fg-basic-accent">엽산</div>}
-        />
+          ><div className="typo-b5 text-fg-basic-accent">엽산</div></Label>
         <Label
           variant="default"
-          children={
-            <div className="typo-b5 text-fg-basic-accent">저분자콜라겐펩타이드GT(제2022-6호)</div>
-          }
-        />
+          ><div className="typo-b5 text-fg-basic-accent">저분자콜라겐펩타이드GT(제2022-6호)</div></Label>
         <Label
           variant="default"
-          children={<div className="typo-b5 text-fg-basic-accent">판토텐산</div>}
-        />
+          ><div className="typo-b5 text-fg-basic-accent">판토텐산</div></Label>
       </CardContent>
     </Card>
   )
