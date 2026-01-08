@@ -25,11 +25,11 @@ export default function SideBar() {
       aria-label="Sidebar"
     >
       {/* 상단 토글 */}
-      <div className="py-4 px-5 h-20 w-full flex items-center justify-end">
+      <div className="py-4 px-5 h-20 w-full flex items-center justify-center">
         <button
           type="button"
           onClick={() => setIsOpen((v) => !v)}
-          className="p-2"
+          className="p-2 gap-2"
           aria-expanded={isOpen}
           aria-label={isOpen ? '사이드바 닫기' : '사이드바 열기'}
         >
