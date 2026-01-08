@@ -1,57 +1,74 @@
-import Image from "next/image"
-import ingredients from "@/assets/ingredients.png"
-import see_more from "@/assets/see_more.png"
-import { Card, CardHeader, CardContent } from "@/app/_components/common/Card"
+import Image from 'next/image'
+import ingredients from '@/assets/ingredients.png'
+import see_more from '@/assets/see_more.png'
+import { Card, CardHeader, CardContent } from '@/app/_components/common/Card'
+import CardTitle from '@/app/_components/common/CardTitle/CardTitle'
+import ingredient_24 from '@/assets/ingredient_24.svg'
+import ingredient_32 from '@/assets/ingredient_32.svg'
+import { Label } from '@/app/_components/common/Label/Label'
 
 export default function IngredientsSection() {
   return (
-    <Card className="flex flex-col gap-[20px] py-[20px] px-[16px] desktop:py-7.5 desktop:px-6 desktop:gap-7.5">
+    <Card className="flex flex-col gap-5 py-5 px-4 desktop:py-7.5 desktop:px-6 desktop:gap-7.5">
       <CardHeader className="gap-2">
-        <span className="w-6 h-6 relative shrink-0 desktop:w-8 desktop:h-8">
-          <Image src={ingredients} fill alt="ingredients" className="object-contain" />
-        </span>
-
-        <div className="typo-b1 text-[#323c48] desktop:typo-h4">포함 성분</div>
-
-        <button
-          type="button"
-          aria-label="포함 성분 더보기"
-          className=" w-5 h-5 relative shrink-0 desktop:w-6 desktop:h-6"
-        >
-          <Image src={see_more} fill alt="see_more" className="object-contain" />
-        </button>
+        <CardTitle
+          icon={
+            <>
+              <Image
+                src={ingredient_24}
+                width={24}
+                height={24}
+                alt="ingredient"
+                className="desktop:hidden"
+              />
+              <Image
+                src={ingredient_32}
+                width={32}
+                height={32}
+                alt="ingredient"
+                className="hidden desktop:block"
+              />
+            </>
+          }
+          title="포함 성분"
+        />
       </CardHeader>
 
-      <CardContent className="flex flex-col w-full gap-[12px]">
-        <div className="flex border-b border-[#dce4ed] pb-[12px]">
-          <div className="w-[148px] p-[10px] desktop:w-60 desktop:px-5 desktop:py-2.5">
-            <div className="typo-b3 whitespace-nowrap">프로바이옥틱스(유산균)</div>
-          </div>
-          <div className="w-[148px] p-[10px] desktop:w-[223px] desktop:py-2.5 desktop:pr-5 desktop:pl-2.5 desktop:gap-2.5">
-            <div className="typo-b3 whitespace-nowrap text-[#59636e]">혈중 콜레스테롤 개선</div>
-          </div>
-          <div className="text-center rounded-[999px] pt-1 px-3 pb-[5px] gap-2.5 bg-[#edf2f6] typo-b4 text-[#59636e] hidden desktop:flex items-center">1,000mg</div>
-        </div>
-
-        <div className="flex border-b border-[#dce4ed] pb-[12px]">
-          <div className="w-[148px] p-[10px] desktop:w-60 desktop:px-5 desktop:py-2.5">
-            <div className="typo-b3 whitespace-nowrap">프로바이옥틱스(유산균)</div>
-          </div>
-          <div className="w-[148px] p-[10px] desktop:w-[223px] desktop:py-2.5 desktop:pr-5 desktop:pl-2.5 desktop:gap-2.5">
-            <div className="typo-b3 whitespace-nowrap text-[#59636e]">혈중 콜레스테롤 개선</div>
-          </div>
-          <div className="text-center rounded-[999px] pt-1 px-3 pb-[5px] gap-2.5 bg-[#edf2f6] typo-b4 text-[#59636e] hidden desktop:flex items-center">1,000mg</div>
-        </div>
-
-        <div className="flex border-b border-[#dce4ed] pb-[12px]">
-          <div className="w-[148px] p-[10px] desktop:w-60 desktop:px-5 desktop:py-2.5">
-            <div className="typo-b3 whitespace-nowrap">프로바이옥틱스(유산균)</div>
-          </div>
-          <div className="w-[148px] p-[10px] desktop:w-[223px] desktop:py-2.5 desktop:pr-5 desktop:pl-2.5 desktop:gap-2.5">
-            <div className="typo-b3 whitespace-nowrap text-[#59636e]">혈중 콜레스테롤 개선</div>
-          </div>
-          <div className="text-center rounded-[999px] pt-1 px-3 pb-[5px] gap-2.5 bg-[#edf2f6] typo-b4 text-[#59636e] hidden desktop:flex items-center">1,000mg</div>
-        </div>
+      <CardContent className="flex w-full gap-2.5 items-center flex-wrap">
+        <Label variant="positive" ><div className="typo-b5">나이아신</div></Label>
+        <Label variant="positive" ><div className="typo-b5">비오틴</div></Label>
+        <Label
+          variant="positive"
+          ><div className="typo-b5 text-fg-info-secondary-accent">비타민 B1</div></Label>
+        <Label
+          variant="default"
+          ><div className="typo-b5 text-fg-basic-accent">비타민 B2</div></Label>
+        <Label
+          variant="default"
+          ><div className="typo-b5 text-fg-basic-accent">비타민 B6</div></Label>
+        <Label
+          variant="default"
+          ><div className="typo-b5 text-fg-basic-accent">비타민 C</div></Label>
+        <Label
+          variant="default"
+          ><div className="typo-b5 text-fg-basic-accent">비타민 D</div></Label>
+        <Label
+          variant="default"
+          ><div className="typo-b5 text-fg-basic-accent">비타민 E</div></Label>
+        <Label
+          variant="default"
+          >
+            <div className="typo-b5 text-fg-basic-accent">아연</div>
+          </Label>
+        <Label
+          variant="default"
+          ><div className="typo-b5 text-fg-basic-accent">엽산</div></Label>
+        <Label
+          variant="default"
+          ><div className="typo-b5 text-fg-basic-accent">저분자콜라겐펩타이드GT(제2022-6호)</div></Label>
+        <Label
+          variant="default"
+          ><div className="typo-b5 text-fg-basic-accent">판토텐산</div></Label>
       </CardContent>
     </Card>
   )
