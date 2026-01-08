@@ -28,7 +28,7 @@ export default function IntakeStorageSection() {
             />
           </>
         }
-        title="포함 성분"
+        title="섭취 ∙ 보관 방법"
        
       />
         <CardContent className="gap-3 flex flex-col">
