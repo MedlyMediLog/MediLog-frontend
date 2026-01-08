@@ -4,7 +4,7 @@ import Image from "next/image"
 export default function ProductDeatilHeader() {
     return(
         <div className="w-full flex h-[56px] p-[16px]  bg-[#edf2f6] gap-30 desktop:py-4 desktop:px-5 desktop:h-auto">
-          <div className="w-full flex justify-between items-center">
+          <div className="w-full flex justify-between items-center desktop:p-1">
             <div className="w-[80px] h-[40px] bg-[#a2acb7]"></div>
             {/* 중앙 타이틀 */}
               <div className="absolute left-1/2 -translate-x-1/2 typo-h5 desktop:hidden">제품 상세</div>
