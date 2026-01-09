@@ -3,9 +3,9 @@ import Image from 'next/image'
 
 export default function CategoryHeader() {
   return (
-    <div className="w-full flex h-[56px] p-[16px]  bg-[#edf2f6] gap-30 desktop:py-4 desktop:px-5 desktop:h-auto">
-      <div className="w-full flex justify-between items-center">
-        <div className="w-[80px] h-[40px] bg-[#a2acb7]"></div>
+    <div className="w-full flex h-[56px] p-[16px]  bg-gray-100 gap-30 desktop:py-4 desktop:px-5 desktop:h-auto">
+      <div className="w-full flex justify-between items-center desktop:p-1">
+        <div className="w-[80px] h-[40px] bg-gray-400"></div>
 
         <button
           type="button"

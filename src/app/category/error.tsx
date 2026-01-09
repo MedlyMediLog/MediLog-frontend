@@ -1,7 +1,9 @@
-import Button from '@/app/_components/common/Button'
+'use client'
+
+import Button from '../_components/common/Button'
 import error from '@/assets/error.png'
 import Image from 'next/image'
-import CategoryHeader from '../_components/CategoryHeader'
+import CategoryHeader from './_components/CategoryHeader'
 export default function Page() {
   return (
     <>
