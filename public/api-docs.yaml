@@ -1,0 +1,117 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: /api
+  description: Generated server url
+paths:
+  /v1/products:
+    get:
+      tags:
+      - product-controller
+      summary: 상품 목록 조회
+      description: 카테고리+타겟 기준으로 FORBID는 제외하고 ALLOW/CAUTION으로 분리해 반환합니다.
+      operationId: getProducts
+      parameters:
+      - name: category
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - EYE
+          - BONE
+          - IMMUNE
+          - ENERGY
+          - STRESS
+          - GUT
+          - BLOOD
+          - SKIN
+          - MUSCLE
+          - LIVER
+      - name: target
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - PREGNANT
+          - TEEN
+          - DIETER
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              example:
+                category: EYE
+                target: PREGNANT
+                allowed:
+                - productId: 20040020006107
+                  name: 루테인 지아잔틴
+                  manufacturer: OO제약
+                  ingredients:
+                  - 루테인
+                  - 지아잔틴
+                  level: "1"
+                  imageUrl: https://cdn.medilog.today/images/products/20040020006107.png
+                caution:
+                - productId: 20040020006108
+                  name: 비타민A
+                  manufacturer: XX헬스
+                  ingredients:
+                  - 비타민A
+                  level: "2"
+                  imageUrl: https://cdn.medilog.today/images/products/20040020006108.png
+  /v1/products/{productId}:
+    get:
+      tags:
+      - product-controller
+      summary: 상품 상세 조회
+      description: 상품 상세 + 선택한 타겟 기준 level + 성분/성상을 반환합니다.
+      operationId: getProductDetail
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: target
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - PREGNANT
+          - TEEN
+          - DIETER
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              example:
+                productId: 20040020006107
+                category: EYE
+                name: 루테인 지아잔틴
+                manufacturer: OO제약
+                target: PREGNANT
+                level: CAUTION
+                appearanceForm: 캡슐
+                text: 고유의 향미가 있고 노랑 입자성을 띄는 성상을 가지고 있어요
+                ingredients:
+                - 루테인
+                - 지아잔틴
+                functionText:
+                - 눈 건강에 도움을 줄 수 있음
+                - 항산화에 도움을 줄 수 있음
+                howToEat: 1일 1회 1캡슐
+                expiration: 제조일로부터 24개월
+                storageMethod: 직사광선을 피해 서늘한 곳 보관
+                cautionRaw:
+                - 특정 질환자는 전문가와 상담하세요
+                - 임산부/수유부는 섭취 전 전문가와 상담하세요
+                imageUrl: https://cdn.medilog.today/images/products/20040020006107.png
+components: {}
