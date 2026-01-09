@@ -29,7 +29,7 @@ export default function SideBar() {
         <button
           type="button"
           onClick={() => setIsOpen((v) => !v)}
-          className="p-2"
+          className="p-2 gap-2"
           aria-expanded={isOpen}
           aria-label={isOpen ? '사이드바 닫기' : '사이드바 열기'}
         >
