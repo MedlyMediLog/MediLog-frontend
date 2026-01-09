@@ -1,3 +1,4 @@
+//src/app/_components/common/SearchInput.tsx
 'use client'
 
 import * as React from 'react'

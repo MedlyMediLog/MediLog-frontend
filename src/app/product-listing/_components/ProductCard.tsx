@@ -1,65 +1,123 @@
-import Image from 'next/image';
-import { Label } from '@/app/_components/common/Label/Label';
-import type { ProductItem } from './types';
+import React from 'react'
+import Image from 'next/image'
+import styles from './ProductCard.module.css'
+import type { ProductItem, ProductStatus } from './types'
+
+// ✅ 피그마 기본 카드 placeholder
+import placeholderCard from '@/assets/product-listing/placeholder/product-listing.png'
+
+// ✅ 공통 라벨 (수정 불가)
+import { Label } from '@/app/_components/common/Label/Label'
 
 type Props = {
-  item: ProductItem;
-};
-
-function statusToVariant(status?: ProductItem['status']) {
-  // Label variant: 'default' | 'positive' | 'attention'
-  if (status === '섭취 가능') return 'positive';
-  if (status === '주의사항') return 'attention';
-  if (status === '섭취 금지') return 'attention';
-  return 'default';
+  item: ProductItem
+  /** 전체(all)일 때는 라벨 숨기고, 대상군 선택 시만 라벨 노출 */
+  showStatus?: boolean
 }
 
-export default function ProductCard({ item }: Props) {
+export function ProductCard({ item, showStatus = false }: Props) {
+  const tags = item.tags ?? []
+  const visible = tags.slice(0, 2)
+  const restCount = Math.max(tags.length - 2, 0)
+
+  const canShowStatus = showStatus && item.status && item.status !== '섭취 금지'
+
+  /**
+   * ✅ 라벨 노출 규칙
+   * - 섭취 가능: 단독
+   * - 섭취 고려 / 주의사항: 항상 "세트"로 같이 노출
+   *
+   * ✅ Label 최신 variant 매핑
+   * - positive  : 섭취 가능
+   * - attention : 섭취 고려(노랑)
+   * - default   : 주의사항(회색)
+   */
+  const renderStatusBadges = (status: Exclude<ProductStatus, '섭취 금지'>) => {
+    if (status === '섭취 가능') {
+      return <Label variant="positive">섭취 가능</Label>
+    }
+
+    // ✅ 섭취 고려 OR 주의사항 → 무조건 세트
+    return (
+      <>
+        <Label variant="attention">섭취 고려</Label>
+        <Label variant="default">주의사항</Label>
+      </>
+    )
+  }
+
   return (
-    <article className="flex flex-col gap-3">
-      {/* 이미지 */}
-      <div className="relative w-full overflow-hidden rounded-[12px] bg-layer-week aspect-[302/202]">
-        {item.image ? (
-          <Image
-            src={item.image}
-            alt={item.name}
-            fill
-            className="object-cover"
-            sizes="(min-width: 1280px) 302px, 100vw"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <div className="h-[120px] w-[65px] rounded-[10px] bg-layer-secondary" />
+    <article className="flex w-[302px] flex-col items-start gap-4">
+      <div
+        className={[
+          'relative w-[302px] h-[202px]',
+          'rounded-[12px] overflow-hidden',
+          'bg-[var(--gray-0)]',
+        ].join(' ')}
+      >
+        {/* ✅ 상태 라벨: 피그마 1:1 (left/top 10, 라벨-라벨 gap 4) */}
+        {canShowStatus && (
+          <div
+            className={[
+              'absolute left-[10px] top-[10px] z-10',
+              'flex items-center',
+              'gap-[4px]', // ✅ 스샷 기준 라벨 간격: 4px
+            ].join(' ')}
+          >
+            {renderStatusBadges(
+              item.status as Exclude<ProductStatus, '섭취 금지'>
+            )}
           </div>
         )}
+
+        <Image
+          src={item.image ?? placeholderCard}
+          alt={item.name}
+          fill
+          className="object-cover"
+          priority={false}
+        />
       </div>
 
-      {/* 브랜드 */}
-      <p className="typo-b5 text-fg-basic-accent">{item.brand}</p>
+      <div className="flex w-full max-w-[280px] flex-col items-start gap-1">
+        <p className="typo-b3 text-fg-basic-primary w-full">{item.brand}</p>
 
-      {/* 상품명 */}
-      <p className="typo-b4 text-fg-basic-primary line-clamp-2">{item.name}</p>
+        <p className={['typo-b1 text-fg-basic-accent w-full', styles.clamp2].join(' ')}>
+          {item.name}
+        </p>
+      </div>
 
-      {/* 라벨 + 태그 */}
-      <div className="flex flex-wrap items-center gap-2">
-        {item.status ? (
-          <Label variant={statusToVariant(item.status)}>{item.status}</Label>
-        ) : null}
-
-        {item.tags?.slice(0, 2).map((t, idx) => (
+      <div className="flex items-center gap-1">
+        {visible.map((label, idx) => (
           <span
-            key={`${item.id}-${t}-${idx}`} // ✅ 중복 방지
-            className="rounded-full bg-layer-secondary px-2 py-1 typo-b5 text-fg-basic-primary"
+            key={`${label}-${idx}`}
+            className={[
+              'inline-flex items-center justify-center',
+              'px-[10px] py-[3px]',
+              'rounded-[8px]',
+              'bg-layer-secondary',
+              'typo-b5 text-fg-basic-accent',
+            ].join(' ')}
           >
-            {t}
+            {label}
           </span>
         ))}
 
-        {/* +N 표기(태그가 2개 초과면) */}
-        {item.tags && item.tags.length > 2 ? (
-          <span className="typo-b5 text-fg-basic-primary">+{item.tags.length - 2}</span>
-        ) : null}
+        {restCount > 0 && (
+          <span
+            className={[
+              'inline-flex items-center justify-center',
+              'min-w-[24px]',
+              'px-[12px] py-[3px]',
+              'rounded-[8px]',
+              'bg-layer-secondary',
+              'typo-b5 text-fg-basic-week',
+            ].join(' ')}
+          >
+            +{restCount}
+          </span>
+        )}
       </div>
     </article>
-  );
+  )
 }

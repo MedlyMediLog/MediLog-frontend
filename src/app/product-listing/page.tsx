@@ -1,19 +1,17 @@
-import ProductListingShell from '@/app/product-listing/_components/ProductListingShell';
+// src/app/product-listing/page.tsx
+import React from 'react'
+import { ProductList } from './_components/ProductList'
+import { ProductListingTopBar } from './_components/ProductListingTopBar'
 
 export default function ProductListingPage() {
   return (
-    <div className="flex w-full">
-      <aside className="hidden desktop:block">
-      </aside>
+    // ✅ 컨텐츠 영역 bg-layer-week
+    <main className="min-h-dvh bg-layer-week">
+      {/* ✅ 상단바 */}
+      <ProductListingTopBar />
 
-      <div className="flex min-h-screen flex-1 flex-col">
-
-        <main className="flex-1 w-full">
-          <div className="min-h-[calc(100vh-120px)]">
-            <ProductListingShell />
-        </div>
+      {/* ✅ 본문 */}
+      <ProductList />
     </main>
-      </div>
-    </div>
-  );
+  )
 }

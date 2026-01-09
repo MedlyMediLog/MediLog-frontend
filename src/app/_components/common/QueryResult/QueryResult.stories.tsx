@@ -1,3 +1,4 @@
+//src/app/_components/common/QueryResult/QueryResult.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { QueryResult } from './QueryResult';
 

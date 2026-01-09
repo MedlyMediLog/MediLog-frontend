@@ -1,3 +1,4 @@
+//src/app/_components/common/InfoMessage/InfoMessage.types.ts
 import type { ReactNode } from 'react';
 
 export type InfoMessageProps = {
