@@ -1,10 +1,78 @@
-export default function CategoryCard(){
-    return (
-        <div className="flex flex-col gap-[8px]">
-            <div className="w-full aspect-square bg-[#E5EAF0] rounded-[12px] flex items-center justify-center">
-                <span className="text-gray-400">IMG</span>
-            </div>
-            <div className="text-center typo-h4"> 뼈, 관절</div>
+import Image from 'next/image'
+import eye from '@/assets/eye.png'
+import bone from '@/assets/bone.png'
+import blood from '@/assets/blood.png'
+import energy from '@/assets/energy.png'
+import immunity from '@/assets/immunity.png'
+import intestine from '@/assets/intestine.png'
+import liver from '@/assets/liver.png'
+import muscle from '@/assets/muscle.png'
+import skin from '@/assets/skin.png'
+import sleep from '@/assets/sleep.png'
+
+export default function CategoryCard() {
+  return (
+    <>
+      <div className="flex flex-col gap-[8px]">
+        <div className="relative w-full aspect-square rounded-[12px] flex items-center justify-center">
+          <Image src={eye} alt="" fill className="object-contain" priority />
         </div>
-    )
+        <div className="text-center typo-h4">눈 건강</div>
+      </div>
+      <div className="flex flex-col gap-[8px]">
+        <div className="relative w-full aspect-square rounded-[12px] flex items-center justify-center">
+          <Image src={bone} alt="" fill className="object-contain" priority />
+        </div>
+        <div className="text-center typo-h4">뼈, 관절</div>
+      </div>
+      <div className="flex flex-col gap-[8px]">
+        <div className="relative w-full aspect-square rounded-[12px] flex items-center justify-center">
+          <Image src={immunity} alt="" fill className="object-contain" priority />
+        </div>
+        <div className="text-center typo-h4">면역</div>
+      </div>
+      <div className="flex flex-col gap-[8px]">
+        <div className="relative w-full aspect-square rounded-[12px] flex items-center justify-center">
+          <Image src={energy} alt="" fill className="object-contain" priority />
+        </div>
+        <div className="text-center typo-h4">피로, 에너지</div>
+      </div>
+      <div className="flex flex-col gap-[8px]">
+        <div className="relative w-full aspect-square rounded-[12px] flex items-center justify-center">
+          <Image src={sleep} alt="" fill className="object-contain" priority />
+        </div>
+        <div className="text-center typo-h4">수면, 스트레스</div>
+      </div>
+      <div className="flex flex-col gap-[8px]">
+        <div className="relative w-full aspect-square rounded-[12px] flex items-center justify-center">
+          <Image src={intestine} alt="" fill className="object-contain" priority />
+        </div>
+        <div className="text-center typo-h4">장 건강</div>
+      </div>
+      <div className="flex flex-col gap-[8px]">
+        <div className="relative w-full aspect-square rounded-[12px] flex items-center justify-center">
+          <Image src={blood} alt="" fill className="object-contain" priority />
+        </div>
+        <div className="text-center typo-h4">혈행, 혈압</div>
+      </div>
+      <div className="flex flex-col gap-[8px]">
+        <div className="relative w-full aspect-square rounded-[12px] flex items-center justify-center">
+          <Image src={skin} alt="" fill className="object-contain" priority />
+        </div>
+        <div className="text-center typo-h4">피부, 모발</div>
+      </div>
+      <div className="flex flex-col gap-[8px]">
+        <div className="relative w-full aspect-square rounded-[12px] flex items-center justify-center">
+          <Image src={muscle} alt="" fill className="object-contain" priority />
+        </div>
+        <div className="text-center typo-h4">근육, 운동</div>
+      </div>
+      <div className="flex flex-col gap-[8px]">
+        <div className="relative w-full aspect-square rounded-[12px] flex items-center justify-center">
+          <Image src={liver} alt="" fill className="object-contain" priority />
+        </div>
+        <div className="text-center typo-h4">간 건강</div>
+      </div>
+    </>
+  )
 }

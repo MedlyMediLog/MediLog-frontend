@@ -1,3 +1,4 @@
+//src/app/_components/common/QueryResult/QueryResult.tsx
 'use client';
 
 import React from 'react';

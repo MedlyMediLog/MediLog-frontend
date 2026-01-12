@@ -1,41 +1,39 @@
+//src/app/_components/common/InfoMessage/InfoMessage.tsx
 'use client';
 
 import React from 'react';
 import Image from 'next/image';
 import type { InfoMessageProps } from './InfoMessage.types';
-import infoCirclePng from '@/assets/infocircle.png';
+import infoPng from '@/assets/product-listing/icons/icon-info.png';
 
 export function InfoMessage({
   message,
   icon,
   showDefaultIcon = true,
   className,
-  minHeight = 100,
+  minHeight, // (필요하면 외부에서 줄 수 있게 유지)
 }: InfoMessageProps) {
   const shouldShowDefault = !icon && showDefaultIcon;
 
   return (
     <div
       className={[
-        // ✅ globals.css 토큰 기반
-        'bg-layer-week rounded-[5px]',
-        // ✅ 반응형: 부모 폭에 맞춰 늘어남
+        // ✅ 피그마: 배경 없는 인라인 안내
         'w-full',
-        // ✅ 피그마 높이(100)는 최소 높이로 유지
-        'flex items-center justify-center',
+        'flex items-center',
         className ?? '',
       ].join(' ')}
-      style={{ minHeight }}
+      style={minHeight ? { minHeight } : undefined}
       role="status"
       aria-live="polite"
     >
-      {/* ✅ 피그마: inline-flex / gap 4px / padding 10px 0 */}
-      <div className="inline-flex items-center gap-[4px] py-[10px] px-4">
+      {/* ✅ 피그마: height 28 / padding 10px 0 / gap 4px / max-width 485 */}
+      <div className="inline-flex items-center gap-[4px] py-[10px] max-w-[485px]">
         {icon ? (
           <span className="flex-shrink-0">{icon}</span>
         ) : shouldShowDefault ? (
           <Image
-            src={infoCirclePng}
+            src={infoPng}
             alt=""
             width={20}
             height={20}
@@ -43,8 +41,8 @@ export function InfoMessage({
           />
         ) : null}
 
-        {/* ✅ typo-b5 + fg-basic-accent (globals.css 유틸) */}
-        <span className="typo-b5 text-fg-basic-accent text-center break-keep">
+        {/* ✅ 피그마: B4, 파란색(Info Primary) */}
+        <span className="typo-b4 text-fg-info-primary break-keep">
           {message}
         </span>
       </div>
