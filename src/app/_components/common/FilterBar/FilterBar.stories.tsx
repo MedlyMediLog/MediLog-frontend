@@ -1,3 +1,4 @@
+// src/app/_components/common/FilterBar/FilterBar.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 import { FilterBar, type FilterBarProps } from './FilterBar'
@@ -35,27 +36,33 @@ function Controlled(args: FilterBarProps & { initialSearch?: string }) {
   const [selected, setSelected] = React.useState(args.selectedValue)
   const [q, setQ] = React.useState(args.initialSearch ?? (args.searchValue ?? ''))
 
+  // ✅ 스토리에서만 프레임 폭을 “피그마처럼” 맞춰주기 (공통 컴포넌트에 max-width를 넣지 않기 위함)
+  const wrapperWidth =
+    args.variant === 'select' ? 798 : args.variant === 'mobile' ? 472 : 560
+
   return (
     <div style={{ padding: 40, display: 'flex', justifyContent: 'center' }}>
-      <FilterBar
-        {...args}
-        selectedValue={selected}
-        onSelect={(v) => {
-          args.onSelect?.(v)
-          setSelected(v)
-        }}
-        searchValue={q}
-        onSearchChange={(v) => {
-          args.onSearchChange?.(v)
-          setQ(v)
-        }}
-        onSearchSubmit={() => {
-          args.onSearchSubmit?.()
-        }}
-        onIconClick={() => {
-          args.onIconClick?.()
-        }}
-      />
+      <div style={{ width: wrapperWidth }}>
+        <FilterBar
+          {...args}
+          selectedValue={selected}
+          onSelect={(v) => {
+            args.onSelect?.(v)
+            setSelected(v)
+          }}
+          searchValue={q}
+          onSearchChange={(v) => {
+            args.onSearchChange?.(v)
+            setQ(v)
+          }}
+          onSearchSubmit={() => {
+            args.onSearchSubmit?.()
+          }}
+          onIconClick={() => {
+            args.onIconClick?.()
+          }}
+        />
+      </div>
     </div>
   )
 }

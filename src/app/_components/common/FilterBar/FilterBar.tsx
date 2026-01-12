@@ -1,3 +1,4 @@
+// src/app/_components/common/FilterBar/FilterBar.tsx
 import React from 'react'
 import './FilterBar.css'
 import { SearchInput } from '../SearchInput'
@@ -91,8 +92,7 @@ export function FilterBar({
           ))}
         </div>
 
-        {/* ✅ 피그마: min 260 / max 350 / flex 1 0 0 */}
-        <div style={{ flex: '1 0 0', minWidth: 260, maxWidth: 350 }}>
+        <div className="medly-filterbar__search medly-filterbar__search--select">
           <SearchInput
             variant="desktop"
             value={searchValue}
@@ -110,8 +110,7 @@ export function FilterBar({
   if (variant === 'mobile') {
     return (
       <div className={`medly-filterbar medly-filterbar--mobile ${className}`}>
-        {/* ✅ 피그마: 아이콘만 (search.png) */}
-        <div style={{ flex: '0 0 auto' }}>
+        <div className="medly-filterbar__icon">
           <SearchInput
             variant="mobile"
             disabled={disabled}
@@ -119,7 +118,6 @@ export function FilterBar({
           />
         </div>
 
-        {/* ✅ 칩 영역만 가로 스와이프 */}
         <div className="medly-filtergroup medly-filtergroup--fixed" aria-label="필터 선택">
           {options.map((opt) => (
             <Chip
@@ -139,8 +137,7 @@ export function FilterBar({
   // searching
   return (
     <div className={`medly-filterbar medly-filterbar--searching ${className}`}>
-      {/* ✅ 피그마: min 330 / max 560 / flex 1 0 0 */}
-      <div style={{ flex: '1 0 0', minWidth: 330, maxWidth: 560 }}>
+      <div className="medly-filterbar__search medly-filterbar__search--searching">
         <SearchInput
           variant="desktop"
           value={searchValue}
@@ -152,7 +149,6 @@ export function FilterBar({
         />
       </div>
 
-      {/* ✅ 칩 영역만 가로 스와이프 */}
       <div className="medly-filtergroup medly-filtergroup--fixed" aria-label="필터 선택">
         {options.map((opt) => (
           <Chip
