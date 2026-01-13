@@ -1,0 +1,9 @@
+/* src/app/product-listing/_components/ProductCard.module.css */
+
+/* ⚠️ "상품명 자리" 줄수/말줄임 규칙이 캡처에 없어서 임의로 2줄 클램프 적용 */
+.clamp2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

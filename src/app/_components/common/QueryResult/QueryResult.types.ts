@@ -1,3 +1,4 @@
+//src/app/_components/common/QueryResult/QueryResult.types.ts
 export type QueryResultProps = {
   /** "조회 결과" 오른쪽에 보여줄 숫자 */
   count: number;
