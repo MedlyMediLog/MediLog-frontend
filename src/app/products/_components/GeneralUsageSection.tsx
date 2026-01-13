@@ -38,9 +38,10 @@ export default function GeneralUsageSection({functionText}: Props) {
           />
         </CardHeader>
         <CardContent className="gap-5 flex flex-col desktop:gap-6 ">
-          {functionText.map((text) => {
+          {functionText.map((text, idx) => {
             return(
               <Mention
+              key={idx}
             text={text}
             avatarSrc={profile}
           />

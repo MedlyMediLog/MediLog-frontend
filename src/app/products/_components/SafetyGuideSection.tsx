@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import warning from '@/assets/warning.png'
 import { Card, CardHeader, CardContent } from '@/app/_components/common/Card'
 import CardTitle from '@/app/_components/common/CardTitle/CardTitle'
 import caution_red_24 from "@/assets/caution_red_24.png"
@@ -41,16 +40,14 @@ export default function SafetyGuideSection({cautionRaw}: Props) {
 
       {/* Content */}
       <CardContent className="flex flex-col gap-2.5 desktop:gap-3">
-        {cautionRaw.map((raw => {
-          return(
-            <div className="w-full flex border-[1px] p-[8px] gap-[10px] bg-gray-0 border-gray-200 rounded-[8px] desktop:rounded-[12px] desktop:p-4">
-          <p className="typo-b3 text-[#242a30] desktop:typo-b2">
-            {raw}
-          </p>
-        </div>
-          )
-        }))}
-        
+        {cautionRaw.map((raw, idx) => (
+          <div
+            key={`${raw}-${idx}`}
+            className="w-full flex border-[1px] p-[8px] gap-[10px] bg-gray-0 border-gray-200 rounded-[8px] desktop:rounded-[12px] desktop:p-4"
+          >
+            <p className="typo-b3 text-[#242a30] desktop:typo-b2">{raw}</p>
+          </div>
+        ))}
       </CardContent>
     </Card>
   )
