@@ -4,7 +4,15 @@ import warning_fill from '@/assets/warning_fill.png'
 import pill from '@/assets/pill.png'
 import { Label } from '@/app/_components/common/Label/Label'
 
-export default function ProductSummarySection() {
+type Props = {
+  name: string;
+  manufacturer: string;
+  appearanceForm: string;
+  text: string;
+
+}
+
+export default function ProductSummarySection({name, manufacturer, appearanceForm, text}: Props) {
   return (
     <div className="flex flex-col gap-4 w-full desktop:w-[623px] desktop:gap-6">
       {/* 제품 */}
@@ -23,12 +31,12 @@ export default function ProductSummarySection() {
 
         <div className="flex flex-col w-full gap-2">
           <div className="flex flex-col gap-2 items-start">
-            <div className="typo-b3 text-fg-basic-primary desktop:typo-h5">제조사명 [“ENTRPS”]</div>
+            <div className="typo-b3 text-fg-basic-primary desktop:typo-h5">{manufacturer}</div>
 
             <div className="typo-b1 text-fg-basic-accent desktop:typo-h2">
-              제품명 자리입니다 [“PRDUCT”]
+              {name}
             </div>
-            <Label variant="default" ><div className='text-fg-basic-accent typo-b5'>분말/알약/액상/캡슐 제품</div></Label>
+            <Label variant="default" ><div className='text-fg-basic-accent typo-b5'>{appearanceForm}</div></Label>
           </div>
 
         </div>
@@ -37,8 +45,7 @@ export default function ProductSummarySection() {
       {/* 설명 */}
       <div className="flex flex-col gap-3 w-full">
         <div className="typo-b3 text-gray-700 desktop:typo-b2">
-          “SUNGSANG 원문” <br /> =&gt; ex) 고유의 향미가 있고 이미 ∙ 이취가 없는 노랑 하양색의
-          입자성이 있는 분말의 성상을 가지고 있어요.
+          “SUNGSANG 원문” <br /> =&gt; ex) {text}
         </div>
       </div>
 
