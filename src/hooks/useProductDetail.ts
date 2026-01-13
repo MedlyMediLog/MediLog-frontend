@@ -1,0 +1,24 @@
+import { useQuery } from "@tanstack/react-query";
+import type { ProductDetail, Target } from "@/lib/api/types";
+
+export function useProductDetail(params: { productId: number; target?: Target | null }) {
+  const { productId, target } = params;
+
+  return useQuery({
+    queryKey: ["productDetail", productId, target ?? null],
+    enabled: Number.isFinite(productId),
+    staleTime: 30_000,
+    queryFn: async () => {
+      const path = target
+        ? `/api/v1/products/${productId}?target=${encodeURIComponent(target)}`
+        : `/api/v1/products/${productId}`;
+
+      const res = await fetch(path);
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || `Request failed: ${res.status}`);
+      }
+      return (await res.json()) as ProductDetail;
+    },
+  });
+}

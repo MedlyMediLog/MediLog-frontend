@@ -162,7 +162,7 @@
    2) Responsive token override (Display only)
    - 너가 원래 하던 방식 유지하되, 중괄호 정상화
 ========================= */
-@media (min-width: 1024px) {
+@media (min-width: 740px) {
   :root {
     --text-d1: 60px;
     --text-d2: 44px;
