@@ -1,5 +1,4 @@
 /* src/app/_components/common/FilterBar/FilterBar.css */
-
 /* 공통 */
 .medly-filterbar {
   box-sizing: border-box;
@@ -83,58 +82,10 @@
   display: none;
 }
 
-/* ✅ 칩 (피그마 1:1)
-  - padding: 6px 16px
-  - gap: 8px
-  - radius: 12px
-  - inactive bg: Color/gray/1000 (#DCE4ED)
-  - inactive text: Role/fg/basic/primary (#59636E)
-  - active bg: Role/bg/layer/accent (#242A30)
-  - active text: Color/gray/0
-*/
-.medly-chip {
-  border: 0;
-  cursor: pointer;
-
-  padding: 6px var(--Number-16, 16px);
-  border-radius: var(--Number-round-M, 12px);
-
-  /* 텍스트(H5) */
-  font-family: Pretendard;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 150%; /* 24px */
-  letter-spacing: -0.32px;
-
-  /* Inactive */
-  background: var(--Color-gray-1000, #DCE4ED);
-  color: var(--Color-Role-fg-basic-primary, #59636E);
-
-  white-space: nowrap;
-  flex: 0 0 auto;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  /* ✅ 피그마 gap 8 */
-  gap: 8px;
-}
-
-/* Active */
-.medly-chip--active {
-  background: var(--Color-Role-bg-layer-accent, #242A30);
-  color: var(--Color-gray-0, #ffffff);
-}
-
-/* 접근성/사용성: 포커스 링 (디자인 깨지지 않게 최소한) */
-.medly-chip:focus-visible {
-  outline: 2px solid rgba(36, 42, 48, 0.35);
-  outline-offset: 2px;
-}
-
-.medly-chip:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
+/* ✅ [추가] 칩 버튼이 줄어들면서 글자 줄바꿈되는 현상 방지
+   - 버튼 자체는 "콘텐츠 크기만큼" 유지
+   - 넘치면 .medly-filtergroup--fixed가 가로 스크롤(스와이프) 담당 */
+.medly-filtergroup--fixed > button {
+  flex: 0 0 auto;       /* (= flex-shrink:0) 버튼 폭 강제 축소 방지 */
+  white-space: nowrap;  /* '전\n체' 같은 줄바꿈 방지 */
 }
