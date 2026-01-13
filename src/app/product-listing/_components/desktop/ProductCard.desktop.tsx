@@ -1,43 +1,27 @@
 import React from 'react'
 import Image from 'next/image'
-import styles from './ProductCard.module.css'
-import type { ProductItem, ProductStatus } from './types'
+import styles from './ProductCard.desktop.module.css'
+import type { ProductItem, ProductStatus } from '../shared/types'
 
-// ✅ 피그마 기본 카드 placeholder
 import placeholderCard from '@/assets/product-listing/placeholder/product-listing.png'
-
-// ✅ 공통 라벨 (수정 불가)
 import { Label } from '@/app/_components/common/Label/Label'
 
 type Props = {
   item: ProductItem
-  /** 전체(all)일 때는 라벨 숨기고, 대상군 선택 시만 라벨 노출 */
   showStatus?: boolean
 }
 
-export function ProductCard({ item, showStatus = false }: Props) {
+export function ProductCardDesktop({ item, showStatus = false }: Props) {
   const tags = item.tags ?? []
   const visible = tags.slice(0, 2)
   const restCount = Math.max(tags.length - 2, 0)
 
   const canShowStatus = showStatus && item.status && item.status !== '섭취 금지'
 
-  /**
-   * ✅ 라벨 노출 규칙
-   * - 섭취 가능: 단독
-   * - 섭취 고려 / 주의사항: 항상 "세트"로 같이 노출
-   *
-   * ✅ Label 최신 variant 매핑
-   * - positive  : 섭취 가능
-   * - attention : 섭취 고려(노랑)
-   * - default   : 주의사항(회색)
-   */
   const renderStatusBadges = (status: Exclude<ProductStatus, '섭취 금지'>) => {
     if (status === '섭취 가능') {
       return <Label variant="positive">섭취 가능</Label>
     }
-
-    // ✅ 섭취 고려 OR 주의사항 → 무조건 세트
     return (
       <>
         <Label variant="attention">섭취 고려</Label>
@@ -48,25 +32,10 @@ export function ProductCard({ item, showStatus = false }: Props) {
 
   return (
     <article className="flex w-[302px] flex-col items-start gap-4">
-      <div
-        className={[
-          'relative w-[302px] h-[202px]',
-          'rounded-[12px] overflow-hidden',
-          'bg-[var(--gray-0)]',
-        ].join(' ')}
-      >
-        {/* ✅ 상태 라벨: 피그마 1:1 (left/top 10, 라벨-라벨 gap 4) */}
+      <div className="relative h-[202px] w-[302px] overflow-hidden rounded-[12px] bg-layer-primary">
         {canShowStatus && (
-          <div
-            className={[
-              'absolute left-[10px] top-[10px] z-10',
-              'flex items-center',
-              'gap-[4px]', // ✅ 스샷 기준 라벨 간격: 4px
-            ].join(' ')}
-          >
-            {renderStatusBadges(
-              item.status as Exclude<ProductStatus, '섭취 금지'>
-            )}
+          <div className="absolute left-[10px] top-[10px] z-10 flex items-center gap-[4px]">
+            {renderStatusBadges(item.status as Exclude<ProductStatus, '섭취 금지'>)}
           </div>
         )}
 
@@ -75,7 +44,6 @@ export function ProductCard({ item, showStatus = false }: Props) {
           alt={item.name}
           fill
           className="object-cover"
-          priority={false}
         />
       </div>
 

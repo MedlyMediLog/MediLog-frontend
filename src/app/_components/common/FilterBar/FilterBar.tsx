@@ -1,8 +1,9 @@
-// src/app/_components/common/FilterBar/FilterBar.tsx
+//src/app/_components/common/FilterBar/FilterBar.tsx
 import React from 'react'
 import './FilterBar.css'
-import { SearchInput } from '../SearchInput'
-import type { SearchInputProps } from '../SearchInput'
+import { SearchInput } from '@/app/_components/common/SearchInput'
+import type { SearchInputProps } from '@/app/_components/common/SearchInput'
+import Button from '@/app/_components/common/Button'
 
 export type FilterBarVariant = 'select' | 'mobile' | 'searching'
 
@@ -38,30 +39,6 @@ export type FilterBarProps = {
   className?: string
 }
 
-function Chip({
-  active,
-  children,
-  onClick,
-  disabled,
-}: {
-  active: boolean
-  children: React.ReactNode
-  onClick: () => void
-  disabled?: boolean
-}) {
-  return (
-    <button
-      type="button"
-      className={`medly-chip ${active ? 'medly-chip--active' : ''}`}
-      onClick={disabled ? undefined : onClick}
-      disabled={disabled}
-      aria-pressed={active}
-    >
-      {children}
-    </button>
-  )
-}
-
 export function FilterBar({
   variant,
   options,
@@ -80,16 +57,20 @@ export function FilterBar({
     return (
       <div className={`medly-filterbar medly-filterbar--select ${className}`}>
         <div className="medly-filtergroup">
-          {options.map((opt) => (
-            <Chip
-              key={opt.value}
-              active={opt.value === selectedValue}
-              onClick={() => onSelect(opt.value)}
-              disabled={disabled}
-            >
-              {opt.label}
-            </Chip>
-          ))}
+          {options.map((opt) => {
+            const active = opt.value === selectedValue
+            return (
+              <Button
+                key={opt.value}
+                shape="square"
+                variant={active ? 'primary' : 'secondary'}
+                disabled={disabled}
+                onClick={() => onSelect(opt.value)}
+              >
+                {opt.label}
+              </Button>
+            )
+          })}
         </div>
 
         <div className="medly-filterbar__search medly-filterbar__search--select">
@@ -119,16 +100,20 @@ export function FilterBar({
         </div>
 
         <div className="medly-filtergroup medly-filtergroup--fixed" aria-label="필터 선택">
-          {options.map((opt) => (
-            <Chip
-              key={opt.value}
-              active={opt.value === selectedValue}
-              onClick={() => onSelect(opt.value)}
-              disabled={disabled}
-            >
-              {opt.label}
-            </Chip>
-          ))}
+          {options.map((opt) => {
+            const active = opt.value === selectedValue
+            return (
+              <Button
+                key={opt.value}
+                shape="square"
+                variant={active ? 'primary' : 'secondary'}
+                disabled={disabled}
+                onClick={() => onSelect(opt.value)}
+              >
+                {opt.label}
+              </Button>
+            )
+          })}
         </div>
       </div>
     )
@@ -150,16 +135,20 @@ export function FilterBar({
       </div>
 
       <div className="medly-filtergroup medly-filtergroup--fixed" aria-label="필터 선택">
-        {options.map((opt) => (
-          <Chip
-            key={opt.value}
-            active={opt.value === selectedValue}
-            onClick={() => onSelect(opt.value)}
-            disabled={disabled}
-          >
-            {opt.label}
-          </Chip>
-        ))}
+        {options.map((opt) => {
+          const active = opt.value === selectedValue
+          return (
+            <Button
+              key={opt.value}
+              shape="square"
+              variant={active ? 'primary' : 'secondary'}
+              disabled={disabled}
+              onClick={() => onSelect(opt.value)}
+            >
+              {opt.label}
+            </Button>
+          )
+        })}
       </div>
     </div>
   )

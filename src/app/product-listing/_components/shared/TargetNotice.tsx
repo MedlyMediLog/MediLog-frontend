@@ -1,11 +1,10 @@
-// src/app/product-listing/_components/TargetNotice.tsx
-import Image from 'next/image';
-
-import infoPng from '@/assets/product-listing/icons/icon-info.png';
+//src/app/product-listing/_compnents/TargetNotice.tsx
+import Image from 'next/image'
+import infoPng from '@/assets/product-listing/icons/icon-info.png'
 
 type Props = {
-  message: string;
-};
+  message: string
+}
 
 export default function TargetNotice({ message }: Props) {
   return (
@@ -13,5 +12,5 @@ export default function TargetNotice({ message }: Props) {
       <Image src={infoPng} alt="" width={20} height={20} />
       <p className="typo-b5 text-fg-info-secondary-accent">{message}</p>
     </div>
-  );
+  )
 }

@@ -1,17 +1,34 @@
 // src/app/product-listing/page.tsx
 import React from 'react'
-import { ProductList } from './_components/ProductList'
-import { ProductListingTopBar } from './_components/ProductListingTopBar'
+
+import { ProductListingTopBarDesktop } from './_components/desktop/ProductListingTopBar.desktop'
+import { ProductListDesktop } from './_components/desktop/ProductList.desktop'
+
+import { ProductListingTopBarMobile } from './_components/mobile/ProductListingTopBar.mobile'
+import { ProductListMobile } from './_components/mobile/ProductList.mobile'
 
 export default function ProductListingPage() {
   return (
-    // ✅ 컨텐츠 영역 bg-layer-week
-    <main className="min-h-dvh bg-layer-week">
-      {/* ✅ 상단바 */}
-      <ProductListingTopBar />
+    <main className="min-h-dvh">
+      {/* ✅ Mobile: 피그마 프레임(375, min 375, max 739, center, column, bg) */}
+      <div className="md:hidden min-h-dvh bg-[var(--Color-gray-100,#EDF2F6)]">
+        <div
+          className={[
+            'mx-auto flex flex-col items-center',
+            'w-[375px] min-w-[375px] max-w-[739px]',
+            'min-h-dvh',
+          ].join(' ')}
+        >
+          <ProductListingTopBarMobile />
+          <ProductListMobile />
+        </div>
+      </div>
 
-      {/* ✅ 본문 */}
-      <ProductList />
+      {/* ✅ Desktop */}
+      <div className="hidden md:block bg-layer-week min-h-dvh">
+        <ProductListingTopBarDesktop />
+        <ProductListDesktop />
+      </div>
     </main>
   )
 }
