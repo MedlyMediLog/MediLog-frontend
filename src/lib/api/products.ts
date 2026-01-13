@@ -252,10 +252,7 @@ export const MOCK_PRODUCTS = {
   },
 } as const
 
-export async function getProducts(
-  category: Category,
-  target?: Target,
-): Promise<ProductListResponse> {
+export async function getProducts(category: Category): Promise<ProductListResponse> {
   //   const params = new URLSearchParams({ category })
   //   if (target) params.append('target', target)
 
@@ -275,7 +272,12 @@ export async function getProducts(
   return {
     category: data.category,
     target: data.target,
-    items: data.items ? data.items.map((item) => ({ ...item })) : null,
+    items: data.items
+      ? data.items.map((item) => ({
+          ...item,
+          ingredients: [...item.ingredients], // ⭐ 핵심
+        }))
+      : null,
     allowed: data.allowed ?? null,
     caution: data.caution ?? null,
   }
