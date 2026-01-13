@@ -5,7 +5,13 @@ import CardTitle from "@/app/_components/common/CardTitle/CardTitle"
 import intake_24 from "@/assets/intake_24.svg"
 import intake_32 from "@/assets/intake_32.svg"
 
-export default function IntakeStorageSection() {
+type Props = {
+  howToEat: string;
+  expiration: string;
+  storageMethod: string;
+}
+
+export default function IntakeStorageSection({howToEat, expiration, storageMethod}: Props) {
   return (
     <>
       <Card className="flex-col flex rounded-[20px] py-5 px-4 gap-4  desktop:py-7.5 desktop:px-6 desktop:gap-6">
@@ -35,21 +41,21 @@ export default function IntakeStorageSection() {
             {/* 유의사항 */}
         <div className="w-full flex border-[1px] p-[8px] gap-[10px] bg-gray-0 border-gray-200 rounded-[8px] desktop:rounded-[12px] desktop:p-4">
           <div className="typo-b3 text-fg-basic-accent desktop:typo-b2">
-            1일 3회, 1회 1스푼(3.2g)씩 물에 녹여 섭취 하세요. [“SRV_USE”]
+            {howToEat}
           </div>
         </div>
         {/* 유의사항 */}
         {/* 유의사항 */}
         <div className="w-full flex border-[1px] p-[8px] gap-[10px] bg-gray-0 border-gray-200 rounded-[8px] desktop:rounded-[12px] desktop:p-4">
           <div className="typo-b3 text-fg-basic-accent desktop:typo-b2">
-            직사광선을 피해 건조하고 서늘한 곳에서 보관해야해요. [“PRSRV_PD”]
+            {storageMethod}
           </div>
         </div>
         {/* 유의사항 */}
         {/* 유의사항 */}
         <div className="w-full flex border-[1px] p-[8px] gap-[10px] bg-gray-0 border-gray-200 rounded-[8px] desktop:rounded-[12px] desktop:p-4">
           <div className="typo-b3 text-fg-basic-accent desktop:typo-b2">
-            제조일 부터 24개월이내 사용되어야해요. [“DISTB_PD”]
+            {expiration}
           </div>
         </div>
         {/* 유의사항 */}

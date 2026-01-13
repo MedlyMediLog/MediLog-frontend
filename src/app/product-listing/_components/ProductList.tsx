@@ -8,6 +8,7 @@ import { FilterBar, type FilterOption } from '@/app/_components/common/FilterBar
 import { QueryResult } from '@/app/_components/common/QueryResult'
 import { InfoMessage } from '@/app/_components/common/InfoMessage'
 import { EmptyResult } from './EmptyResult'
+import type { ProductListResponse } from '@/types/product'
 
 import bottleCapsules from '@/assets/product-listing/mock/bottle-capsules.png'
 import bottleTablets from '@/assets/product-listing/mock/bottle-tablets.png'
@@ -27,6 +28,10 @@ const FILTER_OPTIONS: FilterOption[] = [
 type ProductItemWithMeta = ProductItem & {
   targets: TargetKey[]
   status: ProductStatus
+}
+
+type Props = {
+  data: ProductListResponse
 }
 
 /**
@@ -109,7 +114,7 @@ const mockProducts: ProductItemWithMeta[] = [
 const STATUS_ORDER: Record<ProductStatus, number> = {
   '섭취 가능': 0,
   '섭취 고려': 1,
-  '주의사항': 2,
+  주의사항: 2,
   '섭취 금지': 3,
 }
 
@@ -137,7 +142,7 @@ function getTargetMessage(selected: SelectedKey) {
   return ''
 }
 
-export function ProductList() {
+export function ProductList({ data }: Props) {
   // ✅ 바로 빈 상태 확인하도록 기본값 diet
   const [selected, setSelected] = React.useState<SelectedKey>('diet')
   const [q, setQ] = React.useState('')
@@ -147,6 +152,8 @@ export function ProductList() {
     console.log('[ProductList] refresh')
     setRefreshKey((v) => v + 1)
   }, [])
+
+  const { items, allowed, caution, target } = data
 
   const filtered = React.useMemo(() => {
     const isFilterApplied = selected !== 'all'

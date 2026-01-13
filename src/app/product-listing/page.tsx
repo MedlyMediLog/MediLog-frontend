@@ -2,8 +2,35 @@
 import React from 'react'
 import { ProductList } from './_components/ProductList'
 import { ProductListingTopBar } from './_components/ProductListingTopBar'
+import { getProducts } from '@/lib/api/products'
+import { CATEGORY_MAP } from '../category/_components/category.constants'
+import type { Target } from '@/types/product'
+import { headers } from 'next/headers'
 
-export default function ProductListingPage() {
+type Props = {
+  searchParams: Promise<{
+    category?: string
+    target?: string
+  }>
+}
+
+export default async function ProductListingPage({ searchParams }: Props) {
+  const { category: rawCategory, target: rawTarget } = await searchParams
+
+  console.log(rawCategory)
+
+  if (!rawCategory) {
+    throw new Error('category is required')
+  }
+
+  const category = CATEGORY_MAP[rawCategory as keyof typeof CATEGORY_MAP]
+  const target = rawTarget?.toUpperCase() as Target | undefined
+
+  if (!category) {
+    throw new Error(`Invalid category: ${rawCategory}`)
+  }
+
+  const data = await getProducts(category, target)
   return (
     // ✅ 컨텐츠 영역 bg-layer-week
     <main className="min-h-dvh bg-layer-week">
@@ -11,7 +38,7 @@ export default function ProductListingPage() {
       <ProductListingTopBar />
 
       {/* ✅ 본문 */}
-      <ProductList />
+      <ProductList data={data} />
     </main>
   )
 }

@@ -1,12 +1,33 @@
+// import CategoryCard from './CategoryCard'
+
+// export default function CategoryGrid() {
+//   return (
+//     <div
+//       className="grid grid-cols-[repeat(auto-fill,160px)] gap-[16px] justify-center
+//                         min-[740px]:grid-cols-[repeat(auto-fill,minmax(180px,200px))]"
+//     >
+//       <CategoryCard />
+//     </div>
+//   )
+// }
+
 import CategoryCard from './CategoryCard'
+import { CATEGORY_LIST } from './category.constants'
 
 export default function CategoryGrid() {
   return (
     <div
       className="grid grid-cols-[repeat(auto-fill,160px)] gap-[16px] justify-center
-                        min-[740px]:grid-cols-[repeat(auto-fill,200px)]"
+                        min-[740px]:grid-cols-[repeat(auto-fill,minmax(180px,200px))]"
     >
-      <CategoryCard />
+      {CATEGORY_LIST.map((category) => (
+        <CategoryCard
+          key={category.key}
+          slug={category.slug}
+          label={category.label}
+          image={category.image}
+        />
+      ))}
     </div>
   )
 }

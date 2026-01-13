@@ -3,6 +3,7 @@ import './globals.css'
 import Footer from './_components/Footer'
 import SideBar from './_components/common/SideBar/SideBar'
 import { ToastProvider } from './_components/common/ToastProvider'
+import Providers from './providers'
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -16,7 +17,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
             {/* Main */}
             <main className="flex-1">
-              {children}
+              <Providers>{children}</Providers>
               <Footer />
             </main>
           </div>
