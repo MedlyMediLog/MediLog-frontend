@@ -6,7 +6,11 @@ import { Card, CardContent, CardHeader } from '@/app/_components/common/Card'
 import CardTitle from '@/app/_components/common/CardTitle/CardTitle'
 import Mention from '@/app/_components/common/Mention/Mention'
 
-export default function GeneralUsageSection() {
+type Props = {
+  functionText: string[];
+}
+
+export default function GeneralUsageSection({functionText}: Props) {
   return (
     <>
       <Card className="flex flex-col gap-5 rounded-[20px] py-5 px-4 desktop:px-6 desktop:py-7.5 desktop:gap-6">
@@ -34,17 +38,15 @@ export default function GeneralUsageSection() {
           />
         </CardHeader>
         <CardContent className="gap-5 flex flex-col desktop:gap-6 ">
-          <Mention
-            text={'유산균 증식 및 유해균 억제·배변활동 원활에 도움을 줄 수 있습니다.'}
+          {functionText.map((text) => {
+            return(
+              <Mention
+            text={text}
             avatarSrc={profile}
           />
-          <Mention
-            text={
-              '어쩌고 저쩌고 할 때 먹어요. 어쩌고 저쩌고 할 때 먹어요.어쩌고 저쩌고 할 때 먹어요.어쩌고 저쩌고 할 때 먹어요.'
-            }
-            avatarSrc={profile}
-          />
-          <Mention text="어쩌고 저쩌고 할 때 먹어요" avatarSrc={profile} />
+            )
+          })}
+          
         </CardContent>
       </Card>
     </>
