@@ -88,7 +88,7 @@ interface Props {
 
 export default function CategoryCard({ slug, label, image }: Props) {
   return (
-    <Link href={`/category/${slug}`} className="flex flex-col gap-[8px]">
+    <Link href={`/product-listing?category=${slug}`} className="flex flex-col gap-[8px]">
       <div className="relative w-full aspect-[200/180] rounded-[12px] flex items-center justify-center">
         <Image src={image} alt={label} fill className="object-contain" />
       </div>
