@@ -21,7 +21,7 @@ const shapeStyles = {
 }
 
 const buttonStyles = {
-  'secondary-square': 'bg-gray-200 text-gray-900 hover:text-gray-700',
+  'secondary-square': 'bg-gray-200 text-fg-basic-primary hover:text-gray-700',
 
   'secondary-rounded': 'bg-gray-200 text-gray-900 hover:text-gray-700',
 

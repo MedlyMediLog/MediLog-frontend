@@ -1,11 +1,11 @@
 "use client";
 
-import ProductDeatilHeader from "../../_components/ProductDetailHeader";
-import IngredientsSection from "../../_components/IngredientsSection";
-import ProductSummarySection from "../../_components/ProductSummarySection";
-import SafetyGuideSection from "../../_components/SafetyGuideSection";
-import IntakeStorageSection from "../../_components/IntakeStorageSection";
-import GeneralUsageSection from "../../_components/GeneralUsageSection";
+import ProductDeatilHeader from "./ProductDetailHeader";
+import IngredientsSection from "./IngredientsSection";
+import ProductSummarySection from "./ProductSummarySection";
+import SafetyGuideSection from "./SafetyGuideSection";
+import IntakeStorageSection from "./IntakeStorageSection";
+import GeneralUsageSection from "./GeneralUsageSection";
 
 import { useProductDetail } from "@/hooks/useProductDetail";
 import { Target } from "@/lib/api/types";
