@@ -2,33 +2,37 @@
 import React from 'react'
 import Image from 'next/image'
 import styles from './ProductCard.mobile.module.css'
-import type { ProductItem, ProductStatus } from '../shared/types'
+import type { ProductItem, ProductStatus, SelectedKey } from '../shared/types'
+import productListingPlaceholder from '@/assets/product-listing/placeholder/product-listing.png'
+import iconSafety from '@/assets/product-listing/icons/mobile/icon-safety.svg'
+import iconWarning from '@/assets/product-listing/icons/mobile/icon-status-warning.svg'
+
 
 import { Label } from '@/app/_components/common/Label/Label'
 import { Card } from '@/app/_components/common/Card'
 
 type Props = {
   item: ProductItem
-  showStatus?: boolean
+  selectedKey: SelectedKey
 }
 
 function ProductImagePlaceholder() {
-  // ✅ 피그마 placeholder SVG (96x120 / radius=8 느낌 / bg-layer-primary + bottle bg-layer-secondary)
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="96" height="120" viewBox="0 0 96 120" fill="none">
-      <path
-        d="M0 8C0 3.58172 3.58172 0 8 0H88C92.4183 0 96 3.58172 96 8V112C96 116.418 92.4183 120 88 120H8C3.58172 120 0 116.418 0 112V8Z"
-        fill="var(--Color-Role-bg-layer-primary, #FBFDFD)"
-      />
-      <path
-        d="M48.001 26.5C54.8028 26.5 60.3174 27.5643 60.3174 28.877V42.0566L60.3135 42.1182C60.2259 42.7852 58.7136 43.3803 56.3428 43.8018C62.0831 45.0948 65.9999 47.6794 66 50.6582C66 50.7107 65.9975 50.7632 65.9951 50.8154H66V84.6055H65.9961C65.8151 89.1544 57.8278 92.8164 48 92.8164C38.1723 92.8164 30.1849 89.1544 30.0039 84.6055H30V50.8154H30.0049C30.0025 50.7632 30 50.7107 30 50.6582C30.0001 47.6791 33.9177 45.0937 39.6592 43.8008C37.2165 43.3664 35.6855 42.7482 35.6855 42.0566V28.877C35.6855 27.5643 41.1993 26.5 48.001 26.5Z"
-        fill="var(--Color-Role-bg-layer-secondary, #DCE4ED)"
-      />
-    </svg>
+    <Image
+      src={productListingPlaceholder}
+      alt="상품 이미지 placeholder"
+      width={96}
+      height={120}
+      style={{
+        borderRadius: 8,
+        background: 'var(--Color-Role-bg-layer-primary, #FBFDFD)',
+      }}
+    />
   )
 }
 
-export function ProductCardMobile({ item, showStatus = false }: Props) {
+
+export function ProductCardMobile({ item, selectedKey }: Props) {
   const tags = item.tags ?? []
   const visible = tags.slice(0, 2)
   const restCount = Math.max(tags.length - 2, 0)
