@@ -17,7 +17,7 @@ type Props = {
 export default async function ProductListingPage({ searchParams }: Props) {
   const { category: rawCategory, target: rawTarget } = await searchParams
 
-  console.log(rawCategory)
+  console.log('카테고리', rawCategory)
 
   if (!rawCategory) {
     throw new Error('category is required')
@@ -30,7 +30,6 @@ export default async function ProductListingPage({ searchParams }: Props) {
     throw new Error(`Invalid category: ${rawCategory}`)
   }
 
-  const data = await getProducts(category, target)
   return (
     // ✅ 컨텐츠 영역 bg-layer-week
     <main className="min-h-dvh bg-layer-week">
@@ -38,7 +37,7 @@ export default async function ProductListingPage({ searchParams }: Props) {
       <ProductListingTopBar />
 
       {/* ✅ 본문 */}
-      <ProductList data={data} />
+      <ProductList category={category} target={target} />
     </main>
   )
 }

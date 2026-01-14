@@ -8,12 +8,13 @@ import { FilterBar, type FilterOption } from '@/app/_components/common/FilterBar
 import { QueryResult } from '@/app/_components/common/QueryResult'
 import { InfoMessage } from '@/app/_components/common/InfoMessage'
 import { EmptyResult } from './EmptyResult'
-import type { ProductListResponse } from '@/types/product'
+import type { Category, ProductListResponse, Target } from '@/types/product'
 
 import bottleCapsules from '@/assets/product-listing/mock/bottle-capsules.png'
 import bottleTablets from '@/assets/product-listing/mock/bottle-tablets.png'
 import boxStick from '@/assets/product-listing/mock/box-stick.png'
 import dropper from '@/assets/product-listing/mock/dropper.png'
+import { useProductList } from '@/hooks/useProductList'
 
 type TargetKey = 'pregnant' | 'teen' | 'diet'
 type SelectedKey = 'all' | TargetKey
@@ -31,7 +32,8 @@ type ProductItemWithMeta = ProductItem & {
 }
 
 type Props = {
-  data: ProductListResponse
+  category: Category
+  target?: Target
 }
 
 /**
@@ -142,7 +144,7 @@ function getTargetMessage(selected: SelectedKey) {
   return ''
 }
 
-export function ProductList({ data }: Props) {
+export function ProductList({ category, target }: Props) {
   // ✅ 바로 빈 상태 확인하도록 기본값 diet
   const [selected, setSelected] = React.useState<SelectedKey>('diet')
   const [q, setQ] = React.useState('')
@@ -152,9 +154,6 @@ export function ProductList({ data }: Props) {
     console.log('[ProductList] refresh')
     setRefreshKey((v) => v + 1)
   }, [])
-
-  const { items, allowed, caution, target } = data
-
   const filtered = React.useMemo(() => {
     const isFilterApplied = selected !== 'all'
 
@@ -177,6 +176,12 @@ export function ProductList({ data }: Props) {
 
   const isFilterApplied = selected !== 'all'
   const isEmpty = isFilterApplied && filtered.length === 0
+
+  const { data, isLoading, isError } = useProductList({ category, target })
+
+  if (isLoading) return <div className="p-5">로딩중...</div>
+  if (isError || !data) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
+  console.log('데이터', data)
 
   return (
     /**
