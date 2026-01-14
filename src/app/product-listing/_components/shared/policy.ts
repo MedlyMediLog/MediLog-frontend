@@ -1,4 +1,4 @@
-//src/app/product-listing/_compnents/shared/policy.ts
+//src/app/product-listing/_components/shared/policy.ts
 import type { ProductItemWithMeta, ProductStatus, SelectedKey } from './types'
 
 export const STATUS_ORDER: Record<ProductStatus, number> = {
