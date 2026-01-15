@@ -8,6 +8,7 @@ const meta: Meta<typeof FilterBar> = {
   component: FilterBar,
   args: {
     variant: 'select',
+    isSearching: false,
     options: [
       { label: '전체', value: 'all' },
       { label: '임산부', value: 'pregnant' },
@@ -21,6 +22,7 @@ const meta: Meta<typeof FilterBar> = {
   },
   argTypes: {
     variant: { control: 'radio', options: ['select', 'mobile', 'searching'] },
+    isSearching: { control: 'boolean' },
     onSelect: { action: 'select' },
     onSearchChange: { action: 'searchChange' },
     onSearchSubmit: { action: 'searchSubmit' },
@@ -35,16 +37,27 @@ type Story = StoryObj<typeof FilterBar>
 function Controlled(args: FilterBarProps & { initialSearch?: string }) {
   const [selected, setSelected] = React.useState(args.selectedValue)
   const [q, setQ] = React.useState(args.initialSearch ?? (args.searchValue ?? ''))
+  const [isSearching, setIsSearching] = React.useState(args.isSearching)
 
-  // ✅ 스토리에서만 프레임 폭을 “피그마처럼” 맞춰주기 (공통 컴포넌트에 max-width를 넣지 않기 위함)
+  // ✅ 스토리에서만 프레임 폭을 “피그마처럼” 맞춰주기
+  // - mobile + searching: 화면 375px 기준으로 고정
+  // - select: 기존 유지
+  // - searching(variant 자체): 560 유지(데스크탑 searching 데모)
   const wrapperWidth =
-    args.variant === 'select' ? 798 : args.variant === 'mobile' ? 472 : 560
+    args.variant === 'select'
+      ? 798
+      : args.variant === 'mobile'
+        ? isSearching
+          ? 375
+          : 472
+        : 560
 
   return (
     <div style={{ padding: 40, display: 'flex', justifyContent: 'center' }}>
       <div style={{ width: wrapperWidth }}>
         <FilterBar
           {...args}
+          isSearching={isSearching}
           selectedValue={selected}
           onSelect={(v) => {
             args.onSelect?.(v)
@@ -60,6 +73,7 @@ function Controlled(args: FilterBarProps & { initialSearch?: string }) {
           }}
           onIconClick={() => {
             args.onIconClick?.()
+            setIsSearching(true) // ✅ 돋보기 클릭 → searching 전환
           }}
         />
       </div>
@@ -73,11 +87,11 @@ export const Select: Story = {
 }
 
 export const Mobile: Story = {
-  args: { variant: 'mobile' },
+  args: { variant: 'mobile', isSearching: false },
   render: (args) => <Controlled {...args} />,
 }
 
 export const Searching: Story = {
-  args: { variant: 'searching' },
+  args: { variant: 'searching', isSearching: true },
   render: (args) => <Controlled {...args} initialSearch="오메가3" />,
 }
