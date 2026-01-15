@@ -1,4 +1,5 @@
 /* src/app/_components/common/FilterBar/FilterBar.css */
+
 /* 공통 */
 .medly-filterbar {
   box-sizing: border-box;
@@ -30,30 +31,47 @@
   gap: var(--Number-12, 12px);
 }
 
+/* ✅ searching에서 검색영역 + 칩영역 정렬을 안정화 */
+.medly-filterbar__searchRow {
+  display: flex;
+  align-items: center;
+  gap: var(--Number-12, 12px);
+  flex: 1 0 0;
+  min-width: 0;
+}
+
 /* ✅ 검색 영역(공통 컴포넌트가 max-width를 강제하지 않도록 분리) */
 .medly-filterbar__search {
   flex: 1 0 0;
+  min-width: 0;
 }
+
 .medly-filterbar__search--select {
   min-width: 260px;
   max-width: 350px;
 }
+
+/* 기본 searching(데스크탑/일반) */
 .medly-filterbar__search--searching {
   min-width: 330px;
   max-width: 560px;
+}
+
+/* ✅ [핵심] 모바일에서 돋보기 클릭 후 searching 상태:
+   - 화면 375 기준, 검색창은 330px으로 “가로 확대”
+   - 즉, search 영역을 330으로 고정(상한/하한 동일)
+*/
+.medly-filterbar--mobileSearching .medly-filterbar__search--searching {
+  min-width: 330px;
+  max-width: 330px;
+  flex: 0 0 330px;
 }
 
 .medly-filterbar__icon {
   flex: 0 0 auto;
 }
 
-/* ✅ 형태=select 안 필터링 영역(피그마 1:1)
-   display:flex;
-   padding: 10px 10px 10px 0;
-   align-items:center;
-   gap: 8px;
-   border-radius: 12px;
-*/
+/* ✅ 형태=select 안 필터링 영역(피그마 1:1) */
 .medly-filtergroup {
   display: flex;
   padding: var(--Number-10, 10px) var(--Number-10, 10px) var(--Number-10, 10px) 0;
@@ -62,9 +80,7 @@
   border-radius: var(--Number-gap-12, 12px);
 }
 
-/* ✅ 모바일/검색중 칩 영역:
-   - 내부 가로 스크롤
-   - 스크롤바 숨김 */
+/* ✅ 모바일/검색중 칩 영역: 내부 가로 스크롤 + 스크롤바 숨김 */
 .medly-filtergroup--fixed {
   display: flex;
   flex: 1 1 auto;
@@ -82,10 +98,8 @@
   display: none;
 }
 
-/* ✅ [추가] 칩 버튼이 줄어들면서 글자 줄바꿈되는 현상 방지
-   - 버튼 자체는 "콘텐츠 크기만큼" 유지
-   - 넘치면 .medly-filtergroup--fixed가 가로 스크롤(스와이프) 담당 */
+/* ✅ 칩 버튼 줄바꿈/축소 방지 */
 .medly-filtergroup--fixed > button {
-  flex: 0 0 auto;       /* (= flex-shrink:0) 버튼 폭 강제 축소 방지 */
-  white-space: nowrap;  /* '전\n체' 같은 줄바꿈 방지 */
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
