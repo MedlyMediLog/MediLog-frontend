@@ -41,7 +41,9 @@
   transform: rotate(0deg);
   transition: transform 160ms ease;
 }
-
+.moreIconDesktopHidden {
+  display: none;
+}
 .moreIconOpen {
   display: inline-flex;
   align-items: center;
