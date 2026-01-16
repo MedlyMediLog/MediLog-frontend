@@ -27,7 +27,7 @@ export function LoadMoreSection({
 
   return (
     <div
-      className={[
+      className={[  
         // ✅ 피그마(제품 더보기 영역)
         // display:flex; padding-top:24px; flex-direction:column;
         // justify-content:center; align-items:center; align-self:stretch;
