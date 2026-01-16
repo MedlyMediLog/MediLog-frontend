@@ -15,7 +15,7 @@ export default function ProductListingPage() {
       </div>
 
       {/* Desktop */}
-      <div className="hidden md:block bg-layer-week min-h-dvh">
+      <div className="hidden md:block flex justify-center bg-layer-week min-h-dvh">
         <ProductListingTopBar />
         <ProductList />
       </div>
