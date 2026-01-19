@@ -18,5 +18,6 @@ export function useProductList(params: { category: Category; target?: Target }) 
       }
       return res.json()
     },
+    throwOnError: true,
   })
 }
