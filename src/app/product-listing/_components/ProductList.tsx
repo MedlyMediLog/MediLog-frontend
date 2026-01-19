@@ -122,6 +122,9 @@ export function ProductList({ category, target }: Props) {
     refetch?: () => void
   }
 
+  console.log('Data', data)
+
+  // ✅ 새로고침 (refetch 없으면 안전하게 noop)
   const onRefresh = React.useCallback(() => {
     refetch?.()
   }, [refetch])
@@ -181,6 +184,12 @@ export function ProductList({ category, target }: Props) {
     }))
   }, [data])
 
+  console.log('baselist', baseList)
+
+  /**
+   * ✅ 선택된 target 섹션 가져오기
+   * - pregnant/teen/diet 탭에서 allowed/caution 목록을 화면에 뿌릴 때 사용
+   */
   const currentTargetSection = React.useMemo<TargetSection | null>(() => {
     if (!data) return null
     if (!apiTarget) return null
@@ -258,6 +267,15 @@ export function ProductList({ category, target }: Props) {
     setVisibleCount((prev) => Math.min(prev + LOAD_STEP, filtered.length))
   }
 
+  React.useEffect(() => {
+    console.log('=== UI STATE ===')
+    console.log('selected:', selected)
+    console.log('q:', q)
+    console.log('filtered length:', filtered.length)
+    console.log('first item:', filtered[0])
+  }, [selected, q, filtered])
+
+  // ✅ early return은 훅들 다 호출된 뒤에!
   if (isLoading) return <div className="p-5">로딩중...</div>
   if (isError || !data) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
 
@@ -281,11 +299,19 @@ export function ProductList({ category, target }: Props) {
 
       {/* Mobile */}
       <section className="md:hidden w-full">
-        <IntakeInfoOverlay open={isIntakeOverlayOpen} onClose={() => setIsIntakeOverlayOpen(false)} />
+        <IntakeInfoOverlay
+          open={isIntakeOverlayOpen}
+          onClose={() => setIsIntakeOverlayOpen(false)}
+        />
 
         <div
           ref={mobileContentRef}
-          className={['w-full', 'flex flex-col items-start self-stretch', 'px-[20px]', 'pb-[60px]'].join(' ')}
+          className={[
+            'w-full',
+            'flex flex-col items-start self-stretch',
+            'px-[20px]',
+            'pb-[60px]',
+          ].join(' ')}
         >
           <ScrollAwareBlock hidden={isScrolling} className="w-full">
             <div className="w-full mb-[12px]">
@@ -348,7 +374,12 @@ export function ProductList({ category, target }: Props) {
                   ))}
                 </ul>
 
-                <LoadMoreSection total={filtered.length} visible={visibleCount} step={LOAD_STEP} onLoadMore={handleLoadMore} />
+                <LoadMoreSection
+                  total={filtered.length}
+                  visible={visibleCount}
+                  step={LOAD_STEP}
+                  onLoadMore={handleLoadMore}
+                />
               </>
             )}
           </div>
