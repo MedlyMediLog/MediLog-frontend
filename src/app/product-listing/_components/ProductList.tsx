@@ -2,8 +2,7 @@
 'use client'
 
 import React from 'react'
-import type { SelectedKey } from './shared/types'
-import { useProductListing } from './shared/useProductListing'
+import type { SelectedKey, ProductItem, ProductStatus } from './shared/types'
 import { getTargetMessage } from './shared/policy'
 
 import { FilterBar, type FilterOption } from '@/app/_components/common/FilterBar'
@@ -11,6 +10,7 @@ import { EmptyResult } from './shared/EmptyResult'
 import TargetNotice from './shared/TargetNotice'
 import { InfoMessage } from '@/app/_components/common/InfoMessage'
 import { IntakeInfoOverlay } from './shared/IntakeInfoOverlay/IntakeInfoOverlay'
+import { getProductImageById } from './shared/productImages'
 
 // 모바일 QueryResult(경로가 다름)
 import { QueryResult as QueryResultMobile } from '@/app/_components/common/QueryResult/QueryResult'
@@ -30,6 +30,9 @@ import type { ToastItem as CommonToastItem } from '@/app/_components/common/type
 
 import ProductGridDesktop from './ProductGrid.desktop'
 import { ProductCard } from './ProductCard'
+import { useProductList } from '@/hooks/useProductList'
+import { Category } from '@/app/category/_components/category.constants'
+import { Target } from '@/types/product'
 
 const FILTER_OPTIONS: FilterOption[] = [
   { label: '전체', value: 'all' },
@@ -38,19 +41,66 @@ const FILTER_OPTIONS: FilterOption[] = [
   { label: '다이어터', value: 'diet' },
 ]
 
+type Props = {
+  category: Category
+  target?: Target // (page에서 넘어오는 target이 있다면 초기값으로만 쓸 수 있음)
+}
+
 const LOAD_STEP = 20
 
-export function ProductList() {
-  const {
-    selected,
-    setSelected,
-    q,
-    setQ,
-    filtered,
-    isFilterApplied,
-    shouldShowEmptyResult,
-    onRefresh,
-  } = useProductListing('all')
+// ✅ 서버 응답 item 형태(콘솔로 확인한 형태)
+type ApiProduct = {
+  productId: number
+  name: string
+  manufacturer: string
+  ingredients: string[]
+  imageUrl?: string
+  level: number | null
+}
+
+// ✅ target 섹션 형태
+type TargetSection = {
+  category: string
+  target: Target
+  items: null
+  allowed: ApiProduct[]
+  caution: ApiProduct[]
+}
+
+// ✅ useProductList data 구조(확장 가능하게 optional 처리)
+type ProductListResponse = {
+  default: {
+    category: string
+    target: null
+    items: ApiProduct[]
+    allowed: null
+    caution: null
+  }
+  PREGNANT?: TargetSection
+  TEEN?: TargetSection
+  DIET?: TargetSection
+}
+
+// ✅ 탭(selected) → API target 매핑
+// ⚠️ 만약 Target 타입이 소문자('pregnant')라면 여기만 바꿔주면 됨.
+const TARGET_BY_SELECTED: Record<Exclude<SelectedKey, 'all'>, Target> = {
+  pregnant: 'PREGNANT' as Target,
+  teen: 'TEEN' as Target,
+  diet: 'DIET' as Target,
+}
+
+// ✅ API target → data key 매핑 (응답이 PREGNANT/TEEN/DIET 키로 온다는 전제)
+const DATAKEY_BY_TARGET: Record<Target, keyof ProductListResponse> = {
+  PREGNANT: 'PREGNANT',
+  TEEN: 'TEEN',
+  DIET: 'DIET',
+} as const
+
+export function ProductList({ category, target }: Props) {
+  // ✅ 탭/검색만 ProductList에서 관리
+  // - target prop이 들어오면 초기 탭을 맞춰줄 수도 있는데, 지금은 기본 all 유지
+  const [selected, setSelected] = React.useState<SelectedKey>('all')
+  const [q, setQ] = React.useState('')
 
   /** ✅ FilterBarProps에서 isSearching이 필수라서 상태를 유지 */
   const [isSearching, setIsSearching] = React.useState(false)
@@ -58,41 +108,50 @@ export function ProductList() {
   /** ✅ 더보기: 현재 노출 개수 (모바일/데스크탑 공통) */
   const [visibleCount, setVisibleCount] = React.useState(LOAD_STEP)
 
-  /** ✅ 스크롤 상태(스크롤 중 숨김용) */
+  /** ✅ 스크롤 중 숨김용 */
   const [isScrolling, setIsScrolling] = React.useState(false)
 
   /** ✅ 플로팅 버튼 노출 여부 */
   const [showTopButton, setShowTopButton] = React.useState(false)
 
-  /** ✅ Toast 상태 (공통 타입 사용) */
+  /** ✅ Toast 상태 */
   const [toast, setToast] = React.useState<CommonToastItem | null>(null)
 
   /** ✅ (모바일) 섭취 정보 오버레이 팝업 상태 */
   const [isIntakeOverlayOpen, setIsIntakeOverlayOpen] = React.useState(false)
 
-  /**
-   * ✅ "사이드바 제외 컨텐츠 영역" 기준 중앙 정렬을 위한 좌표
-   * - Mobile/Desk 각각 DOM이 다르므로 ref를 분리해서 안전하게 처리
-   */
+  /** ✅ Toast 위치 계산용 ref */
   const mobileContentRef = React.useRef<HTMLDivElement | null>(null)
   const desktopContentRef = React.useRef<HTMLDivElement | null>(null)
   const [toastLeft, setToastLeft] = React.useState<number | null>(null)
 
-  /** ✅ 화면에 보여줄 아이템 */
-  const visibleItems = filtered.slice(0, visibleCount)
-
-  /** ✅ 필터/검색 결과 바뀌면 노출 개수 초기화 */
-  React.useEffect(() => {
-    setVisibleCount(LOAD_STEP)
-  }, [selected, q, filtered.length])
-
   /**
-   * ✅ 스크롤 요구사항 구현
-   * - 최상단이면 버튼 숨김
-   * - 어느 정도 내려가면 버튼 표시
-   * - 스크롤 중엔 상단 UI 숨김
-   * - 스크롤 멈추면 다시 나타남
+   * ✅ 핵심 변경: selected 탭에 따라 API target을 바꾼다
+   * - all: target 없음(=default + 서버가 함께 주는 섹션)
+   * - pregnant/teen/diet: 각각 PREGNANT/TEEN/DIET로 요청
    */
+  const apiTarget = React.useMemo<Target | undefined>(() => {
+    if (selected === 'all') return undefined
+    return TARGET_BY_SELECTED[selected]
+  }, [selected])
+
+  // ✅ 실데이터 hook (apiTarget에 따라 자동 재요청)
+  const { data, isLoading, isError, refetch } = useProductList({
+    category,
+    target: apiTarget ?? target, // ✅ all이면 기존 target prop을 쓰고 싶다면 이렇게(보통은 apiTarget만 써도 됨)
+  }) as {
+    data?: ProductListResponse
+    isLoading: boolean
+    isError: boolean
+    refetch?: () => void
+  }
+
+  // ✅ 새로고침 (refetch 없으면 안전하게 noop)
+  const onRefresh = React.useCallback(() => {
+    refetch?.()
+  }, [refetch])
+
+  // ✅ 스크롤 요구사항 구현
   React.useEffect(() => {
     let stopTimer: number | null = null
 
@@ -101,11 +160,8 @@ export function ProductList() {
       setShowTopButton(y > 240)
 
       setIsScrolling(true)
-
       if (stopTimer) window.clearTimeout(stopTimer)
-      stopTimer = window.setTimeout(() => {
-        setIsScrolling(false)
-      }, 160)
+      stopTimer = window.setTimeout(() => setIsScrolling(false), 160)
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -121,9 +177,7 @@ export function ProductList() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  /**
-   * ✅ Toast 위치 계산
-   */
+  // ✅ Toast 위치 계산
   React.useEffect(() => {
     const updateToastLeft = () => {
       const el = window.matchMedia('(min-width: 768px)').matches
@@ -141,17 +195,103 @@ export function ProductList() {
     return () => window.removeEventListener('resize', updateToastLeft)
   }, [])
 
+  // ✅ isFilterApplied: 전체가 아니면 true
+  const isFilterApplied = selected !== 'all'
+
   /**
-   * ✅ “검색/필터 결과 0개(EmptyResult 노출)”일 때 토스트도 띄우고 싶으면 유지
-   * - EmptyResult 화면이 이미 뜨니, 토스트는 UX상 과하면 삭제해도 됨
+   * ✅ default.items -> baseList(ProductItem[])로 바인딩
+   * - all 탭에서 사용하는 기본 리스트
    */
+  const baseList: ProductItem[] = React.useMemo(() => {
+    const items = data?.default?.items ?? []
+    return items.map((p) => ({
+      id: String(p.productId),
+      name: p.name,
+      brand: p.manufacturer,
+      tags: p.ingredients,
+      image: getProductImageById(p.productId), // ✅ CDN 대신 로컬 매핑
+    }))
+  }, [data])
+
+  /**
+   * ✅ 선택된 target 섹션 가져오기
+   * - pregnant/teen/diet 탭에서 allowed/caution 목록을 화면에 뿌릴 때 사용
+   */
+  const currentTargetSection = React.useMemo<TargetSection | null>(() => {
+    if (!data) return null
+    if (!apiTarget) return null // all이면 섹션 기반 렌더링 안 함
+
+    const key = DATAKEY_BY_TARGET[apiTarget]
+    const section = data[key]
+    if (!section) return null
+
+    // 타입상 default도 들어올 수 있어서 안전하게 체크
+    if ((section as TargetSection).allowed && (section as TargetSection).caution) {
+      return section as TargetSection
+    }
+    return null
+  }, [data, apiTarget])
+
+  /**
+   * ✅ target 섹션(allowed/caution) -> ProductItem[]로 변환 + status 주입
+   */
+  const targetList: ProductItem[] = React.useMemo(() => {
+    if (!currentTargetSection) return []
+
+    const allowed = currentTargetSection.allowed ?? []
+    const caution = currentTargetSection.caution ?? []
+
+    const toItem = (p: ApiProduct, status: ProductStatus): ProductItem => ({
+      id: String(p.productId),
+      name: p.name,
+      brand: p.manufacturer,
+      tags: p.ingredients,
+      image: getProductImageById(p.productId),
+      status,
+    })
+
+    return [
+      ...allowed.map((p) => toItem(p, '섭취 가능')),
+      ...caution.map((p) => toItem(p, '주의사항')),
+    ]
+  }, [currentTargetSection])
+
+  /**
+   * ✅ 최종 리스트(filtered)
+   * - all: baseList
+   * - target 탭: targetList
+   * 그리고 검색(q)은 둘 다 동일 기준으로 적용
+   */
+  const filtered: ProductItem[] = React.useMemo(() => {
+    const keyword = q.trim()
+
+    const source = selected === 'all' ? baseList : targetList
+
+    if (keyword.length === 0) return source
+
+    // 검색: 제조사/브랜드명 기준
+    return source.filter((it) => it.brand.includes(keyword))
+  }, [baseList, targetList, q, selected])
+
+  // ✅ 결과 0이면 EmptyResult
+  const shouldShowEmptyResult = !isLoading && !isError && filtered.length === 0
+
+  // ✅ 더보기용 visibleItems
+  const visibleItems = React.useMemo(() => {
+    return filtered.slice(0, visibleCount)
+  }, [filtered, visibleCount])
+
+  // ✅ 필터/검색 결과 바뀌면 노출 개수 초기화
+  React.useEffect(() => {
+    setVisibleCount(LOAD_STEP)
+  }, [selected, q, filtered.length])
+
+  // ✅ EmptyResult 토스트 (원하면 제거 가능)
   const toastKey = `${selected}__${q}__${shouldShowEmptyResult}__${isFilterApplied}`
   const prevToastKeyRef = React.useRef<string | null>(null)
 
   React.useEffect(() => {
-    // EmptyResult가 뜰 때만 토스트도 띄움 (원하면 이 블록 제거)
     const shouldShowErrorToast = shouldShowEmptyResult
-
     if (prevToastKeyRef.current === toastKey) return
     prevToastKeyRef.current = toastKey
 
@@ -167,21 +307,30 @@ export function ProductList() {
     return () => window.clearTimeout(t)
   }, [toastKey, shouldShowEmptyResult])
 
-  /** ✅ (공통) 더보기 핸들러: "팝업 + 더보기"를 ProductList에서 조합 */
+  // ✅ 더보기
   const handleLoadMore = () => {
-    // ✅ 기획: 4번 클릭 시 팝업 (모바일에서만)
     setIsIntakeOverlayOpen(true)
-
-    // ✅ 기존 더보기 동작 유지
     setVisibleCount((prev) => Math.min(prev + LOAD_STEP, filtered.length))
+    
   }
+
+  React.useEffect(() => {
+  console.log('=== UI STATE ===')
+  console.log('selected:', selected)
+  console.log('q:', q)
+  console.log('filtered length:', filtered.length)
+  console.log('first item:', filtered[0])
+}, [selected, q, filtered])
+
+  // ✅ early return은 훅들 다 호출된 뒤에!
+  if (isLoading) return <div className="p-5">로딩중...</div>
+  if (isError || !data) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
+  
 
   return (
     <>
-      {/* ✅ 플로팅 최상단 버튼 (모바일/데스크탑 공통) */}
       <FloatingTopButton visible={showTopButton} onClick={handleScrollToTop} />
 
-      {/* ✅ 공통 Toast (사이드바 제외 컨텐츠 영역 기준 중앙 / 하단 170px) */}
       {toast && toastLeft !== null && (
         <div
           style={{
@@ -198,23 +347,12 @@ export function ProductList() {
 
       {/* Mobile */}
       <section className="md:hidden w-full">
-        {/* ✅ 모바일에서만 렌더링되는 섭취 정보 오버레이 */}
-        <IntakeInfoOverlay
-          open={isIntakeOverlayOpen}
-          onClose={() => setIsIntakeOverlayOpen(false)}
-        />
+        <IntakeInfoOverlay open={isIntakeOverlayOpen} onClose={() => setIsIntakeOverlayOpen(false)} />
 
         <div
           ref={mobileContentRef}
-          className={[
-            // ✅ 모바일은 max-width 제한을 두면 "데스크탑 축소판"처럼 보일 수 있음
-            'w-full',
-            'flex flex-col items-start self-stretch',
-            'px-[20px]',
-            'pb-[60px]',
-          ].join(' ')}
+          className={['w-full', 'flex flex-col items-start self-stretch', 'px-[20px]', 'pb-[60px]'].join(' ')}
         >
-          {/* ✅ 스크롤 중에 숨길 상단 UI 묶음 */}
           <ScrollAwareBlock hidden={isScrolling} className="w-full">
             <div className="w-full mb-[12px]">
               <BasicTargetSummaryCard />
@@ -230,9 +368,7 @@ export function ProductList() {
               onSearchChange={setQ}
               onSearchSubmit={() => {}}
               searchPlaceholder="제조사/브랜드명으로 검색해보세요."
-              onIconClick={() => {
-                setIsSearching(true)
-              }}
+              onIconClick={() => setIsSearching(true)}
             />
 
             {isFilterApplied && (
@@ -241,7 +377,6 @@ export function ProductList() {
               </div>
             )}
 
-            {/* ✅ 결과가 있을 때만 QueryResult 노출 */}
             {!shouldShowEmptyResult && (
               <div className="mt-[16px] w-full flex justify-end">
                 <QueryResultMobile count={filtered.length} onRefresh={onRefresh} />
@@ -272,12 +407,7 @@ export function ProductList() {
                   ))}
                 </ul>
 
-                <LoadMoreSection
-                  total={filtered.length}
-                  visible={visibleCount}
-                  step={LOAD_STEP}
-                  onLoadMore={handleLoadMore}
-                />
+                <LoadMoreSection total={filtered.length} visible={visibleCount} step={LOAD_STEP} onLoadMore={handleLoadMore} />
               </>
             )}
           </div>
@@ -295,7 +425,6 @@ export function ProductList() {
             'px-[20px] pb-[120px]',
           ].join(' ')}
         >
-          {/* ✅ 스크롤 중에 숨길 상단 UI 묶음 */}
           <ScrollAwareBlock hidden={isScrolling} className="w-full">
             <div className="w-full flex flex-col items-start pt-0 pb-[20px]">
               <div className="w-full mb-[12px]">
@@ -325,7 +454,6 @@ export function ProductList() {
                   <div className="min-w-0 flex-1" />
                 )}
 
-                {/* ✅ 결과가 있을 때만 QueryResult 노출 */}
                 {!shouldShowEmptyResult && (
                   <div className="ml-auto flex-shrink-0 -my-[10px]">
                     <QueryResultDesktop
@@ -357,15 +485,12 @@ export function ProductList() {
               <>
                 <ProductGridDesktop items={visibleItems} showStatus={isFilterApplied} />
 
-                {/* ✅ PC는 기획상 오버레이 제외 → 더보기는 기존대로 */}
                 <LoadMoreSection
                   total={filtered.length}
                   visible={visibleCount}
                   step={LOAD_STEP}
                   onLoadMore={() => {
-                    setVisibleCount((prev) =>
-                      Math.min(prev + LOAD_STEP, filtered.length),
-                    )
+                    setVisibleCount((prev) => Math.min(prev + LOAD_STEP, filtered.length))
                   }}
                 />
               </>

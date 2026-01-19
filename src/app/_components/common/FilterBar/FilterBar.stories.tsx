@@ -13,7 +13,7 @@ const meta: Meta<typeof FilterBar> = {
       { label: '전체', value: 'all' },
       { label: '임산부', value: 'pregnant' },
       { label: '청소년', value: 'teen' },
-      { label: '다이어터', value: 'diet' },
+      { label: '다이어터', value: 'dieter' },
     ],
     selectedValue: 'all',
     searchValue: '',
