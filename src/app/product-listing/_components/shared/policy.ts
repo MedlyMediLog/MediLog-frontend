@@ -28,6 +28,6 @@ export function sortByPolicy(items: ProductItemWithMeta[], isFilterApplied: bool
 export function getTargetMessage(selected: SelectedKey) {
   if (selected === 'pregnant') return '강한 주의가 언급된 제품은 결과에서 제외했어요.'
   if (selected === 'teen') return '강한 주의가 언급된 제품은 결과에서 제외했어요.'
-  if (selected === 'diet') return '강한 주의가 언급된 제품은 결과에서 제외했어요.'
+  if (selected === 'dieter') return '강한 주의가 언급된 제품은 결과에서 제외했어요.'
   return ''
 }

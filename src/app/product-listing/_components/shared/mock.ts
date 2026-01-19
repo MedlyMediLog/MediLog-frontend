@@ -248,7 +248,7 @@ const baseProducts: ProductItemWithMeta[] = [
     name: '밀크씨슬 (다이어터)',
     tags: ['실리마린', '비타민B'],
     image: bottleTablets,
-    targets: ['diet'],
+    targets: ['dieter'],
     status: '섭취 금지',
   },
   {
@@ -257,7 +257,7 @@ const baseProducts: ProductItemWithMeta[] = [
     name: '다이어트 보조제 A',
     tags: ['카페인', '가르시니아'],
     image: dropper,
-    targets: ['diet'],
+    targets: ['dieter'],
     status: '섭취 금지',
   },
   {
@@ -266,7 +266,7 @@ const baseProducts: ProductItemWithMeta[] = [
     name: '다이어트 보조제 B',
     tags: ['L-카르니틴', '카페인'],
     image: boxStick,
-    targets: ['diet'],
+    targets: ['dieter'],
     status: '섭취 금지',
   },
 ]
