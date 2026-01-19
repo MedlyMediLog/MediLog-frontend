@@ -1,4 +1,3 @@
-//src/app/_components/common/QueryResult/QueryResult.tsx
 'use client';
 
 import React from 'react';
@@ -27,6 +26,15 @@ export function QueryResult({
   refreshAriaLabel = '새로고침',
   iconSize = 20,
 }: QueryResultProps) {
+  /** ✅ 새로고침 가능 여부 */
+  const canRefresh = !disabled && typeof onRefresh === 'function';
+
+  /** ✅ 실제 클릭 핸들러 */
+  const handleRefreshClick = () => {
+    if (!canRefresh) return;
+    onRefresh();
+  };
+
   return (
     <div
       className={cn(
@@ -42,16 +50,16 @@ export function QueryResult({
       {showRefresh && (
         <button
           type="button"
-          onClick={onRefresh}
-          disabled={disabled}
+          onClick={handleRefreshClick}
+          disabled={!canRefresh}
           aria-label={refreshAriaLabel}
           className={cn(
             'inline-flex items-center justify-center',
             'p-[2.5px] rounded-[5px]',
-            // tokens 기반 포커스 (outline 색상을 fg-basic-accent로)
+            // tokens 기반 포커스
             'focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
             'focus-visible:outline-[color:var(--fg-basic-accent)]',
-            disabled && 'opacity-50 cursor-not-allowed',
+            !canRefresh && 'opacity-50 cursor-not-allowed',
           )}
         >
           <Image

@@ -1,8 +1,9 @@
 // src/app/_components/common/FilterBar/FilterBar.tsx
 import React from 'react'
 import './FilterBar.css'
-import { SearchInput } from '../SearchInput'
-import type { SearchInputProps } from '../SearchInput'
+import { SearchInput } from '@/app/_components/common/SearchInput'
+import type { SearchInputProps } from '@/app/_components/common/SearchInput'
+import Button from '@/app/_components/common/Button'
 
 export type FilterBarVariant = 'select' | 'mobile' | 'searching'
 
@@ -14,6 +15,9 @@ export type FilterOption = {
 export type FilterBarProps = {
   /** 피그마 형태: select / 모바일 / 검색중 */
   variant: FilterBarVariant
+
+  /** ✅ 모바일에서 돋보기 클릭 시 searching UI로 전환하기 위한 상태 */
+  isSearching: boolean
 
   /** 칩 목록 */
   options: FilterOption[]
@@ -38,32 +42,9 @@ export type FilterBarProps = {
   className?: string
 }
 
-function Chip({
-  active,
-  children,
-  onClick,
-  disabled,
-}: {
-  active: boolean
-  children: React.ReactNode
-  onClick: () => void
-  disabled?: boolean
-}) {
-  return (
-    <button
-      type="button"
-      className={`medly-chip ${active ? 'medly-chip--active' : ''}`}
-      onClick={disabled ? undefined : onClick}
-      disabled={disabled}
-      aria-pressed={active}
-    >
-      {children}
-    </button>
-  )
-}
-
 export function FilterBar({
   variant,
+  isSearching,
   options,
   selectedValue,
   onSelect,
@@ -76,20 +57,28 @@ export function FilterBar({
   ariaLabelSearch = '검색어 입력',
   className = '',
 }: FilterBarProps) {
+  // ✅ 핵심: 모바일 variant여도 isSearching=true면 searching UI를 그린다
+  const isMobileSearching = variant === 'mobile' && isSearching
+  const shouldShowSearching = variant === 'searching' || isMobileSearching
+
   if (variant === 'select') {
     return (
       <div className={`medly-filterbar medly-filterbar--select ${className}`}>
         <div className="medly-filtergroup">
-          {options.map((opt) => (
-            <Chip
-              key={opt.value}
-              active={opt.value === selectedValue}
-              onClick={() => onSelect(opt.value)}
-              disabled={disabled}
-            >
-              {opt.label}
-            </Chip>
-          ))}
+          {options.map((opt) => {
+            const active = opt.value === selectedValue
+            return (
+              <Button
+                key={opt.value}
+                shape="square"
+                variant={active ? 'primary' : 'secondary'}
+                disabled={disabled}
+                onClick={() => onSelect(opt.value)}
+              >
+                {opt.label}
+              </Button>
+            )
+          })}
         </div>
 
         <div className="medly-filterbar__search medly-filterbar__search--select">
@@ -107,59 +96,77 @@ export function FilterBar({
     )
   }
 
-  if (variant === 'mobile') {
+  // ✅ Searching UI (모바일 돋보기 클릭 포함)
+  if (shouldShowSearching) {
     return (
-      <div className={`medly-filterbar medly-filterbar--mobile ${className}`}>
-        <div className="medly-filterbar__icon">
-          <SearchInput
-            variant="mobile"
-            disabled={disabled}
-            onSubmit={disabled ? undefined : onIconClick}
-          />
-        </div>
-
-        <div className="medly-filtergroup medly-filtergroup--fixed" aria-label="필터 선택">
-          {options.map((opt) => (
-            <Chip
-              key={opt.value}
-              active={opt.value === selectedValue}
-              onClick={() => onSelect(opt.value)}
+      <div
+        className={[
+          'medly-filterbar',
+          'medly-filterbar--searching',
+          isMobileSearching ? 'medly-filterbar--mobileSearching' : '',
+          className,
+        ].join(' ')}
+      >
+        <div className="medly-filterbar__searchRow">
+          <div className="medly-filterbar__search medly-filterbar__search--searching">
+            <SearchInput
+              variant="desktop"
+              value={searchValue}
+              onChange={(v) => onSearchChange?.(v)}
+              onSubmit={onSearchSubmit}
+              placeholder={searchPlaceholder}
               disabled={disabled}
-            >
-              {opt.label}
-            </Chip>
-          ))}
+              aria-label={ariaLabelSearch}
+            />
+          </div>
+
+          <div className="medly-filtergroup medly-filtergroup--fixed" aria-label="필터 선택">
+            {options.map((opt) => {
+              const active = opt.value === selectedValue
+              return (
+                <Button
+                  key={opt.value}
+                  shape="square"
+                  variant={active ? 'primary' : 'secondary'}
+                  disabled={disabled}
+                  onClick={() => onSelect(opt.value)}
+                >
+                  {opt.label}
+                </Button>
+              )
+            })}
+          </div>
         </div>
       </div>
     )
   }
 
-  // searching
+  // ✅ 기본 모바일 UI (아이콘 + 칩)
   return (
-    <div className={`medly-filterbar medly-filterbar--searching ${className}`}>
-      <div className="medly-filterbar__search medly-filterbar__search--searching">
+    <div className={`medly-filterbar medly-filterbar--mobile ${className}`}>
+      <div className="medly-filterbar__icon">
         <SearchInput
-          variant="desktop"
-          value={searchValue}
-          onChange={(v) => onSearchChange?.(v)}
-          onSubmit={onSearchSubmit}
-          placeholder={searchPlaceholder}
+          variant="mobile"
           disabled={disabled}
-          aria-label={ariaLabelSearch}
+          onSubmit={disabled ? undefined : onIconClick}
         />
       </div>
 
       <div className="medly-filtergroup medly-filtergroup--fixed" aria-label="필터 선택">
-        {options.map((opt) => (
-          <Chip
-            key={opt.value}
-            active={opt.value === selectedValue}
-            onClick={() => onSelect(opt.value)}
-            disabled={disabled}
-          >
-            {opt.label}
-          </Chip>
-        ))}
+        {options.map((opt) => {
+          const active = opt.value === selectedValue
+          return (
+            <Button
+              key={opt.value}
+              shape="square"
+              variant={active ? 'primary' : 'secondary'}
+              disabled={disabled}
+              onClick={() => onSelect(opt.value)}
+            >
+              {opt.label}
+            </Button>
+          )
+        })}
       </div>
     </div>
   )

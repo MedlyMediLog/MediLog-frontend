@@ -1,0 +1,24 @@
+.block {
+  /* 스윽 나타나는 모션 */
+  transition: opacity 180ms ease, transform 180ms ease, max-height 180ms ease;
+  transform-origin: top;
+}
+
+/* ✅ 스크롤 중: 숨김(공간도 줄여서 리스트가 위로 당겨짐) */
+.blockHidden {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+
+  max-height: 0;
+  overflow: hidden;
+}
+
+/* ✅ 스크롤 멈춤: 다시 노출 */
+.blockShown {
+  opacity: 1;
+  transform: translateY(0);
+
+  /* 충분히 큰 값(내용 높이보다 크면 됨) */
+  max-height: 2000px;
+}
