@@ -38,7 +38,7 @@ const FILTER_OPTIONS: FilterOption[] = [
   { label: '전체', value: 'all' },
   { label: '임산부', value: 'pregnant' },
   { label: '청소년', value: 'teen' },
-  { label: '다이어터', value: 'diet' },
+  { label: '다이어터', value: 'dieter' },
 ]
 
 type Props = {
@@ -78,7 +78,7 @@ type ProductListResponse = {
   }
   PREGNANT?: TargetSection
   TEEN?: TargetSection
-  DIET?: TargetSection
+  DIETER?: TargetSection
 }
 
 // ✅ 탭(selected) → API target 매핑
@@ -86,14 +86,14 @@ type ProductListResponse = {
 const TARGET_BY_SELECTED: Record<Exclude<SelectedKey, 'all'>, Target> = {
   pregnant: 'PREGNANT' as Target,
   teen: 'TEEN' as Target,
-  diet: 'DIET' as Target,
+  dieter: 'DIETER' as Target,
 }
 
 // ✅ API target → data key 매핑 (응답이 PREGNANT/TEEN/DIET 키로 온다는 전제)
 const DATAKEY_BY_TARGET: Record<Target, keyof ProductListResponse> = {
   PREGNANT: 'PREGNANT',
   TEEN: 'TEEN',
-  DIET: 'DIET',
+  DIETER: 'DIETER',
 } as const
 
 export function ProductList({ category, target }: Props) {
