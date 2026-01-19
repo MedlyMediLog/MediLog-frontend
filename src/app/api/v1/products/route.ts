@@ -2,39 +2,42 @@
 import { NextResponse } from 'next/server'
 import { MOCK_PRODUCTS, type Category } from '@/types/product'
 
-function isCategory(v: string | null): v is Category {
-  return (
-    v === 'EYE' ||
-    v === 'BONE' ||
-    v === 'IMMUNE' ||
-    v === 'ENERGY' ||
-    v === 'STRESS' ||
-    v === 'GUT' ||
-    v === 'BLOOD' ||
-    v === 'SKIN' ||
-    v === 'MUSCLE' ||
-    v === 'LIVER'
-  )
-}
+// function isCategory(v: string | null): v is Category {
+//   return (
+//     v === 'EYE' ||
+//     v === 'BONE' ||
+//     v === 'IMMUNE' ||
+//     v === 'ENERGY' ||
+//     v === 'STRESS' ||
+//     v === 'GUT' ||
+//     v === 'BLOOD' ||
+//     v === 'SKIN' ||
+//     v === 'MUSCLE' ||
+//     v === 'LIVER'
+//   )
+// }
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
-  const rawCategory = searchParams.get('category')
 
-  if (!rawCategory) {
+  const category = searchParams.get('category')
+  const target = searchParams.get('target')
+
+  if (!category) {
     return NextResponse.json({ message: 'category is required' }, { status: 400 })
   }
 
-  if (!isCategory(rawCategory)) {
-    return NextResponse.json({ message: `invalid category: ${rawCategory}` }, { status: 400 })
-  }
+  const backendUrl = new URL('http://medly.deving.xyz:8080/v1/products')
+  backendUrl.searchParams.set('category', category)
+  if (target) backendUrl.searchParams.set('target', target)
 
-  const categoryData = MOCK_PRODUCTS[rawCategory]
+  const res = await fetch(backendUrl.toString(), {
+    // 필요 시 인증 헤더 추가
+    // headers: { Authorization: 'Bearer ...' }
+  })
 
-  if (!categoryData) {
-    return NextResponse.json({ message: `no data for category: ${rawCategory}` }, { status: 404 })
-  }
+  const data = await res.json()
+  console.log(data)
 
-  // ✅ 핵심: categoryData 전체를 그대로 응답
-  return NextResponse.json(categoryData)
+  return NextResponse.json(data, { status: res.status })
 }
