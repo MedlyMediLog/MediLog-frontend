@@ -4,6 +4,7 @@ import Button from '@/app/_components/common/Button'
 import error from '@/assets/error.png'
 import Image from 'next/image'
 import CategoryHeader from '../_components/CategoryHeader'
+import { ErrorState } from '@/app/_components/common/ErrorState'
 export default function Page() {
   return (
     <>
@@ -16,8 +17,7 @@ export default function Page() {
             </div>
           </div>
           <div className="w-full flex justify-center min-h-[745px]">
-            <div className="w-full flex flex-col items-center py-[60px] gap-[24px] max-w-[295px] rounded-[12px]">
-              {/* 에러 묶음 */}
+            {/* <div className="w-full flex flex-col items-center py-[60px] gap-[24px] max-w-[295px] rounded-[12px]">
               <div className="flex flex-col items-center gap-[4px]">
                 <div className="typo-d1 text-gray-300">5XX errors</div>
 
@@ -30,11 +30,15 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* 버튼 */}
               <Button variant="primary" shape="rounded">
                 다시 시도하기
               </Button>
-            </div>
+            </div> */}
+            <ErrorState
+              code={'5XX errors'}
+              description={'카테고리 정보를 불러올 수 없어요.\n잠시 후 다시 시도해주세요.'}
+              actionLabel={'다시 시도하기'}
+            />
           </div>
         </div>
       </div>
