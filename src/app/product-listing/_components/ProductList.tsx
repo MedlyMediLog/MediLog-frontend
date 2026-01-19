@@ -80,11 +80,7 @@ const TARGET_BY_SELECTED: Record<Exclude<SelectedKey, 'all'>, Target> = {
 }
 
 export function ProductList({ category, target }: Props) {
-  // ✅ “칩이 우선” 정책:
-  // - 사용자가 칩을 만지기 전까지는(초기 진입) URL target이 있으면 그걸 반영할 수 있음
-  // - 한 번이라도 칩 선택하면, 그 이후엔 selected만 기준으로 API 요청/렌더
-  const userTouchedFilterRef = React.useRef(false)
-
+  // ✅ 초기 진입 시 URL target이 있으면 그걸로 selected 초기값 세팅
   const initialSelected: SelectedKey = React.useMemo(() => {
     if (target === 'PREGNANT') return 'pregnant'
     if (target === 'TEEN') return 'teen'
@@ -105,11 +101,18 @@ export function ProductList({ category, target }: Props) {
   const desktopContentRef = React.useRef<HTMLDivElement | null>(null)
   const [toastLeft, setToastLeft] = React.useState<number | null>(null)
 
+  /**
+   * ✅ “칩이 우선” 정책을 위해 ref 대신 state 사용 (eslint react-hooks/refs 대응)
+   * - 사용자가 칩을 만지기 전까지는 URL target을 유지할 수 있음
+   * - 한 번이라도 칩을 누르면 이후엔 selected만 기준으로 API 요청/렌더
+   */
+  const [hasUserTouchedFilter, setHasUserTouchedFilter] = React.useState(false)
+
   // ✅ 실제 API 요청에 넣을 target 결정
-  // - 사용자가 칩을 누른 적이 없고, selected가 all이면: URL target을 유지할 수 있음
-  // - 사용자가 칩을 누른 뒤에는: selected 기준(전체는 undefined)
+  // - 사용자가 칩을 누른 뒤(hasUserTouchedFilter=true): selected 기준(전체는 undefined)
+  // - 아직 칩을 안 눌렀고 selected가 all이면: URL target 유지(옵션)
   const requestTarget = React.useMemo<Target | undefined>(() => {
-    if (userTouchedFilterRef.current) {
+    if (hasUserTouchedFilter) {
       if (selected === 'all') return undefined
       return TARGET_BY_SELECTED[selected]
     }
@@ -117,7 +120,7 @@ export function ProductList({ category, target }: Props) {
     // 아직 사용자가 칩을 안 만짐: URL target이 있으면 유지(옵션)
     if (selected === 'all') return target
     return TARGET_BY_SELECTED[selected]
-  }, [selected, target])
+  }, [hasUserTouchedFilter, selected, target])
 
   const { data, isLoading, isError, refetch } = useProductList({
     category,
@@ -181,7 +184,6 @@ export function ProductList({ category, target }: Props) {
   const safeId = (p: ApiProduct) => String(p.productCode)
 
   // ✅ 이미지 매핑: productCode가 엄청 큰 숫자/문자열이라도 안전하게 number로 변환 시도
-  // (getProductImageById가 내부에서 fallback을 해주면 가장 깔끔)
   const safeImage = (p: ApiProduct) => {
     const n = Number(p.productCode)
     if (Number.isFinite(n)) return getProductImageById(n)
@@ -219,10 +221,13 @@ export function ProductList({ category, target }: Props) {
       status,
     })
 
-    return [...allowed.map((p) => toItem(p, '섭취 가능')), ...caution.map((p) => toItem(p, '주의사항'))]
+    return [
+      ...allowed.map((p) => toItem(p, '섭취 가능')),
+      ...caution.map((p) => toItem(p, '주의사항')),
+    ]
   }, [data, isFilterApplied])
 
-  // ✅ 검색: 제조사/브랜드명(manufacturer) 기준 (스펙 그대로)
+  // ✅ 검색: 제조사/브랜드명(manufacturer) 기준
   const filtered: ProductItem[] = React.useMemo(() => {
     const keyword = q.trim()
     if (keyword.length === 0) return sourceList
@@ -264,11 +269,9 @@ export function ProductList({ category, target }: Props) {
   }
 
   const handleSelect = (v: string) => {
-    userTouchedFilterRef.current = true
+    // ✅ 여기서 “유저가 칩을 만졌다”를 state로 기록
+    setHasUserTouchedFilter(true)
     setSelected(v as SelectedKey)
-
-    // ✅ “전체”를 누르면 URL target과 상관없이 “전체”가 되길 원하니까
-    // requestTarget 계산에서 userTouchedFilterRef가 true면 all -> undefined로 처리됨
   }
 
   if (isLoading) return <div className="p-5">로딩중...</div>
@@ -294,9 +297,20 @@ export function ProductList({ category, target }: Props) {
 
       {/* Mobile */}
       <section className="md:hidden w-full">
-        <IntakeInfoOverlay open={isIntakeOverlayOpen} onClose={() => setIsIntakeOverlayOpen(false)} />
+        <IntakeInfoOverlay
+          open={isIntakeOverlayOpen}
+          onClose={() => setIsIntakeOverlayOpen(false)}
+        />
 
-        <div ref={mobileContentRef} className={['w-full', 'flex flex-col items-start self-stretch', 'px-[20px]', 'pb-[60px]'].join(' ')}>
+        <div
+          ref={mobileContentRef}
+          className={[
+            'w-full',
+            'flex flex-col items-start self-stretch',
+            'px-[20px]',
+            'pb-[60px]',
+          ].join(' ')}
+        >
           <ScrollAwareBlock hidden={isScrolling} className="w-full">
             <div className="w-full mb-[12px]">
               <BasicTargetSummaryCard />
@@ -335,7 +349,7 @@ export function ProductList({ category, target }: Props) {
                 message={'에러 문구 출력 자리.\n문장이 두개 일시 엔터로!'}
                 buttonText="다시 찾아보기"
                 onClick={() => {
-                  userTouchedFilterRef.current = true
+                  setHasUserTouchedFilter(true)
                   setQ('')
                   setSelected('all')
                   setIsSearching(false)
@@ -347,14 +361,23 @@ export function ProductList({ category, target }: Props) {
                 <ul className="flex flex-col items-start self-stretch w-full gap-[20px]">
                   {visibleItems.map((item) => (
                     <li key={item.id} className="w-full">
-                      <Link href={`/products/${item.id}`} className="block" aria-label={`${item.name} 상세로 이동`}>
+                      <Link
+                        href={`/products/${item.id}`}
+                        className="block"
+                        aria-label={`${item.name} 상세로 이동`}
+                      >
                         <ProductCard item={item} showStatus={isFilterApplied} />
                       </Link>
                     </li>
                   ))}
                 </ul>
 
-                <LoadMoreSection total={filtered.length} visible={visibleCount} step={LOAD_STEP} onLoadMore={handleLoadMore} />
+                <LoadMoreSection
+                  total={filtered.length}
+                  visible={visibleCount}
+                  step={LOAD_STEP}
+                  onLoadMore={handleLoadMore}
+                />
               </>
             )}
           </div>
@@ -363,7 +386,15 @@ export function ProductList({ category, target }: Props) {
 
       {/* Desktop */}
       <section className="hidden md:flex flex-col items-center w-full">
-        <div ref={desktopContentRef} className={['flex flex-col items-center', 'w-full max-w-[1300px]', 'flex-1 self-stretch', 'px-[20px] pb-[120px]'].join(' ')}>
+        <div
+          ref={desktopContentRef}
+          className={[
+            'flex flex-col items-center',
+            'w-full max-w-[1300px]',
+            'flex-1 self-stretch',
+            'px-[20px] pb-[120px]',
+          ].join(' ')}
+        >
           <ScrollAwareBlock hidden={isScrolling} className="w-full">
             <div className="w-full flex flex-col items-start pt-0 pb-[20px]">
               <div className="w-full mb-[12px]">
@@ -395,7 +426,13 @@ export function ProductList({ category, target }: Props) {
 
                 {!shouldShowEmptyResult && (
                   <div className="ml-auto flex-shrink-0 -my-[10px]">
-                    <QueryResultDesktop count={filtered.length} showRefresh onRefresh={onRefresh} label="조회 결과" unit="개" />
+                    <QueryResultDesktop
+                      count={filtered.length}
+                      showRefresh
+                      onRefresh={onRefresh}
+                      label="조회 결과"
+                      unit="개"
+                    />
                   </div>
                 )}
               </div>
@@ -409,7 +446,7 @@ export function ProductList({ category, target }: Props) {
                 message={'에러 문구 출력 자리.\n문장이 두개 일시 엔터로!'}
                 buttonText="다시 찾아보기"
                 onClick={() => {
-                  userTouchedFilterRef.current = true
+                  setHasUserTouchedFilter(true)
                   setQ('')
                   setSelected('all')
                   onRefresh()
@@ -423,7 +460,9 @@ export function ProductList({ category, target }: Props) {
                   total={filtered.length}
                   visible={visibleCount}
                   step={LOAD_STEP}
-                  onLoadMore={() => setVisibleCount((prev) => Math.min(prev + LOAD_STEP, filtered.length))}
+                  onLoadMore={() =>
+                    setVisibleCount((prev) => Math.min(prev + LOAD_STEP, filtered.length))
+                  }
                 />
               </>
             )}
