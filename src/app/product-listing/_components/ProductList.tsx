@@ -146,6 +146,8 @@ export function ProductList({ category, target }: Props) {
     refetch?: () => void
   }
 
+  console.log('Data', data)
+
   // ✅ 새로고침 (refetch 없으면 안전하게 noop)
   const onRefresh = React.useCallback(() => {
     refetch?.()
@@ -212,6 +214,8 @@ export function ProductList({ category, target }: Props) {
       image: getProductImageById(p.productId), // ✅ CDN 대신 로컬 매핑
     }))
   }, [data])
+
+  console.log('baselist', baseList)
 
   /**
    * ✅ 선택된 target 섹션 가져오기
@@ -311,21 +315,19 @@ export function ProductList({ category, target }: Props) {
   const handleLoadMore = () => {
     setIsIntakeOverlayOpen(true)
     setVisibleCount((prev) => Math.min(prev + LOAD_STEP, filtered.length))
-    
   }
 
   React.useEffect(() => {
-  console.log('=== UI STATE ===')
-  console.log('selected:', selected)
-  console.log('q:', q)
-  console.log('filtered length:', filtered.length)
-  console.log('first item:', filtered[0])
-}, [selected, q, filtered])
+    console.log('=== UI STATE ===')
+    console.log('selected:', selected)
+    console.log('q:', q)
+    console.log('filtered length:', filtered.length)
+    console.log('first item:', filtered[0])
+  }, [selected, q, filtered])
 
   // ✅ early return은 훅들 다 호출된 뒤에!
   if (isLoading) return <div className="p-5">로딩중...</div>
   if (isError || !data) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
-  
 
   return (
     <>
@@ -347,11 +349,19 @@ export function ProductList({ category, target }: Props) {
 
       {/* Mobile */}
       <section className="md:hidden w-full">
-        <IntakeInfoOverlay open={isIntakeOverlayOpen} onClose={() => setIsIntakeOverlayOpen(false)} />
+        <IntakeInfoOverlay
+          open={isIntakeOverlayOpen}
+          onClose={() => setIsIntakeOverlayOpen(false)}
+        />
 
         <div
           ref={mobileContentRef}
-          className={['w-full', 'flex flex-col items-start self-stretch', 'px-[20px]', 'pb-[60px]'].join(' ')}
+          className={[
+            'w-full',
+            'flex flex-col items-start self-stretch',
+            'px-[20px]',
+            'pb-[60px]',
+          ].join(' ')}
         >
           <ScrollAwareBlock hidden={isScrolling} className="w-full">
             <div className="w-full mb-[12px]">
@@ -407,7 +417,12 @@ export function ProductList({ category, target }: Props) {
                   ))}
                 </ul>
 
-                <LoadMoreSection total={filtered.length} visible={visibleCount} step={LOAD_STEP} onLoadMore={handleLoadMore} />
+                <LoadMoreSection
+                  total={filtered.length}
+                  visible={visibleCount}
+                  step={LOAD_STEP}
+                  onLoadMore={handleLoadMore}
+                />
               </>
             )}
           </div>
