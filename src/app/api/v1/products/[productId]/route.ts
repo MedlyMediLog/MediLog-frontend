@@ -394,33 +394,29 @@
 // }
 
 // src/app/api/v1/products/[productId]/route.ts
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET(req: Request, { params }: { params: { productId: string } }) {
-  const { productId } = await params
+export async function GET(
+  request: NextRequest,
+  context: { params: Promise<{ productId: string }> },
+) {
+  const { productId } = await context.params
 
   if (!productId) {
     return NextResponse.json({ message: 'productId is required' }, { status: 400 })
   }
 
-  const { searchParams } = new URL(req.url)
+  const { searchParams } = new URL(request.url)
   const target = searchParams.get('target')
 
-  // ✅ 실제 백엔드 URL
   const backendUrl = new URL(`http://medly.deving.xyz:8080/v1/products/${productId}`)
 
   if (target) {
     backendUrl.searchParams.set('target', target)
   }
 
-  const res = await fetch(backendUrl.toString(), {
-    // 필요하면 인증 헤더 추가
-    // headers: { Authorization: `Bearer ${token}` }
-  })
-
+  const res = await fetch(backendUrl.toString())
   const data = await res.json()
 
-  return NextResponse.json(data, {
-    status: res.status,
-  })
+  return NextResponse.json(data, { status: res.status })
 }
