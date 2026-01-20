@@ -7,9 +7,9 @@ import google from '@/assets/google.png'
 export default function LoginActions() {
 
     const handleGoogleLogin = () => {
-        window.location.href = 
-        'http://medly.deving.xyz:8080/oauth2/authorization/google'
-    }
+  window.location.href = '/api/auth/login/google'
+}
+
     
   return (
     <div className="flex-col flex justify-center items-center gap-2">
