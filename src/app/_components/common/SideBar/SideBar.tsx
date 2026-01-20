@@ -116,7 +116,7 @@ export default function SideBar() {
             <div className="flex flex-col text-fg-basic-primary typo-b3">
               <div className="flex gap-2.5 flex-col">
                 {/* TODO: 최근 본 제품 데이터 연결 */}
-                <Link href="/login" className="py-2.5 px-2 rounded-[8px] gap-2 typo-b3">['PRODUCT']</Link>
+                <Link href="/login" className="py-2.5 px-2 rounded-[8px] gap-2 typo-b3">[&quot;PRODUCT&quot;]</Link>
               </div>
             </div>
           </div>
