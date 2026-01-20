@@ -1,3 +1,4 @@
+//src/app/product-listing/_components/shared/ScrollAwareBlock/ScrollAwareBlock.tsx
 'use client'
 
 import React from 'react'
@@ -17,8 +18,10 @@ export function ScrollAwareBlock({ hidden, children, className }: Props) {
         hidden ? styles.blockHidden : styles.blockShown,
         className ?? '',
       ].join(' ')}
+      aria-hidden={hidden}
     >
       {children}
     </div>
   )
 }
+

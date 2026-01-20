@@ -1,50 +1,17 @@
-.fab {
-  /* ✅ 버튼 레이아웃 */
-  display: flex;
-  width: 48px;
-  height: 48px;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-
-  /* ✅ 위치: 컨테이너 기준(우측 20 / 하단 60)처럼 보이게 fixed + calc */
-  position: fixed;
-  bottom: 60px;
-  right: max(20px, calc((100vw - 1300px) / 2 + 20px));
-  z-index: 50;
-
-  /* ✅ 스타일 */
-  border: 0;
-  border-radius: var(--Number-round-Ultra, 999px);
-  background: var(--Color-Role-bg-layer-accent, #242a30);
-
-  /* ✅ 플로팅 그림자 */
-  box-shadow: 0 0 8px 0 rgba(36, 42, 48, 0.12);
-
-  cursor: pointer;
-}
-
-.fab:focus {
-  outline: none;
-}
-
-.fab:focus-visible {
-  outline: 2px solid var(--fg-basic-accent);
-  outline-offset: 2px;
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-}
+/* src/app/product-listing/_components/shared/FloatingTopButton/FloatingTopButton.module.css */
 .wrapper {
+  /* ✅ 피그마처럼 "컨테이너 우측 라인"에 맞추기 */
   position: fixed;
-  bottom: 60px;
-  right: max(20px, calc((100vw - 1300px) / 2 + 20px));
+
+  /* ✅ 기존: +20 때문에 컨테이너 패딩이 중복 반영될 수 있었음 */
+  right: max(20px, calc((100vw - 1300px) / 2));
+
+  /* ✅ 피그마 gap/30 (30px) + 안전영역 */
+  bottom: calc(30px + env(safe-area-inset-bottom, 0px));
+
   z-index: 50;
 
-  /* 공통 Button에 없는 플로팅 전용 그림자 */
+  /* ✅ 공통 Button에 없는 플로팅 전용 그림자 */
   box-shadow: 0 0 8px 0 rgba(36, 42, 48, 0.12);
   border-radius: var(--Number-round-Ultra, 999px);
 }

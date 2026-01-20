@@ -25,13 +25,7 @@ export function FloatingTopButton({ visible, onClick }: Props) {
         onClick={onClick}
         aria-label="최상단으로 이동"
       >
-        <Image
-          src={iconArrowUp}
-          alt=""
-          width={24}
-          height={24}
-          priority
-        />
+        <Image src={iconArrowUp} alt="" width={24} height={24} priority />
       </Button>
     </div>
   )
