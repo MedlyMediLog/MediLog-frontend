@@ -71,9 +71,8 @@ export default function SideBar() {
               </div>
 
               {isOpen && (
-                <span className="min-w-0 truncate typo-h5 text-fg-basic-accent">
-                  {item.label}
-                </span>
+                <span className="min-w-0 truncate typo-h5 text-fg-basic-accent">{item.label}</span>
+
               )}
             </Link>
           )
@@ -82,25 +81,33 @@ export default function SideBar() {
 
       {/* ✅ isOpen일 때만 추가 리스트 */}
       {isOpen && (
-        <nav className="mt-6 px-5 flex flex-col gap-1">
-          {EXTRA_NAV.map((item) => {
-            const isActive = pathname === item.href
+        <div className="flex flex-col px-3 gap-10">
+          <nav className="px-3 flex flex-col">
+            {EXTRA_NAV.map((item) => {
+              const isActive = pathname === item.href
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={clsx(
-                  'px-3 py-2 rounded-[8px] typo-b4',
-                  'text-fg-basic-accent hover:bg-layer-secondary',
-                  isActive && 'bg-layer-secondary',
-                )}
-              >
-                {item.label}
-              </Link>
-            )
-          })}
-        </nav>
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={clsx(
+                    'px-3 py-2 rounded-[8px] typo-b4',
+                    'text-fg-basic-accent hover:bg-layer-secondary',
+                    isActive && 'bg-layer-secondary',
+                  )}
+                >
+                  {item.label}
+                </Link>
+              )
+            })}
+          </nav>
+
+          {/* 최근 본 영양제 */}
+          <div className='flex flex-col gap-1'>
+            <div className='flex p-2 gap-2.5 text-gray-1000 typo-h5'>최근 본 제품</div>
+
+          </div>
+        </div>
       )}
     </aside>
   )

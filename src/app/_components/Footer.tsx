@@ -2,7 +2,7 @@ export default function Footer() {
   return (
     <>
       {/* 푸터 */}
-      <div className="flex flex-col w-full py-7.5 px-10 gap-2.5 bg-[#dce4ed] desktop:flex-row ">
+      <div className="flex flex-col w-full py-7.5 px-10 gap-2.5 bg-[#dce4ed] desktop:flex-row  bottom-0">
         <div className="flex flex-col w-full gap-10 desktop:flex-row">
           
           <div className="flex flex-col w-full gap-5 desktop:flex-row">
