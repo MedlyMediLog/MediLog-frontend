@@ -1,10 +1,13 @@
-export default function Footer() {
+type FooterProps = {
+  className?: string
+}
+
+export default function Footer({ className = '' }: FooterProps) {
   return (
     <>
       {/* 푸터 */}
       <div className="flex flex-col w-full py-7.5 px-10 gap-2.5 bg-[#dce4ed] desktop:flex-row  bottom-0">
         <div className="flex flex-col w-full gap-10 desktop:flex-row">
-          
           <div className="flex flex-col w-full gap-5 desktop:flex-row">
             <div className="flex flex-col w-full gap-7.5 desktop:flex-row">
               <div className="w-20 h-7.5 bg-[#d9d9d9]"></div>
