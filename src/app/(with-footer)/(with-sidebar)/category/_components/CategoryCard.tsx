@@ -89,9 +89,10 @@ interface Props {
 export default function CategoryCard({ slug, label, image }: Props) {
   return (
     <Link href={`/products?category=${slug}`} className="flex flex-col gap-[8px]">
-      <div className="relative w-full aspect-[200/180] rounded-[12px] flex items-center justify-center">
-        <Image src={image} alt={label} fill className="object-contain" />
+      <div className="relative w-full aspect-[200/180] rounded-[12px] flex items-center justify-center gap-[10px] py-[20px] px-[21px] bg-layer-primary">
+        <Image src={image} alt={label} width={80} height={80} className="object-contain" />
       </div>
+
       <div className="text-center typo-h4 text-gray-900">{label}</div>
     </Link>
   )
