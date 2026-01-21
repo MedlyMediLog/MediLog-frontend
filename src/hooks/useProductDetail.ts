@@ -10,8 +10,8 @@ export function useProductDetail(params: { productId: number; target?: Target | 
     staleTime: 30_000,
     queryFn: async () => {
       const path = target
-        ? `/v1/products/${productId}?target=${encodeURIComponent(target)}`
-        : `/v1/products/${productId}`;
+        ? `/api/v1/products/${productId}?target=${encodeURIComponent(target)}`
+        : `/api/v1/products/${productId}`;
 
       const res = await fetch(path, {credentials: 'include'});
       if (!res.ok) {
