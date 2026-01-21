@@ -409,7 +409,7 @@ export async function GET(
   const { searchParams } = new URL(request.url)
   const target = searchParams.get('target')
 
-  const backendUrl = new URL(`http://medly.deving.xyz:8080/v1/products/${productId}`)
+  const backendUrl = new URL(`https://medly.deving.xyz/v1/products/${productId}`)
 
   if (target) {
     backendUrl.searchParams.set('target', target)
