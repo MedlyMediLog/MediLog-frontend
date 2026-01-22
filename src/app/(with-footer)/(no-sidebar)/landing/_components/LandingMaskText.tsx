@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import clsx from 'clsx'
+import './landing.css'
 
 type Props = {
   titleLines: string[]
@@ -39,7 +40,7 @@ export default function LandingMaskText({ titleLines, subLines }: Props) {
     <div ref={ref} className="mask-block">
       <div className="mask-block__title">
         {titleLines.map((line, i) => (
-          <h2 key={i} className="mask-fill mask-fill--title" data-fill-text={line}>
+          <h2 key={i} className="mask-fill mask-fill--title typo-d1" data-fill-text={line}>
             {line}
           </h2>
         ))}

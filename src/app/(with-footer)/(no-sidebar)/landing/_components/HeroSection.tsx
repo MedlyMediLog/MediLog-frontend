@@ -76,7 +76,7 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
             <Button
               variant="primary"
               shape="rounded"
-              className="flex py-3 px-5 justify-center items-center gap-[8px]"
+              className="flex py-3 px-5 justify-center items-center gap-[8px] cursor-pointer"
               onClick={() => router.push('/category')}
             >
               제품 정보 확인하기

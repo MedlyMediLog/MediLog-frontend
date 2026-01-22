@@ -32,6 +32,7 @@
 /* 타이틀 */
 .mask-fill--title {
   color: #a2a6a9; /* 시작 색 */
+  white-space: normal;
 }
 
 .mask-fill--title::before {
@@ -41,8 +42,29 @@
 /* 서브 */
 .mask-fill--sub {
   color: #c0c4ca;
+  white-space: normal;
 }
 
 .mask-fill--sub::before {
   color: #6e7783;
+}
+.mask-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.mask-block__title {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mask-block__sub {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mask-block__gap {
+  height: 12px;
 }
