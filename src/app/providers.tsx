@@ -25,7 +25,7 @@ const queryClient = new QueryClient()
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <QueryErrorResetBoundary>
+      {/* <QueryErrorResetBoundary>
         {({ reset }) => (
           <ErrorBoundary
             onReset={reset}
@@ -41,7 +41,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             {children}
           </ErrorBoundary>
         )}
-      </QueryErrorResetBoundary>
+      </QueryErrorResetBoundary> */}
+      {children}
     </QueryClientProvider>
   )
 }

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import Footer from '../../_components/Footer'
 import SideBar from '../../_components/common/SideBar/SideBar'
+import { PageErrorBoundary } from '@/app/_components/ErrorBoundaryWrapper'
 
 export default function WithFooterLayout({ children }: { children: ReactNode }) {
   return (
@@ -11,7 +12,7 @@ export default function WithFooterLayout({ children }: { children: ReactNode }) 
         </aside>
 
         <main className="flex-1">
-          {children}
+          <PageErrorBoundary>{children}</PageErrorBoundary>
           <Footer />
         </main>
       </div>

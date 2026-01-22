@@ -1,0 +1,48 @@
+/* 공통 */
+.mask-fill {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+/* 채워지는 레이어 */
+.mask-fill::before {
+  content: attr(data-fill-text);
+  position: absolute;
+  inset: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  clip-path: inset(0 100% 0 0);
+  will-change: clip-path;
+}
+
+/* 활성화 */
+.mask-fill.is-active::before {
+  animation: maskFillReveal 6000ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes maskFillReveal {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* 타이틀 */
+.mask-fill--title {
+  color: #a2a6a9; /* 시작 색 */
+}
+
+.mask-fill--title::before {
+  color: #242a30; /* 채워지는 색 */
+}
+
+/* 서브 */
+.mask-fill--sub {
+  color: #c0c4ca;
+}
+
+.mask-fill--sub::before {
+  color: #6e7783;
+}

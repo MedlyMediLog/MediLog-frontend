@@ -1,25 +1,26 @@
-"use client";
+'use client'
 
-import ProductDeatilHeader from "./ProductDetailHeader";
-import IngredientsSection from "./IngredientsSection";
-import ProductSummarySection from "./ProductSummarySection";
-import SafetyGuideSection from "./SafetyGuideSection";
-import IntakeStorageSection from "./IntakeStorageSection";
-import GeneralUsageSection from "./GeneralUsageSection";
+import ProductDeatilHeader from './ProductDetailHeader'
+import IngredientsSection from './IngredientsSection'
+import ProductSummarySection from './ProductSummarySection'
+import SafetyGuideSection from './SafetyGuideSection'
+import IntakeStorageSection from './IntakeStorageSection'
+import GeneralUsageSection from './GeneralUsageSection'
 
-import { useProductDetail } from "@/hooks/useProductDetail";
-import { Target } from "@/lib/api/types";
+import { useProductDetail } from '@/hooks/useProductDetail'
+import { Target } from '@/lib/api/types'
+import ShareButton from './ShareButton'
 
 type Props = {
-  productId: number;
-  target: Target | null;
-};
+  productId: number
+  target: Target | null
+}
 
 export default function ProductDetailClient({ productId, target }: Props) {
-  const { data, isLoading, isError } = useProductDetail({ productId, target });
+  const { data, isLoading, isError } = useProductDetail({ productId, target })
 
-  if (isLoading) return <div className="p-5">로딩중...</div>;
-  if (isError || !data) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>;
+  if (isLoading) return <div className="p-5">로딩중...</div>
+  if (isError || !data) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
 
   return (
     <div className="flex flex-col bg-gray-100 relative">
@@ -46,9 +47,10 @@ export default function ProductDetailClient({ productId, target }: Props) {
               storageMethod={data.storageMethod}
             />
             <SafetyGuideSection cautionRaw={data.cautionRaw} />
+            <ShareButton />
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
