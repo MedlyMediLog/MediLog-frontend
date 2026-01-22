@@ -1,11 +1,14 @@
+'use client'
 import logo from '@/assets/logo.png'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 type FooterProps = {
   className?: string
 }
 
 export default function Footer({ className = '' }: FooterProps) {
+  const router = useRouter()
   return (
     <>
       {/* 푸터
@@ -63,13 +66,28 @@ export default function Footer({ className = '' }: FooterProps) {
               </div>
 
               <div className="flex flex-wrap w-full gap-4">
-                <button className="py-1 gap-1 typo-b5 text-fg-basic-secondary whitespace-nowrap">
+                <button
+                  onClick={() => router.push('/term')}
+                  className="py-1 gap-1 typo-b5 text-fg-basic-secondary whitespace-nowrap cursor-pointer"
+                >
                   서비스 이용 약관
                 </button>
-                <button className="py-1 gap-1 typo-b5 text-fg-basic-secondary whitespace-nowrap">
+                <button
+                  onClick={() => router.push('/privacy')}
+                  className="py-1 gap-1 typo-b5 text-fg-basic-secondary whitespace-nowrap cursor-pointer"
+                >
                   개인정보 처리방침
                 </button>
-                <button className="py-1 gap-1 typo-b5 text-fg-basic-secondary whitespace-nowrap">
+                <button
+                  onClick={() =>
+                    window.open(
+                      'https://www.foodsafetykorea.go.kr/apiMain.do',
+                      '_blank',
+                      'noopener,noreferrer',
+                    )
+                  }
+                  className="py-1 gap-1 typo-b5 text-fg-basic-secondary whitespace-nowrap cursor-pointer"
+                >
                   식약처 공공 데이터
                 </button>
               </div>
