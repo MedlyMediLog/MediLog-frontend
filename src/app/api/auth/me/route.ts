@@ -9,17 +9,20 @@ export async function GET(req: NextRequest) {
     )
   }
 
+  // ✅ 들어온 쿠키(브라우저 -> Next)
   const cookie = req.headers.get('cookie') ?? ''
+  const url = `${BE}/api/auth/me`
 
   try {
-    const url = `${BE}/api/auth/me`
     const res = await fetch(url, {
       method: 'GET',
       headers: {
+        // ✅ Next -> BE 로 쿠키 그대로 전달
         cookie,
         accept: 'application/json',
       },
       cache: 'no-store',
+      redirect: 'manual', // ✅ 302 따라가지 말기 (HTML 200으로 변조 방지)
     })
 
     const data = await res.text()
@@ -28,8 +31,10 @@ export async function GET(req: NextRequest) {
       status: res.status,
       headers: {
         'content-type': res.headers.get('content-type') ?? 'application/json',
-        // 디버깅용: 지금 백엔드에 실제로 어떤 URL로 쐈는지
         'x-proxy-url': url,
+        // ✅ 디버깅 핵심 2개
+        'x-cookie-len': String(cookie.length),
+        'x-be-location': res.headers.get('location') ?? '',
       },
     })
   } catch (e) {

@@ -14,11 +14,19 @@ export async function GET(req: NextRequest) {
       accept: 'application/json',
     },
     cache: 'no-store',
-    redirect: 'follow',
+    redirect: 'manual',
   })
 
   // ✅ 현재 요청의 host 기준으로 redirect (local/prod 자동)
-  const out = NextResponse.redirect(new URL('/category', req.nextUrl))
+const proto = req.headers.get('x-forwarded-proto') ?? 'https'
+const host =
+  req.headers.get('x-forwarded-host') ??
+  req.headers.get('host') ??
+  'medilog.today'
+
+const origin = `${proto}://${host}`
+const out = NextResponse.redirect(new URL('/category', origin))
+
 
   const setCookies = res.headers.getSetCookie?.() ?? []
   for (const sc of setCookies) out.headers.append('set-cookie', sc)
