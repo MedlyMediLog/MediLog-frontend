@@ -36,7 +36,7 @@ export default function MobileSidebar({ open, onClose }: Props) {
     async function run() {
       try {
         setMeLoading(true)
-        const res = await fetch('/api/me', { cache: 'no-store' })
+        const res = await fetch('/api/auth/me', { cache: 'no-store' })
         if (!res.ok) {
           if (!cancelled) setMe(null)
           return

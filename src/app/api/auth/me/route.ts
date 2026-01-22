@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
         accept: 'application/json',
       },
       cache: 'no-store',
-      redirect: 'manual', // ✅ 302 따라가지 말기 (HTML 200으로 변조 방지)
+      redirect: 'manual', // 
     })
 
     const data = await res.text()
@@ -32,7 +32,6 @@ export async function GET(req: NextRequest) {
       headers: {
         'content-type': res.headers.get('content-type') ?? 'application/json',
         'x-proxy-url': url,
-        // ✅ 디버깅 핵심 2개
         'x-cookie-len': String(cookie.length),
         'x-be-location': res.headers.get('location') ?? '',
       },
