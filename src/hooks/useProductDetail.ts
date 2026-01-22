@@ -10,10 +10,10 @@ export function useProductDetail(params: { productId: number; target?: Target | 
     staleTime: 30_000,
     queryFn: async () => {
       const path = target
-        ? `/api/v1/products/${productId}?target=${encodeURIComponent(target)}`
-        : `/api/v1/products/${productId}`;
+        ? `/v1/products/${productId}?target=${encodeURIComponent(target)}`
+        : `/v1/products/${productId}`;
 
-      const res = await fetch(path, {credentials: 'include'});
+      const res = await fetch(path);
       if (!res.ok) {
         const text = await res.text().catch(() => "");
         throw new Error(text || `Request failed: ${res.status}`);
