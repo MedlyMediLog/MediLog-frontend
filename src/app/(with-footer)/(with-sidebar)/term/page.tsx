@@ -20,8 +20,11 @@ export default function Page() {
             <div className="flex items-start gap-[6px]">
               <div className="shrink-0 typo-b2 text-fg-basic-primary pl-[6px]">1.</div>
               <div className="typo-b2 text-fg-basic-primary">
-                본 서비스는 건강기능식품 구매 전 이해를 돕기 위한 정보 제공 서비스로서 제품의 판매,
-                광고, 추천 또는 구매 유도를 목적으로 하지 않습니다.
+                본 서비스는{' '}
+                <strong className="font-semibold">
+                  건강기능식품 구매 전 이해를 돕기 위한 정보 제공 서비스
+                </strong>
+                로서 제품의 판매, 광고, 추천 또는 구매 유도를 목적으로 하지 않습니다.
               </div>
             </div>
             <div className="flex items-start gap-[6px]">
@@ -51,8 +54,10 @@ export default function Page() {
             <div className="flex items-start gap-[6px]">
               <div className="shrink-0 typo-b2 text-fg-basic-primary pl-[6px]">1.</div>
               <div className="typo-b2 text-fg-basic-primary">
-                서비스에서 제공되는 모든 정보는 ‘일반적인 참고용’이며, 개인의 건강 상태, 체질, 질환,
-                복용 중인 약물 등에 따른 의료적 판단을 대체할 수 없습니다.
+                서비스에서 제공되는 모든 정보는{' '}
+                <strong className="font-semibold">‘일반적인 참고용’</strong>
+                이며, 개인의 건강 상태, 체질, 질환, 복용 중인 약물 등에 따른 의료적 판단을 대체할 수
+                없습니다.
               </div>
             </div>
             <div className="flex items-start gap-[6px]">
@@ -66,8 +71,11 @@ export default function Page() {
             <div className="flex items-start gap-[6px]">
               <div className="shrink-0 typo-b2 text-fg-basic-primary pl-[6px]">3.</div>
               <div className="typo-b2 text-fg-basic-primary">
-                이용자는 건강기능식품 섭취 여부에 대해 반드시 전문가와 상담한 후 본인의 책임 하에
-                최종 판단해야 합니다.
+                이용자는 건강기능식품 섭취 여부에 대해{' '}
+                <strong className="font-semibold">
+                  반드시 전문가와 상담한 후 본인의 책임 하에 최종 판단
+                </strong>
+                해야 합니다.
               </div>
             </div>
           </div>
@@ -187,7 +195,7 @@ export default function Page() {
         <div className="flex flex-col items-start gap-1 w-full">
           <div className="typo-b1 text-fg-basic-accent">{'부칙'}</div>
           <div className="typo-b2 text-fg-basic-primary">
-            본 약관은 2026년 1월 12일부터 시행됩니다.
+            본 약관은 <strong className="font-semibold">2026년 1월 12일부터 시행</strong>됩니다.
           </div>
         </div>
       </div>

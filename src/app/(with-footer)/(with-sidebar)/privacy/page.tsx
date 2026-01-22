@@ -13,8 +13,9 @@ export default function Page() {
           </div>
           <div className="flex flex-col typo-b2 text-fg-basic-primary">
             <div>
+              <strong className="font-semibold">{"'딱!(TTAK!)'"}</strong>
               {
-                "딱!(TTAK!)’(이하 '서비스')는 회원가입 없이 게스트 이용이 가능한 정보 제공 서비스를 기본으로 하며, 서비스 제공에 필수적인 경우를 제외하고 개인정보를 수집하지 않습니다. 다만, 서비스 이용 과정에서 다음과 같은 정보가 자동으로 생성·수집될 수 있습니다."
+                "(이하 '서비스')는 회원가입없이 게스트 이용이 가능한 정보 제공 서비스를 기본으로 하며, 서비스 제공에 필수적인 경우를 제외하고 개인정보를 수집하지 않습니다. 다만, 서비스 이용 과정에서 다음과 같은 정보가 자동으로 생성·수집될 수 있습니다."
               }
             </div>
 
@@ -199,8 +200,12 @@ export default function Page() {
             </div>
 
             <ul className="list-disc pl-[22px] space-y-1">
-              <li>공고일자: 2026년 1월 12일</li>
-              <li>시행일자: 2026년 1월 28일</li>
+              <li>
+                공고일자: <strong className="font-semibold">2026년 1월 12일</strong>
+              </li>
+              <li>
+                시행일자: <strong className="font-semibold">2026년 1월 28일</strong>
+              </li>
             </ul>
           </div>
         </div>
