@@ -9,9 +9,9 @@ export default function Page() {
         <div className="flex flex-col items-start gap-1 w-full">
           <div className="typo-b1 text-fg-basic-accent">{'제1조 (목적)'}</div>
           <div className="typo-b2 text-fg-basic-primary">
-            본 약관은 ‘딱!(ttak)’(이하 '서비스')이 제공하는 건강기능식품 정보 제공 서비스의 이용과
-            관련하여 서비스와 이용자 간의 권리·의무 및 책임사항, 이용 조건과 절차 등 기본적인 사항을
-            규정함을 목적으로 합니다.
+            {
+              "본 약관은 ‘딱!(ttak)’(이하 '서비스')이 제공하는 건강기능식품 정보 제공 서비스의 이용과 관련하여 서비스와 이용자 간의 권리·의무 및 책임사항, 이용 조건과 절차 등 기본적인 사항을 규정함을 목적으로 합니다."
+            }
           </div>
         </div>
         <div className="flex flex-col items-start gap-1 w-full">
