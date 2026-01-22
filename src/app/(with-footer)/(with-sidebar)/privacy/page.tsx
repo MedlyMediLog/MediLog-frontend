@@ -13,10 +13,10 @@ export default function Page() {
           </div>
           <div className="flex flex-col typo-b2 text-fg-basic-primary">
             <div>
-              <strong className="font-semibold">{"'딱!(TTAK!)'"}</strong>(이하 '서비스')는 회원가입
-              없이 게스트 이용이 가능한 정보 제공 서비스를 기본으로 하며, 서비스 제공에 필수적인
-              경우를 제외하고 개인정보를 수집하지 않습니다. 다만, 서비스 이용 과정에서 다음과 같은
-              정보가 자동으로 생성·수집될 수 있습니다.
+              <strong className="font-semibold">{"'딱!(TTAK!)'"}</strong>
+              {
+                "(이하 '서비스')는 회원가입없이 게스트 이용이 가능한 정보 제공 서비스를 기본으로 하며, 서비스 제공에 필수적인 경우를 제외하고 개인정보를 수집하지 않습니다. 다만, 서비스 이용 과정에서 다음과 같은 정보가 자동으로 생성·수집될 수 있습니다."
+              }
             </div>
 
             <ul className="list-disc pl-[22px] space-y-1">
