@@ -1,5 +1,3 @@
-// src/app/(with-footer)/(with-sidebar)/products/_components/shared/FloatingTopButton/FloatingTopButton.tsx
-
 'use client'
 
 import React from 'react'
@@ -22,6 +20,7 @@ export function FloatingTopButton({ visible, onClick }: Props) {
       <Button
         variant="primary"
         shape="rounded"
+        className={styles.fab}
         onClick={onClick}
         aria-label="최상단으로 이동"
       >

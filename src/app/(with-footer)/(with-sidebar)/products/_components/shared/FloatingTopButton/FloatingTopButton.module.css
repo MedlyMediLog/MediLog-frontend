@@ -1,16 +1,27 @@
 .wrapper {
-  /* ✅ 피그마처럼 "컨테이너 우측 라인"에 맞추기 */
   position: fixed;
 
-  /* ✅ 예전 기준: 컨테이너 라인 정렬(패딩 중복 반영 방지) */
-  right: max(20px, calc((100vw - 1300px) / 2));
+  /* 컨테이너 우측 라인 정렬 */
+  right: max(20px, calc((100vw - 1380px) / 2));
 
-  /* ✅ 예전 기준: iOS safe-area(홈바) 고려 + 기본 30px */
+  /* iOS safe-area + 기본 30px */
   bottom: calc(30px + env(safe-area-inset-bottom, 0px));
 
   z-index: 50;
+}
 
-  /* ✅ 공통 Button에 없는 플로팅 전용 그림자 */
+.fab {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+
+  border-radius: 999px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   box-shadow: 0 0 8px 0 rgba(36, 42, 48, 0.12);
-  border-radius: var(--Number-round-Ultra, 999px);
 }
