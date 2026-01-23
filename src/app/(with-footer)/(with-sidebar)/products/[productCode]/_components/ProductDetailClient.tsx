@@ -8,13 +8,16 @@ import ProductSummarySection from './ProductSummarySection'
 import SafetyGuideSection from './SafetyGuideSection'
 import IntakeStorageSection from './IntakeStorageSection'
 import GeneralUsageSection from './GeneralUsageSection'
+import ShareButton from './ShareButton'
 
 import { useProductDetail } from '@/hooks/useProductDetail'
-import { Target } from '@/lib/api/types'
-import ShareButton from './ShareButton'
+import type { Target } from '@/lib/api/types'
+
 import LoadingSpinner from '@/app/_components/common/LoadingSpinner'
 import { ErrorState } from '@/app/_components/common/ErrorState'
+
 import { getOrCreateAnonId } from '@/lib/analytics/identity'
+import { usePageDuration } from '@/hooks/usePageDuration'
 
 type Props = {
   productCode: number
@@ -22,25 +25,50 @@ type Props = {
 }
 
 export default function ProductDetailClient({ productCode, target }: Props) {
-  // ✅ 익명 사용자 ID 보장 (로그인/비로그인 공통)
+  // 익명 사용자 ID 보장 (로그인/비로그인 공통)
   useEffect(() => {
     getOrCreateAnonId()
   }, [])
 
-  const { data, isLoading, isError } = useProductDetail({ productCode, target })
+  // 체류시간 측정 & 백엔드 전송 (/v1/stay-time-events)
+  usePageDuration({
+    pageKey: `product_detail:${productCode}`,
+    meta: { productCode, target },
+    idleMs: 10_000,
+    onFlush: async (p) => {
+      const anonId = getOrCreateAnonId()
 
-  // if (isLoading) return <div className="p-5">로딩중...</div>
-  // if (!data) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
+      // 백엔드 스펙에 맞춤
+      await fetch('https://api.medilog.today/v1/stay-time-events', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          anonId,
+          startedAt: p.startedAt,
+          endedAt: p.endedAt,
+          totalMs: p.totalMs,
+          activeMs: p.activeMs,
+          productCode: String(productCode), // 스펙: string
+          target: target ?? null,
+        }),
+        keepalive: true,
+        credentials: 'include',
+      }).catch(() => {})
+    },
+  })
+
+  const { data, isLoading, isError } = useProductDetail({ productCode, target })
 
   return (
     <div className="flex flex-col bg-[linear-gradient(to_bottom,#EDF2F6_0%,#FFFFFF_100%)] relative">
       <ProductDeatilHeader />
+
       {isLoading ? (
         <div className="w-full flex justify-center items-center py-[150px]">
           <LoadingSpinner />
         </div>
       ) : isError || !data ? (
-        <div className="w-full flex justify-center  pb-[120px]">
+        <div className="w-full flex justify-center pb-[120px]">
           <ErrorState
             code="1XX errors"
             description={
