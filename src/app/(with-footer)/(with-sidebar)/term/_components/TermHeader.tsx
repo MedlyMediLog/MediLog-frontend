@@ -6,7 +6,7 @@ import { useState } from 'react'
 import MobileSidebar from '@/app/_components/MobileSidebar'
 import Link from 'next/link'
 
-export default function ProductDeatilHeader() {
+export default function TermHeader() {
   const [open, setOpen] = useState(false)
   return (
     <div className="w-full flex h-[56px] p-[16px]  bg-gray-100 gap-30 desktop:py-4 desktop:px-5 desktop:h-auto">
@@ -22,7 +22,7 @@ export default function ProductDeatilHeader() {
         </Link>
 
         <div className="absolute left-1/2 -translate-x-1/2 desktop:hidden">
-          <span className="typo-h5 text-fg-basic-accent">제품 상세</span>
+          <span className="typo-h5 text-fg-basic-accent">서비스 이용 약관</span>
         </div>
 
         <button

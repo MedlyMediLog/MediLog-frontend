@@ -1,6 +1,7 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ['https://medilog.today:3000'],
   async rewrites() {
     const be = process.env.BE_URL
     if (!be) return []

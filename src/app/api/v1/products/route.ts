@@ -27,13 +27,13 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: 'category is required' }, { status: 400 })
   }
 
-  const backendUrl = new URL('https://medly.deving.xyz/v1/products')
+  const backendUrl = new URL('https://api.medilog.today/v1/products')
   backendUrl.searchParams.set('category', category)
   if (target) backendUrl.searchParams.set('target', target)
 
   const res = await fetch(backendUrl.toString(), {
     // 필요 시 인증 헤더 추가
-    // headers: { Authorization: 'Bearer ...' }
+    
   })
 
   const data = await res.json()

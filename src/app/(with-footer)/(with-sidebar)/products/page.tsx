@@ -29,7 +29,7 @@ export default async function ProductListingPage({ searchParams }: Props) {
   return (
     <main className="min-h-dvh">
       {/* 배경 레이어 */}
-      <div className="min-h-dvh bg-[var(--Color-gray-100,#EDF2F6)] desktop:bg-layer-week">
+      <div className="min-h-dvh bg-[linear-gradient(to_bottom,#EDF2F6_0%,#FFFFFF_100%)] ">
         {/* ✅ 전체를 가운데 정렬 (모바일은 full, 데스크탑은 center) */}
         <div className="min-h-dvh flex justify-center">
           {/* ✅ 공통 컨테이너: 모든 섹션의 '시작선'을 통일 */}
