@@ -1,7 +1,6 @@
-// src/app/_components/common/SideBar/SideBar.tsx
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -17,7 +16,9 @@ import { logout } from '@/lib/api/logout'
 import { useRecentProducts } from '@/hooks/useRecentProducts'
 import { useMe } from '@/hooks/useMe'
 
-const NAV = [{ href: '/category', label: '건강 주제 탐색하기', icon: finding }] as const
+import ProfileMenuPopover from './ProfileMenuPopover'
+
+const NAV = [{ href: '/category', label: '홈', icon: home }] as const
 
 export default function SideBar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -28,32 +29,87 @@ export default function SideBar() {
 
   const { data: me, isLoading: meLoading } = useMe()
 
-  // ✅ 사이드바 열렸고 + 로그인 상태일 때만 최근본 요청
+  // 프로필 팝오버 상태 (SideBar는 “상태/좌표/닫기”만 관리)
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
+  const profileMenuWrapRef = useRef<HTMLDivElement | null>(null)
+  const profileBtnRef = useRef<HTMLButtonElement | null>(null)
+  const [menuPos, setMenuPos] = useState<{ left: number; top: number } | null>(null)
+
   const canFetchRecent = isOpen && !meLoading && !!me
   const { data: recent = [], isLoading: recentLoading } = useRecentProducts(canFetchRecent)
 
   const onLogout = async () => {
     try {
       await logout()
-
-      // ✅ 로그인 기반 캐시/상태 정리
       qc.removeQueries({ queryKey: ['me'] })
       qc.removeQueries({ queryKey: ['recent-products'] })
       qc.removeQueries({ queryKey: ['productDetail'] })
 
-      // ✅ UI 갱신
       router.replace('/')
       router.refresh()
     } catch (e) {
       console.error(e)
       alert('로그아웃에 실패했어요')
+    } finally {
+      setIsProfileMenuOpen(false)
     }
   }
+
+  const closeProfileMenu = () => setIsProfileMenuOpen(false)
+
+  // 바깥 클릭 / ESC 로 닫기
+  useEffect(() => {
+    if (!isProfileMenuOpen) return
+
+    const onMouseDown = (e: MouseEvent) => {
+      const el = profileMenuWrapRef.current
+      if (!el) return
+      if (e.target instanceof Node && !el.contains(e.target)) closeProfileMenu()
+    }
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeProfileMenu()
+    }
+
+    
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+     
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [isProfileMenuOpen])
+
+  // 사이드바 닫히면 메뉴도 닫기
+  useEffect(() => {
+    if (!isOpen) closeProfileMenu()
+  }, [isOpen])
+
+  // 메뉴 열릴 때 버튼 기준 좌표 계산 (resize/scroll에도 갱신)
+  useEffect(() => {
+    if (!isProfileMenuOpen) return
+    const btn = profileBtnRef.current
+    if (!btn) return
+
+    const update = () => {
+      const r = btn.getBoundingClientRect()
+      setMenuPos({
+        left: 8,
+        top: r.top - 10,
+      })
+    }
+
+    update()
+    window.addEventListener('resize', update)
+    window.addEventListener('scroll', update, true)
+    return () => {
+      window.removeEventListener('resize', update)
+      window.removeEventListener('scroll', update, true)
+    }
+  }, [isProfileMenuOpen])
 
   return (
     <aside
       className={clsx(
-        // ✅ 화면 하단 고정처럼 보이게 하려면 h-screen + relative가 핵심
         'sticky top-0 h-screen bg-[#edf2f6] border-r border-[#c1cad6] flex flex-col relative',
         'overflow-hidden transition-[width] duration-300 ease-out',
         isOpen ? 'w-[280px]' : 'w-[80px]',
@@ -81,18 +137,10 @@ export default function SideBar() {
       </div>
 
       {/* 메뉴/본문 */}
-      <div
-        className={clsx(
-          'px-3 gap-10 flex flex-col',
-          // ✅ 하단 absolute 영역 높이만큼 바닥 패딩(겹침 방지)
-          'pb-[96px]',
-        )}
-      >
-        {/* 메뉴 */}
+      <div className={clsx('px-3 gap-10 flex flex-col', 'pb-[96px]')}>
         <nav className="flex flex-col gap-2 items-center">
           {NAV.map((item) => {
             const isActive = pathname === item.href
-
             return (
               <Link
                 key={item.href}
@@ -121,7 +169,6 @@ export default function SideBar() {
           })}
         </nav>
 
-        {/* 최근 본 제품 (열렸을 때만) */}
         {isOpen && (
           <div className="flex flex-col gap-1">
             <div className="flex p-2 gap-2.5 text-gray-1000 typo-h5">최근 본 제품</div>
@@ -140,7 +187,6 @@ export default function SideBar() {
                   recent.map((p) => {
                     const href = `/products/${p.productCode}`
                     const isActive = pathname === href
-
                     return (
                       <Link
                         key={p.productCode}
@@ -162,7 +208,7 @@ export default function SideBar() {
         )}
       </div>
 
-      {/* ✅ 하단: fixed 대신 absolute (부모 relative 기준으로 화면 하단에 붙음) */}
+      {/* 하단 */}
       <div className="absolute bottom-0 left-0 w-full border-t border-gray-300 px-2.5 py-2 flex flex-col gap-2 bg-[#edf2f6]">
         {/* 프로필 */}
         <div
@@ -188,13 +234,41 @@ export default function SideBar() {
         {/* 로그아웃 버튼: 로그인 상태에서만 */}
         {/* {isOpen && !meLoading && me && (
           <button
+            ref={profileBtnRef}
             type="button"
-            onClick={onLogout}
-            className="w-full px-2 py-2.5 rounded-[8px] text-left typo-b3 hover:bg-layer-secondary"
+            onClick={() => setIsProfileMenuOpen((v) => !v)}
+            className={clsx(
+              'w-full rounded-[8px] px-2 py-2.5 gap-3 flex items-center hover:bg-layer-secondary',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500',
+              isOpen ? 'justify-start' : 'justify-center',
+            )}
+            aria-haspopup="menu"
+            aria-expanded={isProfileMenuOpen}
+            aria-label="프로필 메뉴 열기"
           >
-            로그아웃
+            <Image src={profile} width={40} height={40} alt="profile" className="shrink-0" />
+
+            {isOpen && (
+              <div className="flex flex-col min-w-0 text-left">
+                <div className="typo-b3 text-fg-basic-accent truncate">
+                  {meLoading ? '불러오는 중…' : (me?.name ?? '게스트')}
+                </div>
+                <div className="text-fg-basic-primary typo-b5 truncate">
+                  {meLoading ? '' : (me?.email ?? me?.provider ?? '로그인이 필요해요')}
+                </div>
+              </div>
+            )}
           </button>
-        )} */}
+
+          <ProfileMenuPopover
+            open={isProfileMenuOpen}
+            pos={menuPos}
+            meLoading={meLoading}
+            me={(me as unknown) ?? null}
+            onClose={closeProfileMenu}
+            onLogout={onLogout}
+          />
+        </div>
       </div>
     </aside>
   )
