@@ -57,7 +57,6 @@ export default function SideBar() {
 
   const closeProfileMenu = () => setIsProfileMenuOpen(false)
 
-  // 바깥 클릭 / ESC 로 닫기
   useEffect(() => {
     if (!isProfileMenuOpen) return
 
@@ -71,7 +70,7 @@ export default function SideBar() {
       if (e.key === 'Escape') closeProfileMenu()
     }
 
-    
+
     document.addEventListener('keydown', onKeyDown)
     return () => {
      
@@ -84,7 +83,7 @@ export default function SideBar() {
     if (!isOpen) closeProfileMenu()
   }, [isOpen])
 
-  // 메뉴 열릴 때 버튼 기준 좌표 계산 (resize/scroll에도 갱신)
+  // 메뉴 열릴 때 버튼 기준 좌표 계산
   useEffect(() => {
     if (!isProfileMenuOpen) return
     const btn = profileBtnRef.current
@@ -126,9 +125,7 @@ export default function SideBar() {
           aria-expanded={isOpen}
           aria-label={isOpen ? '사이드바 닫기' : '사이드바 열기'}
         >
-          <div
-            className={clsx('flex items-center justify-center rounded-[12px]', isOpen ? '' : '')}
-          >
+          <div className="flex items-center justify-center rounded-[12px]">
             <div className="w-6 h-6 relative shrink-0">
               <Image src={sidebar} fill alt="sidebar" className="object-contain" />
             </div>
@@ -148,11 +145,8 @@ export default function SideBar() {
                 aria-current={isActive ? 'page' : undefined}
                 className={clsx(
                   'rounded-[12px] flex items-center transition-colors',
-                  isOpen
-                    ? isActive
-                      ? 'w-60 p-2 gap-2 justify-start bg-layer-secondary'
-                      : 'w-60 p-2 gap-2 justify-start'
-                    : 'w-10 h-10 justify-center',
+                  isOpen ? 'w-60 p-2 gap-2 justify-start' : 'w-10 h-10 justify-center',
+                  isActive ? 'bg-layer-secondary' : '',
                 )}
               >
                 <div className="w-6 h-6 relative shrink-0">
@@ -210,54 +204,32 @@ export default function SideBar() {
 
       {/* 하단 */}
       <div className="absolute bottom-0 left-0 w-full border-t border-gray-300 px-2.5 py-2 flex flex-col gap-2 bg-[#edf2f6]">
-        {/* 프로필 */}
-        <div
-          className={clsx(
-            'w-full rounded-[8px] px-2 py-2.5 gap-3 flex items-center',
-            isOpen ? 'justify-start' : 'justify-center',
-          )}
-        >
-          <Image src={profile} width={40} height={40} alt="profile" className="shrink-0" />
-
-          {isOpen && (
-            <div className="flex flex-col min-w-0">
-              <div className="typo-b3 text-fg-basic-accent truncate">
-                {meLoading ? '불러오는 중…' : me?.name ?? '게스트'}
-              </div>
-              <div className="text-fg-basic-primary typo-b5 truncate">
-                {meLoading ? '' : me?.email ?? me?.provider ?? '로그인이 필요해요'}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* 로그아웃 버튼: 로그인 상태에서만 */}
-        {/* {isOpen && !meLoading && me && (
+        <div ref={profileMenuWrapRef} className="relative">
           <button
             ref={profileBtnRef}
             type="button"
             onClick={() => setIsProfileMenuOpen((v) => !v)}
-            className={clsx(
+          className={clsx(
               'w-full rounded-[8px] px-2 py-2.5 gap-3 flex items-center hover:bg-layer-secondary',
               'focus:outline-none focus:ring-2 focus:ring-blue-500',
-              isOpen ? 'justify-start' : 'justify-center',
-            )}
+            isOpen ? 'justify-start' : 'justify-center',
+          )}
             aria-haspopup="menu"
             aria-expanded={isProfileMenuOpen}
             aria-label="프로필 메뉴 열기"
-          >
-            <Image src={profile} width={40} height={40} alt="profile" className="shrink-0" />
+        >
+          <Image src={profile} width={40} height={40} alt="profile" className="shrink-0" />
 
-            {isOpen && (
+          {isOpen && (
               <div className="flex flex-col min-w-0 text-left">
-                <div className="typo-b3 text-fg-basic-accent truncate">
+              <div className="typo-b3 text-fg-basic-accent truncate">
                   {meLoading ? '불러오는 중…' : (me?.name ?? '게스트')}
-                </div>
-                <div className="text-fg-basic-primary typo-b5 truncate">
-                  {meLoading ? '' : (me?.email ?? me?.provider ?? '로그인이 필요해요')}
-                </div>
               </div>
-            )}
+              <div className="text-fg-basic-primary typo-b5 truncate">
+                  {meLoading ? '' : (me?.email ?? me?.provider ?? '로그인이 필요해요')}
+              </div>
+            </div>
+          )}
           </button>
 
           <ProfileMenuPopover

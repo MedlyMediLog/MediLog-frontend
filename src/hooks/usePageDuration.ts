@@ -1,11 +1,10 @@
-// src/hooks/usePageDuration.ts
 'use client'
 
 import { useEffect, useRef } from 'react'
 import { getOrCreateAnonId } from '@/lib/analytics/identity'
 
 type Options = {
-  pageKey: string // 예: `product_detail:${productCode}`
+  pageKey: string // 예: product_detail:${productCode}
   onFlush: (payload: {
     anonId: string
     pageKey: string
@@ -45,6 +44,25 @@ export function usePageDuration({
   const flushingRef = useRef<boolean>(false)
   const intervalIdRef = useRef<number | null>(null)
   const flushedOnceRef = useRef<boolean>(false)
+
+  const tick = () => {
+    if (!startedAtRef.current) return
+    const now = Date.now()
+    const last = lastTickRef.current || now
+    const delta = now - last
+    lastTickRef.current = now
+
+    if (delta <= 0) return
+    if (!visibleRef.current) return
+
+    totalMsRef.current += delta
+
+    // idle 기준 이내에 활동이 있었으면 active로 누적
+    const lastAct = lastActivityAtRef.current || startedAtRef.current
+    if (now - lastAct <= idleMs) {
+      activeMsRef.current += delta
+    }
+  }
 
   const flush = async (reason: 'interval' | 'hide' | 'unmount') => {
     // 첫 flush 이전에 start가 없으면 방어
@@ -87,25 +105,6 @@ export function usePageDuration({
     }
   }
 
-  const tick = () => {
-    if (!startedAtRef.current) return
-    const now = Date.now()
-    const last = lastTickRef.current || now
-    const delta = now - last
-    lastTickRef.current = now
-
-    if (delta <= 0) return
-    if (!visibleRef.current) return
-
-    totalMsRef.current += delta
-
-    // idle 기준 이내에 활동이 있었으면 active로 누적
-    const lastAct = lastActivityAtRef.current || startedAtRef.current
-    if (now - lastAct <= idleMs) {
-      activeMsRef.current += delta
-    }
-  }
-
   useEffect(() => {
     anonIdRef.current = getOrCreateAnonId()
 
@@ -115,8 +114,8 @@ export function usePageDuration({
     lastActivityAtRef.current = now
     visibleRef.current = typeof document === 'undefined' ? true : !document.hidden
 
-    // 활동 이벤트(활동 시간 산정용)
-    const markActivity = () => {
+    // 활동 이벤트(활동 시간 산정용) 
+    const markActivity: EventListener = () => {
       lastActivityAtRef.current = Date.now()
     }
 
@@ -132,11 +131,11 @@ export function usePageDuration({
       window.addEventListener(ev, markActivity, { passive: true }),
     )
 
-    //  시간 누적 tick 
+    // 시간 누적 tick
     // rAF 대신 setInterval(가볍게). 1초마다 tick
     const tickId = window.setInterval(tick, 1000)
 
-    //  visibility 처리 
+    // visibility 처리
     const onVisibility = () => {
       // 바뀌기 직전까지 반영
       tick()
@@ -146,35 +145,33 @@ export function usePageDuration({
         flush('hide')
       } else {
         // 다시 보이기 시작하면 기준 activity 갱신
-        lastActivityAtRef.current = Date.now()
-        lastTickRef.current = Date.now()
+        const t = Date.now()
+        lastActivityAtRef.current = t
+        lastTickRef.current = t
       }
     }
     document.addEventListener('visibilitychange', onVisibility)
 
-    // 페이지 이탈/백그라운드 종료 처리 
+    // 페이지 이탈/백그라운드 종료 처리
     const onPageHide = () => {
       // pagehide는 iOS 사파리에서 더 신뢰도 높음
       flush('hide')
     }
     window.addEventListener('pagehide', onPageHide)
 
-    //  주기 flush 옵션 
+    // 주기 flush 옵션
     if (flushIntervalMs > 0) {
       intervalIdRef.current = window.setInterval(() => {
         flush('interval')
-      }, flushIntervalMs) as unknown as number
+      }, flushIntervalMs)
     }
 
     return () => {
       // 마지막 반영 후 flush
-      // (unmount 시점에 flush가 이미 됐어도 중복 방지 로직이 있음)
       tick()
       flush('unmount')
 
-      activityEvents.forEach((ev) =>
-        window.removeEventListener(ev, markActivity as any),
-      )
+      activityEvents.forEach((ev) => window.removeEventListener(ev, markActivity))
       window.clearInterval(tickId)
       document.removeEventListener('visibilitychange', onVisibility)
       window.removeEventListener('pagehide', onPageHide)
@@ -186,6 +183,3 @@ export function usePageDuration({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageKey])
 }
-
-
-

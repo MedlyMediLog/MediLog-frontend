@@ -8,7 +8,6 @@ import ProductSummarySection from './ProductSummarySection'
 import SafetyGuideSection from './SafetyGuideSection'
 import IntakeStorageSection from './IntakeStorageSection'
 import GeneralUsageSection from './GeneralUsageSection'
-import ShareButton from './ShareButton'
 
 import { useProductDetail } from '@/hooks/useProductDetail'
 import { Target } from '@/lib/api/types'

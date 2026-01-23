@@ -5,7 +5,7 @@ import LoginBenefits from './LoginBenefits'
 import LoginActions from './LoginActions'
 
 type Props = {
-  onClose: () => void
+  onClose?: () => void
 }
 
 export default function LoginContent({onClose}: Props) {
