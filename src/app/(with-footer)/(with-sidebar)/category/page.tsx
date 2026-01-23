@@ -6,7 +6,7 @@ export default function Page() {
     <>
       {/* <div className="flex"> */}
       {/* <div className="w-[80px] bg-[#EDF2F6]"></div> */}
-      <div className="flex flex-col bg-gray-100 relative">
+      <div className="flex flex-col bg-[linear-gradient(to_bottom,#EDF2F6_0%,#FFFFFF_100%)] relative">
         <CategoryHeader />
         <div className="w-full">
           <div className="w-full max-w-[1300px] mx-auto px-[20px] py-[17px] flex items-center">

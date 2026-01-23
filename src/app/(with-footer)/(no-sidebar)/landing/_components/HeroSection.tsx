@@ -3,6 +3,7 @@ import logo from '@/assets/logo.png'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import LandingMaskText from './LandingMaskText'
 
 type HeroSectionProps = {
   isLoggedIn: boolean
@@ -64,31 +65,18 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
         <div className="mx-auto max-w-[1300px] h-[1000px] desktop:pt-[200px] pt-[80px] px-5">
           <div className="flex flex-col items-center desktop:items-start gap-[30px] desktop:gap-[60px]">
             <div className="flex flex-col text-center items-center desktop:text-left desktop:items-start gap-[12px]">
-              <div
-                className="
-                    typo-h2
-                    desktop:typo-d1
-                    bg-gradient-to-r
-                    from-gray-900
-                    via-gray-400
-                    to-gray-0
-                    bg-[length:300%_100%]
-                    bg-clip-text
-                    text-transparent
-                    animate-gradient-move
-                    whitespace-pre-line
-                "
-              >
-                {'안심하고 판단할 수 있는 \n건강기능식품 정보'}
-              </div>
-              <div className="desktop:text-[24px] typo-b3 whitespace-pre-line">
-                {'식약처 공공데이터로 성분, 기능성부터 \n섭취방법, 주의사항까지 한번에 확인해요.'}
-              </div>
+              <LandingMaskText
+                titleLines={['안심하고 판단할 수 있는', '건강기능식품 정보']}
+                subLines={[
+                  '식약처 공공데이터로 성분, 기능성부터',
+                  '섭취방법, 주의사항까지 한번에 확인해요.',
+                ]}
+              />
             </div>
             <Button
               variant="primary"
               shape="rounded"
-              className="flex py-3 px-5 justify-center items-center gap-[8px]"
+              className="flex py-3 px-5 justify-center items-center gap-[8px] cursor-pointer"
               onClick={() => router.push('/category')}
             >
               제품 정보 확인하기

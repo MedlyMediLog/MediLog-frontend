@@ -33,7 +33,7 @@ export async function GET(req: Request) {
 
   const res = await fetch(backendUrl.toString(), {
     // 필요 시 인증 헤더 추가
-    // headers: { Authorization: 'Bearer ...' }
+    
   })
 
   const data = await res.json()
