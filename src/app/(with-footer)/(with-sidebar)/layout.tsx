@@ -12,7 +12,7 @@ export default function WithFooterLayout({ children }: { children: ReactNode }) 
         </aside>
 
         <main className="flex-1">
-          <PageErrorBoundary>{children}</PageErrorBoundary>
+          {children}
           <Footer />
         </main>
       </div>
