@@ -1,1 +1,0 @@
-export { IntakeInfoOverlay } from './IntakeInfoOverlay'
