@@ -60,7 +60,7 @@ const TARGET_BY_SELECTED: Record<Exclude<SelectedKey, 'all'>, Target> = {
  *  - 값이 커질수록 아래로 내려감
  *  - 음수면 위로 올라감
  */
-const SEARCH_OVERLAY_Y_OFFSET = -40
+const SEARCH_OVERLAY_Y_OFFSET = 50
 
 function useDebouncedValue<T>(value: T, delayMs: number) {
   const [debounced, setDebounced] = React.useState(value)
@@ -481,7 +481,7 @@ export function ProductList({ category, target }: Props) {
           <div
             style={{
               position: 'absolute',
-              top: searchOverlayTop,
+              top: 50,
               left: 0,
               right: 0,
             }}
