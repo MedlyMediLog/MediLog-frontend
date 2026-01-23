@@ -40,7 +40,7 @@ export default function LoginModal({ onClose }: Props) {
 
       {/* content */}
       <div className="relative z-[1000]">
-        <LoginContent />
+        <LoginContent onClose={onClose} />
       </div>
     </div>
   )

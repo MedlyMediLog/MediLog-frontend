@@ -12,14 +12,12 @@ export async function POST(req: NextRequest) {
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      cookie, // ✅ 브라우저 쿠키를 백엔드로 전달
+      cookie, 
       accept: 'application/json',
     },
     cache: 'no-store',
   })
 
-  // ✅ 백엔드가 Set-Cookie로 access_token 만료를 내려주면,
-  // Next가 그 Set-Cookie를 그대로 브라우저에 전달해줘야 함
   const out =
     res.status === 204
       ? new NextResponse(null, { status: 204 })
