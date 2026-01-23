@@ -1,28 +1,29 @@
-"use client";
+'use client'
 
-import ProductDeatilHeader from "./ProductDetailHeader";
-import IngredientsSection from "./IngredientsSection";
-import ProductSummarySection from "./ProductSummarySection";
-import SafetyGuideSection from "./SafetyGuideSection";
-import IntakeStorageSection from "./IntakeStorageSection";
-import GeneralUsageSection from "./GeneralUsageSection";
+import ProductDeatilHeader from './ProductDetailHeader'
+import IngredientsSection from './IngredientsSection'
+import ProductSummarySection from './ProductSummarySection'
+import SafetyGuideSection from './SafetyGuideSection'
+import IntakeStorageSection from './IntakeStorageSection'
+import GeneralUsageSection from './GeneralUsageSection'
 
-import { useProductDetail } from "@/hooks/useProductDetail";
-import { Target } from "@/lib/api/types";
+import { useProductDetail } from '@/hooks/useProductDetail'
+import { Target } from '@/lib/api/types'
+import ShareButton from './ShareButton'
 
 type Props = {
-  productId: number;
-  target: Target | null;
-};
+  productCode: number
+  target: Target | null
+}
 
-export default function ProductDetailClient({ productId, target }: Props) {
-  const { data, isLoading, isError } = useProductDetail({ productId, target });
+export default function ProductDetailClient({ productCode, target }: Props) {
+  const { data, isLoading, isError } = useProductDetail({ productCode, target })
 
-  if (isLoading) return <div className="p-5">로딩중...</div>;
-  if (isError || !data) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>;
+  if (isLoading) return <div className="p-5">로딩중...</div>
+  if (isError || !data) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
 
   return (
-    <div className="flex flex-col bg-gray-100 relative">
+    <div className="flex flex-col bg-[linear-gradient(to_bottom,#EDF2F6_0%,#FFFFFF_100%)]  relative">
       {/* 상단바: 제목/레벨/타겟 등 필요하면 data로 표시 */}
       <ProductDeatilHeader />
 
@@ -46,9 +47,10 @@ export default function ProductDetailClient({ productId, target }: Props) {
               storageMethod={data.storageMethod}
             />
             <SafetyGuideSection cautionRaw={data.cautionRaw} />
+            <ShareButton />
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
