@@ -1,3 +1,4 @@
+//src/app/_components/common/SearchInput/SearchInput.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 import { SearchInput, type SearchInputProps } from './SearchInput'

@@ -1,4 +1,4 @@
-// src/app/product-listing/_components/shared/BasicTargetSummaryCard.tsx
+// src/app/(with-footer)/(with-sidebar)/products/_components/shared/BasicTargetSummaryCard/BasicTargetSummaryCard.tsx
 'use client'
 
 import React from 'react'
@@ -21,21 +21,19 @@ type Props = {
 
 export function BasicTargetSummaryCard({
   title = '["Tittle"]',
-  subtitle = '서브 타이틀',
+  subtitle = '[“Sentence_Intro”] + [“Sentence_Note”] ',
   helperTitle = '함께 알아두면 좋아요!',
-  helperLabel = '꿀팁',
+  helperLabel = '[“Sentence_AvgComposition”]',
   defaultOpen = false,
   withSlotPadding = false,
 }: Props) {
   const [open, setOpen] = React.useState(defaultOpen)
-
   const [isDesktop, setIsDesktop] = React.useState(false)
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return
 
     const mq = window.matchMedia('(min-width: 740px)')
-
     const apply = () => setIsDesktop(mq.matches)
     apply()
 
@@ -47,6 +45,7 @@ export function BasicTargetSummaryCard({
     }
   }, [])
 
+  // ✅ 데스크탑은 항상 열린 상태(설계 유지)
   const isOpen = isDesktop ? true : open
 
   const card = (
@@ -79,7 +78,7 @@ export function BasicTargetSummaryCard({
           <Image src={iconGuide} alt="" width={20} height={20} />
 
           <div className={styles.tipTexts}>
-            <span className={`typo-b3 text-fg-info-primary-accent ${styles.helperTitle}`}>
+            <span className={`typo-b3 text-fg-info-primary ${styles.helperTitle}`}>
               {helperTitle}
             </span>
 
