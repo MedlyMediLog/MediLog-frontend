@@ -13,7 +13,7 @@ export default function Page() {
         <div className="w-full">
           <div className="w-full max-w-[1300px] mx-auto px-[20px] py-[17px] gap-[10px] flex items-center">
             <div className="typo-d2 text-fg-basic-accent whitespace-pre-line">
-              {'어떤 종류의 제품 정보를 \n확인하고 싶으신가요?'}
+              {'요즘 어떤 건강 주제에\n관심 있으세요?'}
             </div>
           </div>
           <div className="w-full flex justify-center min-h-[745px]">

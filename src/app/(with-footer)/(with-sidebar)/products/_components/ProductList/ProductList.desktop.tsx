@@ -17,6 +17,7 @@ import { ScrollAwareBlock } from '../shared/ScrollAwareBlock/ScrollAwareBlock'
 import { QueryResult as QueryResultDesktop } from '@/app/_components/common/QueryResult'
 
 import ProductGridDesktop from '../ProductGrid.desktop'
+import LoadingSpinner from '@/app/_components/common/LoadingSpinner'
 
 type Props = {
   contentRef: React.RefObject<HTMLDivElement | null>
@@ -27,6 +28,7 @@ type Props = {
   // 필터/검색
   options: FilterOption[]
   selected: SelectedKey
+  isLoading: boolean
   q: string
   isFilterApplied: boolean
   targetMessage: string
@@ -51,6 +53,7 @@ export function ProductListDesktop({
   isScrolling,
   options,
   selected,
+  isLoading,
   q,
   isFilterApplied,
   targetMessage,
@@ -69,7 +72,12 @@ export function ProductListDesktop({
     <section className="hidden desktop:flex flex-col items-stretch w-full">
       <div
         ref={contentRef}
-        className={['w-full', 'flex flex-col items-stretch', 'flex-1 self-stretch', 'pb-[120px]'].join(' ')}
+        className={[
+          'w-full',
+          'flex flex-col items-stretch',
+          'flex-1 self-stretch',
+          'pb-[120px]',
+        ].join(' ')}
       >
         <ScrollAwareBlock hidden={isScrolling} className="w-full">
           <div className="w-full flex flex-col items-start pt-0 pb-[20px]">
@@ -116,12 +124,16 @@ export function ProductListDesktop({
         </ScrollAwareBlock>
 
         <div className="w-full">
-          {shouldShowEmptyResult ? (
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : shouldShowEmptyResult ? (
             // ✅ Desktop: 중앙 정렬 + 여백(푸터/하단 영역 고려)
             <div className="w-full flex justify-center  pb-[120px]">
               <ErrorState
                 code="1XX errors"
-                description={'입력하신 조건으로는 결과를 찾지 못했어요.\n다른 키워드로 다시 검색해보세요.'}
+                description={
+                  '입력하신 조건으로는 결과를 찾지 못했어요.\n다른 키워드로 다시 검색해보세요.'
+                }
                 actionLabel="다시 찾아보기"
                 onAction={onResetEmpty}
               />
@@ -129,7 +141,12 @@ export function ProductListDesktop({
           ) : (
             <>
               <ProductGridDesktop items={visibleItems} showStatus={isFilterApplied} />
-              <LoadMoreSection total={filteredCount} visible={visibleCount} step={step} onLoadMore={onLoadMore} />
+              <LoadMoreSection
+                total={filteredCount}
+                visible={visibleCount}
+                step={step}
+                onLoadMore={onLoadMore}
+              />
             </>
           )}
         </div>

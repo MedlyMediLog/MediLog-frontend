@@ -11,12 +11,13 @@ import { useQueryClient } from '@tanstack/react-query'
 import profile from '@/assets/profile.png'
 import sidebar from '@/assets/sidebar.png'
 import home from '@/assets/home.png'
+import finding from '@/assets/finding.png'
 
 import { logout } from '@/lib/api/logout'
 import { useRecentProducts } from '@/hooks/useRecentProducts'
 import { useMe } from '@/hooks/useMe'
 
-const NAV = [{ href: '/category', label: '홈', icon: home }] as const
+const NAV = [{ href: '/category', label: '건강 주제 탐색하기', icon: finding }] as const
 
 export default function SideBar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -70,10 +71,7 @@ export default function SideBar() {
           aria-label={isOpen ? '사이드바 닫기' : '사이드바 열기'}
         >
           <div
-            className={clsx(
-              'flex items-center justify-center rounded-[12px]',
-              isOpen ? '' : '',
-            )}
+            className={clsx('flex items-center justify-center rounded-[12px]', isOpen ? '' : '')}
           >
             <div className="w-6 h-6 relative shrink-0">
               <Image src={sidebar} fill alt="sidebar" className="object-contain" />
@@ -102,8 +100,11 @@ export default function SideBar() {
                 aria-current={isActive ? 'page' : undefined}
                 className={clsx(
                   'rounded-[12px] flex items-center transition-colors',
-                  isOpen ? 'w-60 p-2 gap-2 justify-start' : 'w-10 h-10 justify-center',
-                  isActive ? 'bg-layer-secondary' : '',
+                  isOpen
+                    ? isActive
+                      ? 'w-60 p-2 gap-2 justify-start bg-layer-secondary'
+                      : 'w-60 p-2 gap-2 justify-start'
+                    : 'w-10 h-10 justify-center',
                 )}
               >
                 <div className="w-6 h-6 relative shrink-0">
@@ -175,10 +176,10 @@ export default function SideBar() {
           {isOpen && (
             <div className="flex flex-col min-w-0">
               <div className="typo-b3 text-fg-basic-accent truncate">
-                {meLoading ? '불러오는 중…' : (me?.name ?? '게스트')}
+                {meLoading ? '불러오는 중…' : me?.name ?? '게스트'}
               </div>
               <div className="text-fg-basic-primary typo-b5 truncate">
-                {meLoading ? '' : (me?.email ?? me?.provider ?? '로그인이 필요해요')}
+                {meLoading ? '' : me?.email ?? me?.provider ?? '로그인이 필요해요'}
               </div>
             </div>
           )}

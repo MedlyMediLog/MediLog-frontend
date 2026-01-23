@@ -17,6 +17,7 @@ import { ScrollAwareBlock } from '../shared/ScrollAwareBlock/ScrollAwareBlock'
 
 import { QueryResult as QueryResultMobile } from '@/app/_components/common/QueryResult/QueryResult'
 import { ProductCard } from '../ProductCard'
+import LoadingSpinner from '@/app/_components/common/LoadingSpinner'
 
 type Props = {
   contentRef: React.RefObject<HTMLDivElement | null>
@@ -27,6 +28,7 @@ type Props = {
 
   options: FilterOption[]
   selected: SelectedKey
+  isLoading: boolean
   q: string
   isFilterApplied: boolean
   targetMessage: string
@@ -54,6 +56,7 @@ export function ProductListMobile({
   isIntakeOverlayOpen,
   options,
   selected,
+  isLoading,
   q,
   isFilterApplied,
   targetMessage,
@@ -75,7 +78,10 @@ export function ProductListMobile({
     <section className="desktop:hidden w-full">
       <IntakeInfoOverlay open={isIntakeOverlayOpen} onClose={onCloseIntakeOverlay} />
 
-      <div ref={contentRef} className={['w-full', 'flex flex-col items-start self-stretch', 'pb-[60px]'].join(' ')}>
+      <div
+        ref={contentRef}
+        className={['w-full', 'flex flex-col items-start self-stretch', 'pb-[60px]'].join(' ')}
+      >
         <ScrollAwareBlock hidden={isScrolling} className="w-full">
           <div className="w-full mb-[12px]">
             <BasicTargetSummaryCard withSlotPadding={false} />
@@ -112,11 +118,15 @@ export function ProductListMobile({
         </ScrollAwareBlock>
 
         <div className="mt-[16px] w-full">
-          {shouldShowEmptyResult ? (
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : shouldShowEmptyResult ? (
             <div className="w-full flex justify-center  pb-[120px]">
               <ErrorState
                 code="1XX errors"
-                description={'입력하신 조건으로는 결과를 찾지 못했어요.\n다른 키워드로 다시 검색해보세요.'}
+                description={
+                  '입력하신 조건으로는 결과를 찾지 못했어요.\n다른 키워드로 다시 검색해보세요.'
+                }
                 actionLabel="다시 찾아보기"
                 onAction={onResetEmpty}
               />
@@ -126,14 +136,23 @@ export function ProductListMobile({
               <ul className="flex flex-col items-start self-stretch w-full gap-[20px]">
                 {visibleItems.map((item) => (
                   <li key={item.id} className="w-full">
-                    <Link href={`/products/${item.id}`} className="block" aria-label={`${item.name} 상세로 이동`}>
+                    <Link
+                      href={`/products/${item.id}`}
+                      className="block"
+                      aria-label={`${item.name} 상세로 이동`}
+                    >
                       <ProductCard item={item} showStatus={isFilterApplied} />
                     </Link>
                   </li>
                 ))}
               </ul>
 
-              <LoadMoreSection total={filteredCount} visible={visibleCount} step={step} onLoadMore={onLoadMore} />
+              <LoadMoreSection
+                total={filteredCount}
+                visible={visibleCount}
+                step={step}
+                onLoadMore={onLoadMore}
+              />
             </>
           )}
         </div>

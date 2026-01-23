@@ -114,21 +114,25 @@ export default function Page() {
             <div className="flex items-start gap-[6px]">
               <div className="shrink-0 typo-b2 text-fg-basic-primary pl-[26px]">1.</div>
               <div className="typo-b2 text-fg-basic-primary">
-                본 서비스는 회원가입 없이 게스트 상태로 주요 기능 이용이 가능합니다.
+                서비스를 정보 제공 목적 외의 용도로 이용하는 행위
               </div>
             </div>
             <div className="flex items-start gap-[6px]">
               <div className="shrink-0 typo-b2 text-fg-basic-primary pl-[26px]">2.</div>
               <div className="typo-b2 text-fg-basic-primary">
-                일부 개인화 기능(최근 기록 등)은 Google 소셜 로그인을 통해 로그인한 사용자에게만
-                제공됩니다.
+                서비스의 중립성·신뢰성을 훼손하는 행위
               </div>
             </div>
             <div className="flex items-start gap-[6px]">
               <div className="shrink-0 typo-b2 text-fg-basic-primary pl-[26px]">3.</div>
               <div className="typo-b2 text-fg-basic-primary">
-                서비스는 이메일 기반 회원가입을 제공하지 않으며, Google OAuth 기반 인증을 단일
-                로그인 수단으로 사용합니다.
+                서비스의 정상적인 운영을 방해하거나 시스템에 부당한 영향을 주는 행위
+              </div>
+            </div>
+            <div className="flex items-start gap-[6px]">
+              <div className="shrink-0 typo-b2 text-fg-basic-primary pl-[26px]">4.</div>
+              <div className="typo-b2 text-fg-basic-primary">
+                서비스가 제공하지 않는 판단·결론을 서비스가 제공한 것처럼 오인·왜곡하는 행위
               </div>
             </div>
           </div>
