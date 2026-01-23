@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mask Fill Preview</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background:#fff;
+    }
+    .spacer{ height: 70vh; }
+    .hero{
+      padding: 80px 24px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    /* ===== 마스크 채움 공통 ===== */
+    .mask-fill{
+      position: relative;
+      display: inline-block;
+      margin: 0;
+      white-space: nowrap;
+      letter-spacing: -0.02em; /* -2% */
+      line-height: 1.5;        /* 150% */
+    }
+    .mask-fill::before{
+      content: attr(data-fill-text);
+      position: absolute;
+      inset: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      clip-path: inset(0 100% 0 0);
+      will-change: clip-path;
+    }
+    .mask-fill.is-active::before{
+      animation: maskFillReveal 6000ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      /* delay는 JS가 줄별로 부여 */
+    }
+    @keyframes maskFillReveal{
+      to { clip-path: inset(0 0 0 0); }
+    }
+
+    /* ===== 데스크탑 타이포/컬러 ===== */
+    .mask-fill--title{
+      font-family: "Pretendard", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-weight: 700;
+      font-size: 44px;
+      color: #A2A6A9; /* 처음 색상 */
+    }
+    .mask-fill--title::before{ color: #242A30; } /* 변화 색상 */
+
+    .mask-fill--sub{
+      font-family: "Pretendard", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-weight: 400;
+      font-size: 24px;
+      color: #C0C4CA; /* 처음 색상 */
+    }
+    .mask-fill--sub::before{ color: #6E7783; } /* 변화 색상 */
+
+    /* ===== 너가 말한 "사이값" 구조 ===== */
+    .mask-block{ display:flex; flex-direction:column; }
+    .mask-block__title{ display:flex; flex-direction:column; gap:0px; }  /* 타이틀 2줄 사이 0 */
+    .mask-block__sub{ display:flex; flex-direction:column; gap:0px; }    /* 서브 2줄 사이 0 */
+    .mask-block__gap{ height:12px; }                                     /* 타이틀↔서브 사이 12 */
+
+    /* 접근성 */
+    @media (prefers-reduced-motion: reduce){
+      .mask-fill::before{
+        clip-path: inset(0 0 0 0);
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="spacer"></div>
+
+  <section class="hero">
+    <div class="mask-block js-maskGroup">
+      <div class="mask-block__title">
+        <h1 class="mask-fill mask-fill--title" data-fill-text="안심하고 판단할 수 있는">
+          안심하고 판단할 수 있는
+        </h1>
+        <h1 class="mask-fill mask-fill--title" data-fill-text="건강기능식품 정보">
+          건강기능식품 정보
+        </h1>
+      </div>
+
+      <div class="mask-block__gap"></div>
+
+      <div class="mask-block__sub">
+        <p class="mask-fill mask-fill--sub" data-fill-text="식약처 공공데이터로 성분·기능성부터">
+          식약처 공공데이터로 성분·기능성부터
+        </p>
+        <p class="mask-fill mask-fill--sub" data-fill-text="섭취방법·주의사항까지 한 번에 확인해요.">
+          섭취방법·주의사항까지 한 번에 확인해요.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="spacer"></div>
+
+  <script>
+    const groups = document.querySelectorAll(".js-maskGroup");
+
+    const BASE_DELAY = 800;   // 800ms 지연 후 시작
+    const STAGGER = 300;      // 줄별 순차 딜레이(원하면 100~200 사이로 조절)
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        const items = entry.target.querySelectorAll(".mask-fill");
+        items.forEach((el, idx) => {
+          // 줄별로 animation-delay를 인라인으로 부여
+          el.style.setProperty("--delay", `${BASE_DELAY + idx * STAGGER}ms`);
+          el.classList.add("is-active");
+          // ::before에 delay 적용
+          el.style.setProperty("animation-delay", "0ms"); // 안전장치 (필요시)
+          el.style.setProperty("--dummy", "0"); // noop
+          el.style.setProperty("--dummy2", "0"); // noop
+          // pseudo-element엔 직접 못 주니, 아래처럼 CSS 변수 방식으로 주는 게 깔끔:
+        });
+
+        // CSS 변수 방식으로 실제 delay 주기
+        items.forEach((el) => {
+          const delay = el.style.getPropertyValue("--delay");
+          el.style.setProperty("--delay", delay);
+        });
+
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.6 });
+
+    groups.forEach(g => io.observe(g));
+
+    // pseudo-element에 animation-delay를 변수로 먹이기 위해,
+    // 아래 한 줄 CSS를 JS로 주입(파일 분리 시엔 CSS에 넣어도 됨)
+    const style = document.createElement("style");
+    style.textContent = `.mask-fill.is-active::before{ animation-delay: var(--delay, 800ms); }`;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
