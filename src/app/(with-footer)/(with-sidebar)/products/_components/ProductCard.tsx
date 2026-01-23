@@ -24,7 +24,6 @@ function getStatusIconSrc(status: Exclude<ProductStatus, '섭취 금지'>) {
 }
 
 export function ProductCard({ item, showStatus = false }: Props) {
-  // ✅ 공통 데이터 가공(바인딩) 1번: 모바일/데스크탑이 같이 씀
   const tags = item.tags ?? []
   const visible = tags.slice(0, 2)
   const restCount = Math.max(tags.length - 2, 0)
@@ -66,7 +65,6 @@ export function ProductCard({ item, showStatus = false }: Props) {
             ].join(' ')}
             style={{ background: 'var(--Color-gray-0, #FBFDFD)' }}
           >
-            {/* 상태 아이콘 */}
             {canShowStatus && (
               <Image
                 src={getStatusIconSrc(item.status as Exclude<ProductStatus, '섭취 금지'>)}

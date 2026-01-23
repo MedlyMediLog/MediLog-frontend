@@ -1,16 +1,57 @@
+/* src/app/(with-footer)/(with-sidebar)/products/_components/shared/FloatingTopButton/FloatingTopButton.module.css */
+
 .wrapper {
-  /* ✅ 피그마처럼 "컨테이너 우측 라인"에 맞추기 */
   position: fixed;
-
-  /* ✅ 예전 기준: 컨테이너 라인 정렬(패딩 중복 반영 방지) */
-  right: max(20px, calc((100vw - 1300px) / 2));
-
-  /* ✅ 예전 기준: iOS safe-area(홈바) 고려 + 기본 30px */
-  bottom: calc(30px + env(safe-area-inset-bottom, 0px));
-
   z-index: 50;
 
-  /* ✅ 공통 Button에 없는 플로팅 전용 그림자 */
-  box-shadow: 0 0 8px 0 rgba(36, 42, 48, 0.12);
+  /**
+   * ✅ Figma content area 기준 정렬
+   * content max-width: 1300
+   * content padding-right: 20
+   * -> right = (100vw - 1300)/2 + 20
+   */
+ /* 컨텐츠 영역 border-box right 끝에 맞춤 */
+right: calc(max(0px, (100vw - 1300px) / 2));
+
+
+  /**
+   * ✅ Figma content area padding-bottom: 60
+   * -> bottom = 60 + safe-area + (footer overlap)
+   */
+  bottom: calc(
+    60px +
+    env(safe-area-inset-bottom, 0px) +
+    var(--floating-extra-bottom, 0px)
+  );
+}
+
+.button {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
   border-radius: var(--Number-round-Ultra, 999px);
+  background: var(--Color-Role-bg-layer-accent, #242a30);
+
+  box-shadow: 0 0 8px 0 rgba(36, 42, 48, 0.12);
+
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.button:focus-visible {
+  outline: 2px solid rgba(251, 253, 253, 0.6);
+  outline-offset: 2px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: block;
 }

@@ -113,7 +113,7 @@ export function ProductListMobile({
 
         <div className="mt-[16px] w-full">
           {shouldShowEmptyResult ? (
-            <div className="w-full flex justify-center pt-[60px] pb-[120px]">
+            <div className="w-full flex justify-center  pb-[120px]">
               <ErrorState
                 code="1XX errors"
                 description={'입력하신 조건으로는 결과를 찾지 못했어요.\n다른 키워드로 다시 검색해보세요.'}
