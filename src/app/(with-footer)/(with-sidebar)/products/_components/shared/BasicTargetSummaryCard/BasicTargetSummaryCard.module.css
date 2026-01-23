@@ -127,3 +127,15 @@
   min-width: 0;
 }
 
+.disclaimer {
+  margin-top: 2px;
+  min-width: 0;
+  align-self: stretch;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

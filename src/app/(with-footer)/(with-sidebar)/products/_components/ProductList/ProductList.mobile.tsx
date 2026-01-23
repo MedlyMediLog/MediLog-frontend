@@ -21,6 +21,9 @@ import { ProductCard } from '../ProductCard'
 type Props = {
   contentRef: React.RefObject<HTMLDivElement | null>
 
+  /** ✅ 카테고리(엑셀 Category와 동일한 문자열) */
+  categoryLabel?: string | null
+
   isScrolling: boolean
   isSearching: boolean
   isIntakeOverlayOpen: boolean
@@ -49,6 +52,7 @@ type Props = {
 
 export function ProductListMobile({
   contentRef,
+  categoryLabel,
   isScrolling,
   isSearching, // (호환용) 현재 오버레이 방식에서는 사용 안 함
   isIntakeOverlayOpen,
@@ -78,11 +82,11 @@ export function ProductListMobile({
       <div ref={contentRef} className={['w-full', 'flex flex-col items-start self-stretch', 'pb-[60px]'].join(' ')}>
         <ScrollAwareBlock hidden={isScrolling} className="w-full">
           <div className="w-full mb-[12px]">
-            <BasicTargetSummaryCard withSlotPadding={false} />
+            {/* ✅ categoryLabel에 따라 엑셀 문구 자동 바인딩 */}
+            <BasicTargetSummaryCard category={categoryLabel} withSlotPadding={false} />
           </div>
 
           <div className="w-full">
-            {/* ✅ 기본 모바일 UI(아이콘 + 칩)만 노출 */}
             <FilterBar
               variant="mobile"
               isSearching={false}
@@ -94,7 +98,7 @@ export function ProductListMobile({
               onSearchChange={onSearchChange}
               onSearchSubmit={onSearchSubmit}
               searchPlaceholder="제조사/브랜드명으로 검색해보세요."
-              onIconClick={onSearchOpen} // ✅ 아이콘 클릭 => 오버레이 오픈
+              onIconClick={onSearchOpen}
             />
           </div>
 

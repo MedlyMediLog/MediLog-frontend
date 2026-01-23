@@ -21,6 +21,9 @@ import ProductGridDesktop from '../ProductGrid.desktop'
 type Props = {
   contentRef: React.RefObject<HTMLDivElement | null>
 
+  /** ✅ 카테고리(엑셀 Category와 동일한 문자열) */
+  categoryLabel?: string | null
+
   // UI 상태
   isScrolling: boolean
 
@@ -48,6 +51,7 @@ type Props = {
 
 export function ProductListDesktop({
   contentRef,
+  categoryLabel,
   isScrolling,
   options,
   selected,
@@ -74,7 +78,8 @@ export function ProductListDesktop({
         <ScrollAwareBlock hidden={isScrolling} className="w-full">
           <div className="w-full flex flex-col items-start pt-0 pb-[20px]">
             <div className="w-full mb-[12px]">
-              <BasicTargetSummaryCard withSlotPadding={false} />
+              {/* ✅ categoryLabel에 따라 엑셀 문구 자동 바인딩 */}
+              <BasicTargetSummaryCard category={categoryLabel} withSlotPadding={false} />
             </div>
 
             <div className="w-full">
@@ -117,7 +122,6 @@ export function ProductListDesktop({
 
         <div className="w-full">
           {shouldShowEmptyResult ? (
-            // ✅ Desktop: 중앙 정렬 + 여백(푸터/하단 영역 고려)
             <div className="w-full flex justify-center  pb-[120px]">
               <ErrorState
                 code="1XX errors"

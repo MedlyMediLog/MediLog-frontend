@@ -8,11 +8,24 @@ import styles from './BasicTargetSummaryCard.module.css'
 import iconGuide from '@/assets/product-listing/icons/mobile/icon-guide.svg'
 import iconMore from '@/assets/product-listing/icons/mobile/icon-more.svg'
 
+import type { TargetSummaryContent } from './BasicTargetSummaryCard.content'
+import { getTargetSummaryContent } from './BasicTargetSummaryCard.content'
+
 type Props = {
-  title?: string
-  subtitle?: string
+  /**
+   * ✅ 카테고리 페이지에서 눌러서 들어온 "카테고리명" (엑셀 Category와 동일한 문자열)
+   * 예) "눈 건강", "뼈·관절" ...
+   */
+  category?: string | null
+
+  /**
+   * ✅ 필요하면 category 대신 content를 직접 주입 가능
+   * (우선순위: content > category 매핑)
+   */
+  content?: TargetSummaryContent
+
+  /** 기본값 유지용(대부분 안 건드려도 됨) */
   helperTitle?: string
-  helperLabel?: string
   defaultOpen?: boolean
 
   /** ⚠️ 페이지가 공통 컨테이너 padding을 가지므로 기본은 false 추천 */
@@ -20,13 +33,19 @@ type Props = {
 }
 
 export function BasicTargetSummaryCard({
-  title = '["Tittle"]',
-  subtitle = '[“Sentence_Intro”] + [“Sentence_Note”] ',
+  category,
+  content,
   helperTitle = '함께 알아두면 좋아요!',
-  helperLabel = '[“Sentence_AvgComposition”]',
   defaultOpen = false,
   withSlotPadding = false,
 }: Props) {
+  const resolved = content ?? getTargetSummaryContent(category)
+
+  const title = resolved.title
+  const subtitle = `${resolved.sentenceIntro} ${resolved.sentenceNote}`
+  const helperLabel = resolved.sentenceAvgComposition
+  const disclaimer = resolved.disclaimer
+
   const [open, setOpen] = React.useState(defaultOpen)
   const [isDesktop, setIsDesktop] = React.useState(false)
 
@@ -78,11 +97,12 @@ export function BasicTargetSummaryCard({
           <Image src={iconGuide} alt="" width={20} height={20} />
 
           <div className={styles.tipTexts}>
-            <span className={`typo-b3 text-fg-info-primary ${styles.helperTitle}`}>
-              {helperTitle}
-            </span>
+            <span className={`typo-b3 text-fg-info-primary ${styles.helperTitle}`}>{helperTitle}</span>
 
             <span className={`typo-b4 text-fg-basic-accent ${styles.helperLabel}`}>{helperLabel}</span>
+
+            {/* ✅ 엑셀 Disclaimer 반영 */}
+            <span className={`typo-b5 text-fg-basic-secondary ${styles.disclaimer}`}>{disclaimer}</span>
           </div>
         </div>
       )}

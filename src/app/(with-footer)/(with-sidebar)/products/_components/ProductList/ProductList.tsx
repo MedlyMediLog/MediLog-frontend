@@ -6,7 +6,7 @@ import React from 'react'
 import type { SelectedKey, ProductItem, ProductStatus } from '../shared/types'
 import { getTargetMessage } from '../shared/policy'
 
-import type { FilterOption } from '@/app/_components/common/FilterBar'
+import { FilterBar, type FilterOption } from '@/app/_components/common/FilterBar'
 import Toast from '@/app/_components/common/Toast'
 import type { ToastItem as CommonToastItem } from '@/app/_components/common/types'
 
@@ -30,7 +30,6 @@ import {
   getSortGroup,
 } from './ProductList.utils'
 
-import { FilterBar } from '@/app/_components/common/FilterBar'
 import Overlay from '@/app/_components/common/Overlay/Overlay'
 
 const FILTER_OPTIONS: FilterOption[] = [
@@ -62,6 +61,41 @@ const TARGET_BY_SELECTED: Record<Exclude<SelectedKey, 'all'>, Target> = {
  */
 const SEARCH_OVERLAY_Y_OFFSET = -80
 
+/** ✅✅ 엑셀 Category 라벨 매핑(라우트 category 코드 → 엑셀 문자열)
+ *  - 프로젝트에서 Category가 영문/코드(enum)로 내려오는 경우를 대비
+ *  - 이미 한글 라벨로 내려오면 그대로 사용
+ */
+const CATEGORY_LABEL_BY_CATEGORY: Record<string, string> = {
+  // ✅ 아래 키들은 "프로젝트의 실제 Category 값"에 맞춰 필요하면 수정/추가해줘.
+  // (안 맞아도 동작은 함: fallback 처리)
+  EYE: '눈 건강',
+  BONE: '뼈·관절',
+  IMMUNE: '면역',
+  ENERGY: '피로·에너지',
+  STRESS: '수면·스트레스',
+  GUT: '장 건강',
+  BLOOD: '혈행·혈압',
+  SKIN: '피부·모발',
+  MUSCLE: '근육·운동',
+  LIVER: '간 건강',
+
+  // 혹시 코드가 다르면 예시로 추가 가능:
+  // EYE_HEALTH: '눈 건강',
+  // BONE_JOINT: '뼈·관절',
+}
+
+function resolveCategoryLabel(category: Category): string {
+  const raw = String(category ?? '').trim()
+  if (!raw) return ''
+
+  // ✅ 이미 한글 라벨로 들어오는 경우(= 엑셀 key와 동일) 그대로 사용
+  const looksKorean = /[가-힣]/.test(raw)
+  if (looksKorean) return raw
+
+  // ✅ 코드/영문/enum이면 매핑 사용
+  return CATEGORY_LABEL_BY_CATEGORY[raw] ?? raw
+}
+
 function useDebouncedValue<T>(value: T, delayMs: number) {
   const [debounced, setDebounced] = React.useState(value)
 
@@ -87,6 +121,9 @@ function getStatusRank(status?: ProductStatus) {
 }
 
 export function ProductList({ category, target }: Props) {
+  /** ✅✅ 엑셀 Category에 대응되는 라벨(= BasicTargetSummaryCard에 내려줄 값) */
+  const categoryLabel = React.useMemo(() => resolveCategoryLabel(category), [category])
+
   const initialSelected: SelectedKey = React.useMemo(() => {
     if (target === 'PREGNANT') return 'pregnant'
     if (target === 'TEEN') return 'teen'
@@ -187,7 +224,10 @@ export function ProductList({ category, target }: Props) {
 
     const onScroll = () => {
       const y = window.scrollY
-      setShowTopButton(y > 240)
+
+      // ✅✅ 데스크탑에서만 탑버튼 노출 상태 계산
+      const isDesktop = window.matchMedia('(min-width: 740px)').matches
+      setShowTopButton(isDesktop && y > 240)
 
       setIsScrolling(true)
       if (stopTimer) window.clearTimeout(stopTimer)
@@ -453,11 +493,12 @@ export function ProductList({ category, target }: Props) {
   }, [])
 
   if (isLoading) return <div className="p-5">로딩중...</div>
-  //if (isError || !allData) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
+  // if (isError || !allData) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
 
   return (
     <>
-      <FloatingTopButton visible={showTopButton} onClick={handleScrollToTop} />
+      {/* ✅✅ 데스크탑에서만 플로팅 탑 버튼 렌더 */}
+      {isDesktopViewport && <FloatingTopButton visible={showTopButton} onClick={handleScrollToTop} />}
 
       {toast && toastLeft !== null && (
         <div
@@ -477,7 +518,6 @@ export function ProductList({ category, target }: Props) {
       {/* ✅✅ Mobile Search Overlay */}
       {!isDesktopViewport && (
         <Overlay open={isSearchOverlayOpen} onClose={closeSearchOverlay} closeOnBackdrop>
-          {/* ✅ 오버레이에서 검색영역을 “원래 FilterBar가 있던 Y + offset”로 내림 */}
           <div
             style={{
               position: 'absolute',
@@ -487,7 +527,6 @@ export function ProductList({ category, target }: Props) {
             }}
             className={['flex flex-col', 'items-stretch', 'gap-[10px]', 'px-[20px]', 'py-[10px]'].join(' ')}
             onClick={(e) => {
-              // ✅ 검색영역 클릭은 닫히지 않게(회색 영역만 닫힘)
               e.stopPropagation()
             }}
           >
@@ -513,6 +552,7 @@ export function ProductList({ category, target }: Props) {
       {isDesktopViewport ? (
         <ProductListDesktop
           contentRef={desktopContentRef}
+          categoryLabel={categoryLabel} // ✅✅ 추가
           isScrolling={isScrolling}
           options={FILTER_OPTIONS}
           selected={selected}
@@ -538,6 +578,7 @@ export function ProductList({ category, target }: Props) {
       ) : (
         <ProductListMobile
           contentRef={mobileContentRef}
+          categoryLabel={categoryLabel} // ✅✅ 추가
           isScrolling={isScrolling}
           isSearching={false}
           isIntakeOverlayOpen={isIntakeOverlayOpen}
