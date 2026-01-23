@@ -1,4 +1,4 @@
-// src/app/product-listing/_components/desktop/ProductGrid.desktop.tsx
+// src/app/(with-footer)/(with-sidebar)/products/_components/ProductGrid.desktop.tsx
 import Link from 'next/link'
 import { ProductCard } from './ProductCard'
 import type { ProductItem } from './shared/types'

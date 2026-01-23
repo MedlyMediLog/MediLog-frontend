@@ -1,3 +1,4 @@
+// src/app/_components/common/SearchInput/SearchInput.tsx
 'use client'
 
 import * as React from 'react'
@@ -13,12 +14,14 @@ export type SearchInputProps = {
   placeholder?: string
   disabled?: boolean
   onSubmit?: () => void
+  onOpen?: () => void
   className?: string
   inputClassName?: string
   'aria-label'?: string
+  autoFocus?: boolean
 }
 
-export default function SearchIcon({ className = '' }: { className?: string }) {
+export function SearchIcon({ className = '' }: { className?: string }) {
   return <Image src={searchIcon} alt="" width={24} height={24} className={className} />
 }
 
@@ -29,95 +32,62 @@ export function SearchInput({
   placeholder = '제조사/브랜드명으로 검색해보세요.',
   disabled = false,
   onSubmit,
+  onOpen,
   className = '',
   inputClassName = '',
   'aria-label': ariaLabel = '검색어 입력',
+  autoFocus = false,
 }: SearchInputProps) {
   const isMobile = variant === 'mobile'
 
-  const [open, setOpen] = React.useState(false)
-  const inputRef = React.useRef<HTMLInputElement | null>(null)
-
-  React.useEffect(() => {
-    if (isMobile && open) inputRef.current?.focus()
-  }, [isMobile, open])
-
-  // 데스크탑은 기존 그대로
-  if (!isMobile) {
+  // ✅ 모바일: “아이콘 버튼만” 제공 (오버레이 열기)
+  if (isMobile) {
     return (
-      <div
+      <button
+        type="button"
+        aria-label="검색 열기"
+        disabled={disabled}
+        onClick={() => {
+          if (disabled) return
+          onOpen?.()
+        }}
         className={[
-          'flex items-center p-1 gap-1 rounded-full bg-layer-primary',
-          'w-[348px] max-w-[560px]',
-          disabled ? 'opacity-60 cursor-not-allowed' : '',
+          'grid place-items-center w-10 h-10 rounded-full bg-layer-primary',
+          disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer',
           className,
         ].join(' ')}
         style={{
-          border: '1px solid var(--color-gray-300)',
-          background: 'bg-layer-primary',
+          border: '1px solid var(--Color-gray-300, #C1CAD6)',
+          background: 'var(--Color-Role-bg-layer-primary, #FBFDFD)',
         }}
       >
-        <button
-          type="button"
-          aria-label="검색"
-          disabled={disabled}
-          onClick={disabled ? undefined : onSubmit}
-          className={[
-            'grid place-items-center w-8 h-8 rounded-[50px]',
-            disabled ? 'cursor-not-allowed' : 'cursor-pointer',
-          ].join(' ')}
-        >
-          <SearchIcon />
-        </button>
-
-        <input
-          aria-label={ariaLabel}
-          value={value}
-          disabled={disabled}
-          placeholder={placeholder}
-          onChange={(e) => onChange(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !disabled) onSubmit?.()
-          }}
-          className={[
-            'w-full bg-transparent outline-none typo-b3',
-            'text-fg-basic-primary placeholder:text-fg-basic-week',
-            inputClassName,
-          ].join(' ')}
-        />
-      </div>
+        <SearchIcon />
+      </button>
     )
   }
 
-  // ✅ 모바일: 아이콘 버튼 → 330px 인풋으로 확장
+  // ✅ 데스크탑(= 입력 가능한 검색바)
+  // - ❗️여기서 width를 고정하지 않는다 (부모가 min/max/strech 제어)
   return (
     <div
       className={[
-        'flex items-center p-1 gap-1 rounded-full bg-layer-primary',
-        'transition-[width] duration-200 ease-out overflow-hidden',
-        open ? 'w-[330px]' : 'w-10', // 40px=아이콘만, 열리면 330px
-        disabled ? 'opacity-60' : '',
+        'flex items-center p-1 gap-1 rounded-full',
+        'w-full',
+        disabled ? 'opacity-60 cursor-not-allowed' : '',
         className,
       ].join(' ')}
       style={{
-        border: '1px solid var(--color-gray-300)',
-        background: 'var(--bg-layer-primary)',
+        border: '1px solid var(--Color-gray-300, #C1CAD6)',
+        background: 'var(--Color-Role-bg-layer-primary, #FBFDFD)',
       }}
     >
       <button
         type="button"
-        aria-label={open ? '검색 실행' : '검색 열기'}
+        aria-label="검색"
         disabled={disabled}
-        onClick={() => {
-          if (disabled) return
-          if (!open) {
-            setOpen(true)
-            return
-          }
-          onSubmit?.()
-        }}
+        onClick={disabled ? undefined : onSubmit}
         className={[
-          'grid place-items-center w-8 h-8 rounded-[50px] shrink-0',
+          'grid place-items-center w-8 h-8 rounded-[50px]',
           disabled ? 'cursor-not-allowed' : 'cursor-pointer',
         ].join(' ')}
       >
@@ -125,26 +95,21 @@ export function SearchInput({
       </button>
 
       <input
-        ref={inputRef}
         aria-label={ariaLabel}
         value={value}
         disabled={disabled}
         placeholder={placeholder}
+        autoFocus={autoFocus}
+        type="search"
+        inputMode="search"
+        enterKeyHint="search"
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && !disabled) onSubmit?.()
-          if (e.key === 'Escape') setOpen(false)
-        }}
-        onBlur={() => {
-          // 값 없으면 닫기(원하는 UX에 맞게)
-          if (!value) setOpen(false)
         }}
         className={[
-          'bg-transparent outline-none typo-b3',
+          'w-full bg-transparent outline-none typo-b3',
           'text-fg-basic-primary placeholder:text-fg-basic-week',
-          'min-w-0 flex-1', // ✅ 폭 계산 안정화
-          open ? 'opacity-100' : 'opacity-0 pointer-events-none',
-          'transition-opacity duration-150',
           inputClassName,
         ].join(' ')}
       />

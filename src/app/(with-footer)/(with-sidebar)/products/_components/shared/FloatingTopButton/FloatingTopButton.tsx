@@ -1,4 +1,4 @@
-// src/app/product-listing/_components/shared/FloatingTopButton/FloatingTopButton.tsx
+// src/app/(with-footer)/(with-sidebar)/products/_components/shared/FloatingTopButton/FloatingTopButton.tsx
 
 'use client'
 

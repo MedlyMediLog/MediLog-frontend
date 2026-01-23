@@ -1,4 +1,4 @@
-// src/app/product-listing/_components/ProductListingTopBar.tsx
+// src/app/(with-footer)/(with-sidebar)/products/_components/ProductListingTopBar.tsx
 import Image from 'next/image'
 import hambugi from '@/assets/hambugi.png'
 import serviceLogo from '@/assets/product-listing/icons/icon-service-logo.svg'

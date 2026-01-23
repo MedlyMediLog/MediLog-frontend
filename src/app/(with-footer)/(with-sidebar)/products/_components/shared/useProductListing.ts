@@ -1,4 +1,4 @@
-// src/app/product-listing/_compnents/shared/useProductListing.ts
+//src/app/(with-footer)/(with-sidebar)/products/_components/shared/useProductListing.ts
 'use client'
 
 import React from 'react'

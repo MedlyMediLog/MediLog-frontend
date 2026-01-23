@@ -1,4 +1,4 @@
-// src/app/product-listing/_components/shared/IntakeInfoOverlay/IntakeInfoOverlay.tsx
+//src/app/(with-footer)/(with-sidebar)/products/_components/shared/IntakeInfoOverlay/IntakeInfoOverlay.tsx
 'use client'
 
 import React from 'react'

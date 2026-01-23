@@ -1,4 +1,4 @@
-// src/app/product-listing/_components/ProductCard.tsx
+// src/app/(with-footer)/(with-sidebar)/products/_components/ProductCard.tsx
 import React from 'react'
 import Image from 'next/image'
 import type { ProductItem, ProductStatus } from './shared/types'

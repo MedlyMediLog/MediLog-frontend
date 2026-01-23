@@ -1,4 +1,4 @@
-// src/app/product-listing/_compnents/shared/mock.ts
+//src/app/(with-footer)/(with-sidebar)/products/_components/shared/mock.ts
 import type { ProductItemWithMeta } from './types'
 import type { StaticImageData } from 'next/image'
 
