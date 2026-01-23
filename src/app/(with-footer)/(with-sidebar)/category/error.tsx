@@ -38,6 +38,7 @@ export default function Page() {
               code={'5XX errors'}
               description={'카테고리 정보를 불러올 수 없어요.\n잠시 후 다시 시도해주세요.'}
               actionLabel={'다시 시도하기'}
+              onAction={() => window.location.reload()}
             />
           </div>
         </div>
