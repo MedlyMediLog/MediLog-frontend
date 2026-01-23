@@ -55,6 +55,26 @@ export function FilterBar({
 }: FilterBarProps) {
   const shouldShowSearching = variant === 'searching' || (variant === 'mobile' && isSearching)
 
+  /**
+   * ✅ Select에서 쓰는 “desktop SearchInput”을 공통화
+   * - Searching에서도 동일 JSX를 그대로 사용
+   * - 차이는 autoFocus만 옵션으로 제어
+   */
+  const renderDesktopSearchInput = (opts?: { autoFocus?: boolean }) => {
+    return (
+      <SearchInput
+        variant="desktop"
+        value={searchValue}
+        onChange={(v: string) => onSearchChange?.(v)}
+        onSubmit={onSearchSubmit}
+        placeholder={searchPlaceholder}
+        disabled={disabled}
+        aria-label={ariaLabelSearch}
+        autoFocus={opts?.autoFocus ?? false}
+      />
+    )
+  }
+
   if (variant === 'select') {
     return (
       <div className={`medly-filterbar medly-filterbar--select ${className}`}>
@@ -76,15 +96,7 @@ export function FilterBar({
         </div>
 
         <div className="medly-filterbar__search medly-filterbar__search--select">
-          <SearchInput
-            variant="desktop"
-            value={searchValue}
-            onChange={(v: string) => onSearchChange?.(v)}
-            onSubmit={onSearchSubmit}
-            placeholder={searchPlaceholder}
-            disabled={disabled}
-            aria-label={ariaLabelSearch}
-          />
+          {renderDesktopSearchInput()}
         </div>
       </div>
     )
@@ -102,16 +114,7 @@ export function FilterBar({
       >
         <div className="medly-filterbar__searchRow">
           <div className="medly-filterbar__search medly-filterbar__search--searching">
-            <SearchInput
-              variant="desktop"
-              value={searchValue}
-              onChange={(v: string) => onSearchChange?.(v)}
-              onSubmit={onSearchSubmit}
-              placeholder={searchPlaceholder}
-              disabled={disabled}
-              aria-label={ariaLabelSearch}
-              autoFocus={autoFocusSearch}
-            />
+            {renderDesktopSearchInput({ autoFocus: autoFocusSearch })}
           </div>
 
           {!hideOptionsWhenSearching && (

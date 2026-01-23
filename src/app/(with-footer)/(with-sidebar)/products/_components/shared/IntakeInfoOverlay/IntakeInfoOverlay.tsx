@@ -81,7 +81,7 @@ export function IntakeInfoOverlay({ open, onClose }: Props) {
                 'tracking-[-0.28px]',
               ].join(' ')}
             >
-              위 아이콘은 각각 <span className="font-[700]">섭취 가능</span>과 섭취 고려
+              위 아이콘은 각각 <span className="font-[700]">섭취 가능</span>과 <span className="font-[700]">섭취 고려</span>
               표시에요.{'\n'}
               섭취 고려 제품은 주의사항이 있으니 꼭 확인하세요.
             </p>

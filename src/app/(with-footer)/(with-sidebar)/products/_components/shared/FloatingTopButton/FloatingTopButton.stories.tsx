@@ -1,3 +1,5 @@
+// src/app/(with-footer)/(with-sidebar)/products/_components/shared/FloatingTopButton/FloatingTopButton.stories.tsx
+
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 import { FloatingTopButton } from './FloatingTopButton'

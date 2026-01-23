@@ -60,7 +60,7 @@ const TARGET_BY_SELECTED: Record<Exclude<SelectedKey, 'all'>, Target> = {
  *  - 값이 커질수록 아래로 내려감
  *  - 음수면 위로 올라감
  */
-const SEARCH_OVERLAY_Y_OFFSET = -40
+const SEARCH_OVERLAY_Y_OFFSET = -80
 
 function useDebouncedValue<T>(value: T, delayMs: number) {
   const [debounced, setDebounced] = React.useState(value)
@@ -373,7 +373,7 @@ export function ProductList({ category, target }: Props) {
     return scored.map((x) => x.it)
   }, [sourceList, debouncedQ, compareForCurrentView, getRankScore])
 
-  const shouldShowEmptyResult = !isLoading && !isError && filtered.length === 0
+  const shouldShowEmptyResult = !isLoading && filtered.length === 0
   const visibleItems = React.useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount])
 
   React.useEffect(() => {
@@ -453,7 +453,7 @@ export function ProductList({ category, target }: Props) {
   }, [])
 
   if (isLoading) return <div className="p-5">로딩중...</div>
-  if (isError || !allData) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
+  //if (isError || !allData) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
 
   return (
     <>
