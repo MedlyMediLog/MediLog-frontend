@@ -23,7 +23,7 @@ export default function ProductDetailClient({ productId, target }: Props) {
   if (isError || !data) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
 
   return (
-    <div className="flex flex-col bg-gray-100 relative">
+    <div className="flex flex-col bg-[linear-gradient(to_bottom,#EDF2F6_0%,#FFFFFF_100%)]  relative">
       {/* 상단바: 제목/레벨/타겟 등 필요하면 data로 표시 */}
       <ProductDeatilHeader />
 

@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     redirect: 'manual',
   })
 
-  // ✅ 현재 요청의 host 기준으로 redirect (local/prod 자동)
+  // 현재 요청의 host 기준으로 redirect (local/prod 자동)
 const proto = req.headers.get('x-forwarded-proto') ?? 'https'
 const host =
   req.headers.get('x-forwarded-host') ??

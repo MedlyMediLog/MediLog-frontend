@@ -49,18 +49,7 @@ export default function ProductSummarySection({name, manufacturer, appearanceFor
         </div>
       </div>
 
-      {/* 주의사항 */}
-      <div className="flex flex-col w-full rounded-[12px] p-2.5 gap-1.5 bg-[#fbe4e4]">
-        <div className="flex w-full gap-1 py-2.5">
-          <div className="w-5 h-5 relative shrink-0">
-            <Image src={warning_fill} fill alt="warning" className="object-contain" />
-          </div>
-          <div className="typo-b4 text-fg-danger-primary-accent">
-            본 정보는 일반적인 참고용이며, 의료적 판단이나 조언을 제공하지 않습니다. 개인 상태에
-            따라 다를 수 있으므로, 이상 증상이 있거나 우려되는 경우 전문가 상담이 필요합니다.
-          </div>
-        </div>
-      </div>
+      
     </div>
   )
 }
