@@ -23,7 +23,7 @@ export function ErrorState({ code, description, actionLabel, onAction }: ErrorSt
     <div className="w-full flex flex-col items-center py-[60px] gap-[24px] max-w-[295px] rounded-[12px]">
       {/* 에러 묶음 */}
       <div className="flex flex-col items-center gap-[4px]">
-        <div className="typo-d1 text-gray-300">{code}</div>
+        <div className="typo-d1 text-gray-300">ERROR</div>
 
         <span className="relative w-[150px] h-[150px]">
           <Image src={error} alt="" fill className="object-contain" priority />

@@ -29,28 +29,25 @@ export default async function ProductListingPage({ searchParams }: Props) {
   return (
     <main className="min-h-dvh">
       {/* 배경 레이어 */}
-      <div className="min-h-dvh bg-[linear-gradient(to_bottom,#EDF2F6_0%,#FFFFFF_100%)] ">
-        {/* ✅ 전체를 가운데 정렬 (모바일은 full, 데스크탑은 center) */}
+      <div className="min-h-dvh bg-[linear-gradient(to_bottom,#EDF2F6_0%,#FFFFFF_100%)]">
+        {/* ✅ A안: TopBar가 패딩/정렬을 자체로 책임 → 공통 컨테이너 밖 */}
+        <ProductListingTopBar />
+
+        {/* ✅ 리스트/본문만 가운데 정렬 컨테이너 */}
         <div className="min-h-dvh flex justify-center">
-          {/* ✅ 공통 컨테이너: 모든 섹션의 '시작선'을 통일 */}
           <div
             className={[
               'w-full',
-              // 모바일~: 좌우 여백(피그마 slot 느낌)
               'px-[20px]',
               'pt-[10px]',
-              // desktop(>=740): 더 넓게 + 위 여백 조정
               'desktop:px-[20px]',
               'desktop:pt-[20px]',
-              // ✅ 740~1380+ 반응형 핵심: 1300까지 넓어짐
               'desktop:max-w-[1300px]',
-              // 내부 정렬
               'flex',
               'flex-col',
               'items-stretch',
             ].join(' ')}
           >
-            <ProductListingTopBar />
             <ProductList category={category} target={target} />
           </div>
         </div>

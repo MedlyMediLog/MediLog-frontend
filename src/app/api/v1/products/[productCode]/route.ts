@@ -10,7 +10,6 @@ export async function GET(req: NextRequest, { params }: Ctx) {
     return NextResponse.json({ ok: false, message: 'BE_URL is not set' }, { status: 500 })
   }
 
-
   const { productCode } = await params
 
   const cookie = req.headers.get('cookie') ?? ''
@@ -18,7 +17,6 @@ export async function GET(req: NextRequest, { params }: Ctx) {
   const { searchParams } = new URL(req.url)
   const target = searchParams.get('target')
   const qs = target ? `?target=${encodeURIComponent(target)}` : ''
-
 
   const url = `https://api.medilog.today/v1/products/${encodeURIComponent(productCode)}${qs}`
 

@@ -60,7 +60,7 @@ const TARGET_BY_SELECTED: Record<Exclude<SelectedKey, 'all'>, Target> = {
  *  - 값이 커질수록 아래로 내려감
  *  - 음수면 위로 올라감
  */
-const SEARCH_OVERLAY_Y_OFFSET = -40
+const SEARCH_OVERLAY_Y_OFFSET = -80
 
 function useDebouncedValue<T>(value: T, delayMs: number) {
   const [debounced, setDebounced] = React.useState(value)
@@ -77,7 +77,7 @@ function useDebouncedValue<T>(value: T, delayMs: number) {
 const STATUS_RANK: Record<string, number> = {
   '섭취 가능': 0,
   '섭취 고려': 1,
-  '주의사항': 1,
+  주의사항: 1,
   '섭취 금지': 2,
 }
 
@@ -356,7 +356,8 @@ export function ProductList({ category, target }: Props) {
       const brandCho = normalize(getChosung(it.brand))
 
       if (keywordCho) {
-        if (queryIsChosungOnly) return nameCho.startsWith(keywordCho) || brandCho.startsWith(keywordCho)
+        if (queryIsChosungOnly)
+          return nameCho.startsWith(keywordCho) || brandCho.startsWith(keywordCho)
         if (queryHasJamo) return nameCho.startsWith(keywordCho) || brandCho.startsWith(keywordCho)
       }
 
@@ -373,8 +374,11 @@ export function ProductList({ category, target }: Props) {
     return scored.map((x) => x.it)
   }, [sourceList, debouncedQ, compareForCurrentView, getRankScore])
 
-  const shouldShowEmptyResult = !isLoading && !isError && filtered.length === 0
-  const visibleItems = React.useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount])
+  const shouldShowEmptyResult = !isLoading && filtered.length === 0
+  const visibleItems = React.useMemo(
+    () => filtered.slice(0, visibleCount),
+    [filtered, visibleCount],
+  )
 
   React.useEffect(() => {
     setVisibleCount(LOAD_STEP)
@@ -452,8 +456,8 @@ export function ProductList({ category, target }: Props) {
     setIsSearchOverlayOpen(false)
   }, [])
 
-  if (isLoading) return <div className="p-5">로딩중...</div>
-  if (isError || !allData) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
+  // if (isLoading) return <div className="p-5">로딩중...</div>
+  //if (isError || !allData) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
 
   return (
     <>
@@ -485,7 +489,13 @@ export function ProductList({ category, target }: Props) {
               left: 0,
               right: 0,
             }}
-            className={['flex flex-col', 'items-stretch', 'gap-[10px]', 'px-[20px]', 'py-[10px]'].join(' ')}
+            className={[
+              'flex flex-col',
+              'items-stretch',
+              'gap-[10px]',
+              'px-[20px]',
+              'py-[10px]',
+            ].join(' ')}
             onClick={(e) => {
               // ✅ 검색영역 클릭은 닫히지 않게(회색 영역만 닫힘)
               e.stopPropagation()
@@ -516,6 +526,7 @@ export function ProductList({ category, target }: Props) {
           isScrolling={isScrolling}
           options={FILTER_OPTIONS}
           selected={selected}
+          isLoading={isLoading}
           q={q}
           isFilterApplied={selected !== 'all'}
           targetMessage={targetMessage}
@@ -543,6 +554,7 @@ export function ProductList({ category, target }: Props) {
           isIntakeOverlayOpen={isIntakeOverlayOpen}
           options={FILTER_OPTIONS}
           selected={selected}
+          isLoading={isLoading}
           q={q}
           isFilterApplied={selected !== 'all'}
           targetMessage={targetMessage}
