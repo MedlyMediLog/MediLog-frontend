@@ -419,7 +419,8 @@ export function ProductList({ category, target }: Props) {
       const brandCho = normalize(getChosung(it.brand))
 
       if (keywordCho) {
-        if (queryIsChosungOnly) return nameCho.startsWith(keywordCho) || brandCho.startsWith(keywordCho)
+        if (queryIsChosungOnly)
+          return nameCho.startsWith(keywordCho) || brandCho.startsWith(keywordCho)
         if (queryHasJamo) return nameCho.startsWith(keywordCho) || brandCho.startsWith(keywordCho)
       }
 
@@ -437,7 +438,10 @@ export function ProductList({ category, target }: Props) {
   }, [sourceList, debouncedQ, compareByProductName, getRankScore])
 
   const shouldShowEmptyResult = !isLoading && !isError && filtered.length === 0
-  const visibleItems = React.useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount])
+  const visibleItems = React.useMemo(
+    () => filtered.slice(0, visibleCount),
+    [filtered, visibleCount],
+  )
 
   React.useEffect(() => {
     setVisibleCount(LOAD_STEP)
@@ -473,7 +477,9 @@ export function ProductList({ category, target }: Props) {
   }
 
   if (isLoading) return <div className="p-5">로딩중...</div>
-  if (isError || !allData) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
+  // if (isError) {
+  //   throw new Error('ProductList error')
+  // }
 
   return (
     <>
@@ -498,10 +504,16 @@ export function ProductList({ category, target }: Props) {
           - ✅ 컨테이너 기준(page.tsx)을 따르므로 px/max-w 중복 제거
          ----------------------------- */}
       <section className="desktop:hidden w-full">
-        <IntakeInfoOverlay open={isIntakeOverlayOpen} onClose={() => setIsIntakeOverlayOpen(false)} />
+        <IntakeInfoOverlay
+          open={isIntakeOverlayOpen}
+          onClose={() => setIsIntakeOverlayOpen(false)}
+        />
 
         {/* ✅ px-[20px] 제거: page 컨테이너가 이미 px를 가짐 */}
-        <div ref={mobileContentRef} className={['w-full', 'flex flex-col items-start self-stretch', 'pb-[60px]'].join(' ')}>
+        <div
+          ref={mobileContentRef}
+          className={['w-full', 'flex flex-col items-start self-stretch', 'pb-[60px]'].join(' ')}
+        >
           <ScrollAwareBlock hidden={isScrolling} className="w-full">
             <div className="w-full mb-[12px]">
               {/* ✅ slot padding 중복 방지 */}
@@ -538,7 +550,9 @@ export function ProductList({ category, target }: Props) {
             {shouldShowEmptyResult ? (
               <EmptyResult
                 title="검색 결과가 없어요"
-                message={'입력하신 조건으로는 결과를 찾지 못했어요.\n다른 키워드로 다시 검색해보세요.'}
+                message={
+                  '입력하신 조건으로는 결과를 찾지 못했어요.\n다른 키워드로 다시 검색해보세요.'
+                }
                 buttonText="다시 찾아보기"
                 onClick={() => {
                   setHasUserTouchedFilter(true)
@@ -553,14 +567,23 @@ export function ProductList({ category, target }: Props) {
                 <ul className="flex flex-col items-start self-stretch w-full gap-[20px]">
                   {visibleItems.map((item) => (
                     <li key={item.id} className="w-full">
-                      <Link href={`/products/${item.id}`} className="block" aria-label={`${item.name} 상세로 이동`}>
+                      <Link
+                        href={`/products/${item.id}`}
+                        className="block"
+                        aria-label={`${item.name} 상세로 이동`}
+                      >
                         <ProductCard item={item} showStatus={isFilterApplied} />
                       </Link>
                     </li>
                   ))}
                 </ul>
 
-                <LoadMoreSection total={filtered.length} visible={visibleCount} step={LOAD_STEP} onLoadMore={handleLoadMore} />
+                <LoadMoreSection
+                  total={filtered.length}
+                  visible={visibleCount}
+                  step={LOAD_STEP}
+                  onLoadMore={handleLoadMore}
+                />
               </>
             )}
           </div>
@@ -574,7 +597,15 @@ export function ProductList({ category, target }: Props) {
          ----------------------------- */}
       <section className="hidden desktop:flex flex-col items-stretch w-full">
         {/* ✅ max-w / px 중복 제거 */}
-        <div ref={desktopContentRef} className={['w-full', 'flex flex-col items-stretch', 'flex-1 self-stretch', 'pb-[120px]'].join(' ')}>
+        <div
+          ref={desktopContentRef}
+          className={[
+            'w-full',
+            'flex flex-col items-stretch',
+            'flex-1 self-stretch',
+            'pb-[120px]',
+          ].join(' ')}
+        >
           <ScrollAwareBlock hidden={isScrolling} className="w-full">
             <div className="w-full flex flex-col items-start pt-0 pb-[20px]">
               <div className="w-full mb-[12px]">
@@ -607,7 +638,13 @@ export function ProductList({ category, target }: Props) {
 
                 {!shouldShowEmptyResult && (
                   <div className="ml-auto flex-shrink-0 -my-[10px]">
-                    <QueryResultDesktop count={filtered.length} showRefresh onRefresh={onRefresh} label="조회 결과" unit="개" />
+                    <QueryResultDesktop
+                      count={filtered.length}
+                      showRefresh
+                      onRefresh={onRefresh}
+                      label="조회 결과"
+                      unit="개"
+                    />
                   </div>
                 )}
               </div>
@@ -618,7 +655,9 @@ export function ProductList({ category, target }: Props) {
             {shouldShowEmptyResult ? (
               <EmptyResult
                 title="검색 결과가 없어요"
-                message={'입력하신 조건으로는 결과를 찾지 못했어요.\n다른 키워드로 다시 검색해보세요.'}
+                message={
+                  '입력하신 조건으로는 결과를 찾지 못했어요.\n다른 키워드로 다시 검색해보세요.'
+                }
                 buttonText="다시 찾아보기"
                 onClick={() => {
                   setHasUserTouchedFilter(true)
@@ -634,7 +673,9 @@ export function ProductList({ category, target }: Props) {
                   total={filtered.length}
                   visible={visibleCount}
                   step={LOAD_STEP}
-                  onLoadMore={() => setVisibleCount((prev) => Math.min(prev + LOAD_STEP, filtered.length))}
+                  onLoadMore={() =>
+                    setVisibleCount((prev) => Math.min(prev + LOAD_STEP, filtered.length))
+                  }
                 />
               </>
             )}

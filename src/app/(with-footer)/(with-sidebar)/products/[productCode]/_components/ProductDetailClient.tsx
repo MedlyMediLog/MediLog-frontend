@@ -12,12 +12,12 @@ import { Target } from '@/lib/api/types'
 import ShareButton from './ShareButton'
 
 type Props = {
-  productId: number
+  productCode: number
   target: Target | null
 }
 
-export default function ProductDetailClient({ productId, target }: Props) {
-  const { data, isLoading, isError } = useProductDetail({ productId, target })
+export default function ProductDetailClient({ productCode, target }: Props) {
+  const { data, isLoading, isError } = useProductDetail({ productCode, target })
 
   if (isLoading) return <div className="p-5">로딩중...</div>
   if (isError || !data) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
