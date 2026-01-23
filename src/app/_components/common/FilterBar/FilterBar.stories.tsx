@@ -3,6 +3,10 @@ import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 import { FilterBar, type FilterBarProps } from './FilterBar'
 
+// ✅ Storybook에서 CSS 변경이 누락/캐시되는 경우를 대비한 “보험”
+// (컴포넌트 내부에서도 import 하지만, SB 환경에서 누락되는 케이스가 있어 중복 로드해도 안전)
+import './FilterBar.css'
+
 const meta: Meta<typeof FilterBar> = {
   title: 'COMMON/FilterBar',
   component: FilterBar,
@@ -39,10 +43,6 @@ function Controlled(args: FilterBarProps & { initialSearch?: string }) {
   const [q, setQ] = React.useState(args.initialSearch ?? (args.searchValue ?? ''))
   const [isSearching, setIsSearching] = React.useState(args.isSearching)
 
-  // ✅ 스토리에서만 프레임 폭을 “피그마처럼” 맞춰주기
-  // - mobile + searching: 화면 375px 기준으로 고정
-  // - select: 기존 유지
-  // - searching(variant 자체): 560 유지(데스크탑 searching 데모)
   const wrapperWidth =
     args.variant === 'select'
       ? 798
@@ -73,7 +73,7 @@ function Controlled(args: FilterBarProps & { initialSearch?: string }) {
           }}
           onIconClick={() => {
             args.onIconClick?.()
-            setIsSearching(true) // ✅ 돋보기 클릭 → searching 전환
+            setIsSearching(true)
           }}
         />
       </div>
