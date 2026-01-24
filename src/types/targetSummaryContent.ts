@@ -15,9 +15,14 @@ export type TargetGuideOverride = {
   sentenceCaution?: string
 }
 
+/**
+ * ✅ 카드 렌더링에 딱 필요한 값
+ * - desktopSubtitle: 데스크탑에서 타이틀 밑에 보여줄 한 줄
+ * - helperLabel: tipBox 안에 들어갈 문구(전체=avg, 타겟=caution)
+ */
 export type BasicTargetCardContent = {
   title: string
-  subtitle: string
+  desktopSubtitle: string
   helperLabel: string
   disclaimer: string
 }
@@ -349,10 +354,11 @@ export const OVERRIDE_BY_CATEGORY_TARGET: Record<string, TargetGuideOverride> = 
   },
 }
 
+
 /**
- * 카드에 필요한 4개 필드만 “최종 조합”해서 반환
- * - 전체/미선택: summary 기반
- * - 타겟 선택: override 기반(Filtering+Caution+AvgComposition도 타겟별)
+ * ✅ 스샷 규칙에 맞춘 최종 조합
+ * - 전체: desktopSubtitle = intro + note, helperLabel = avgComposition
+ * - 타겟: desktopSubtitle = avgComposition(타겟 우선), helperLabel = caution(타겟 우선)
  */
 export function getBasicTargetCardContent(params: {
   category?: string | null
@@ -363,32 +369,51 @@ export function getBasicTargetCardContent(params: {
 
   const base = getTargetSummaryContent(category)
 
-  // target 미선택/전체
-  if (!category || target === '전체') {
+  // category 없으면 그냥 base로
+  if (!category) {
     return {
       title: base.title,
-      subtitle: `${base.sentenceIntro} ${base.sentenceNote}`,
+      desktopSubtitle: `${base.sentenceIntro} ${base.sentenceNote}`.trim(),
       helperLabel: base.sentenceAvgComposition,
       disclaimer: base.disclaimer,
     }
   }
 
+  // ✅ 전체(또는 타겟 미설정)
+  if (target === '전체') {
+    return {
+      title: base.title,
+      desktopSubtitle: `${base.sentenceIntro} ${base.sentenceNote}`.trim(),
+      helperLabel: base.sentenceAvgComposition,
+      disclaimer: base.disclaimer,
+    }
+  }
+
+  // ✅ 타겟 선택
   const override = OVERRIDE_BY_CATEGORY_TARGET[`${category}__${target}`]
 
-  // override 없으면 summary로 안전 fallback
+  // override 없으면 안전하게 전체 룰로 fallback
   if (!override) {
     return {
       title: base.title,
-      subtitle: `${base.sentenceIntro} ${base.sentenceNote}`,
+      desktopSubtitle: `${base.sentenceIntro} ${base.sentenceNote}`.trim(),
       helperLabel: base.sentenceAvgComposition,
       disclaimer: base.disclaimer,
     }
   }
 
+  const title = override.title ?? base.title
+
+  // (데스크탑) 타이틀 밑은 AvgComposition (타겟별 우선)
+  const desktopSubtitle = (override.sentenceAvgComposition ?? base.sentenceAvgComposition).trim()
+
+  // tipBox는 Caution (타겟별 우선) — 없으면 avg로 fallback
+  const helperLabel = (override.sentenceCaution ?? override.sentenceFiltering ?? base.sentenceAvgComposition).trim()
+
   return {
-    title: override.title ?? base.title,
-    subtitle: `${override.sentenceFiltering ?? ''} ${override.sentenceCaution ?? ''}`.trim(),
-    helperLabel: override.sentenceAvgComposition ?? base.sentenceAvgComposition,
+    title,
+    desktopSubtitle,
+    helperLabel,
     disclaimer: base.disclaimer,
   }
 }

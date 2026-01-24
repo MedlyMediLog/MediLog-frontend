@@ -34,7 +34,11 @@ const TARGET_ALIAS: Record<string, Target> = {
   PREGNANT: '임산부',
   TEEN: '청소년',
   DIETER: '다이어터',
- 
+
+  '전체': '전체',
+  '임산부': '임산부',
+  '청소년': '청소년',
+  '다이어터': '다이어터',
 }
 
 function normalizeTarget(raw?: string | null): Target {
@@ -44,11 +48,16 @@ function normalizeTarget(raw?: string | null): Target {
 }
 
 type Props = {
-  /** 외부에서 강제로 주고 싶으면 그대로 덮어쓸 수 있게 유지 */
   title?: string
+
+  /** 강제로 주면 desktopSubtitle을 통째로 대체 */
   subtitle?: string
+
   helperTitle?: string
+
+  /** 강제로 주면 tipBox 문구를 통째로 대체 */
   helperLabel?: string
+
   defaultOpen?: boolean
   withSlotPadding?: boolean
 }
@@ -63,20 +72,15 @@ export function BasicTargetSummaryCard({
 }: Props) {
   const sp = useSearchParams()
 
-  const rawCategory = sp.get('category')
-  const category = normalizeCategory(rawCategory)
+  const category = normalizeCategory(sp.get('category'))
+  const target = normalizeTarget(sp.get('target'))
 
-  const rawTarget = sp.get('target')
-  const target = normalizeTarget(rawTarget)
-
-  // 분기 로직은 util에서 끝냄 (전체=summary, 타겟선택=override)
   const content = React.useMemo(() => {
     return getBasicTargetCardContent({ category, target })
   }, [category, target])
 
-  // props 우선, 없으면 content 사용
   const resolvedTitle = title ?? content.title
-  const resolvedSubtitle = subtitle ?? content.subtitle
+  const resolvedDesktopSubtitle = subtitle ?? content.desktopSubtitle
   const resolvedHelperLabel = helperLabel ?? content.helperLabel
 
   const [open, setOpen] = React.useState(defaultOpen)
@@ -84,7 +88,6 @@ export function BasicTargetSummaryCard({
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return
-
     const mq = window.matchMedia('(min-width: 740px)')
     const apply = () => setIsDesktop(mq.matches)
     apply()
@@ -116,23 +119,35 @@ export function BasicTargetSummaryCard({
               {resolvedTitle}
             </span>
 
-            <span className={isOpen ? styles.moreIconOpen : styles.moreIcon} aria-hidden="true">
+            <span
+              className={isOpen ? styles.moreIconOpen : styles.moreIcon}
+              aria-hidden="true"
+            >
               <Image src={iconMore} alt="" width={24} height={24} />
             </span>
           </button>
         )}
 
-        
+        {/* intro/note(또는 타겟 avgComposition)는 데스크탑에서만 보여야 함 */}
+        {isDesktop && (
+          <span className={`typo-b3 text-fg-basic-primary ${styles.subtitle}`}>
+            {resolvedDesktopSubtitle}
+          </span>
+        )}
       </div>
 
       {isOpen && (
+  
+        
         <div className={styles.tipBox}>
+          
           <Image src={iconGuide} alt="" width={20} height={20} />
 
           <div className={styles.tipTexts}>
             <span className={`typo-b3 text-fg-info-primary ${styles.helperTitle}`}>
               {helperTitle}
             </span>
+            
 
             <span className={`typo-b4 text-fg-basic-accent ${styles.helperLabel}`}>
               {resolvedHelperLabel}
@@ -141,7 +156,7 @@ export function BasicTargetSummaryCard({
           
           </div>
         </div>
-      )}
+    )}
     </section>
   )
 
