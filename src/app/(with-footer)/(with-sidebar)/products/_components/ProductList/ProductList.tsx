@@ -2,6 +2,7 @@
 'use client'
 
 import React from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import type { SelectedKey, ProductItem, ProductStatus } from '../shared/types'
 import { getTargetMessage } from '../shared/policy'
@@ -86,6 +87,11 @@ function getStatusRank(status?: ProductStatus) {
 }
 
 export function ProductList({ category, target }: Props) {
+  // ✅ Next navigation
+  const router = useRouter()
+  const pathname = usePathname()
+  const sp = useSearchParams()
+
   const initialSelected: SelectedKey = React.useMemo(() => {
     if (target === 'PREGNANT') return 'pregnant'
     if (target === 'TEEN') return 'teen'
@@ -132,9 +138,16 @@ export function ProductList({ category, target }: Props) {
       mq.addEventListener('change', onChange)
       return () => mq.removeEventListener('change', onChange)
     }
-
-    
   }, [])
+
+  // ✅ (권장) URL ↔ selected 동기화: 뒤로가기/공유 링크에도 동작하게
+  React.useEffect(() => {
+    const t = sp.get('target')
+    if (t === 'PREGNANT') setSelected('pregnant')
+    else if (t === 'TEEN') setSelected('teen')
+    else if (t === 'DIETER') setSelected('dieter')
+    else setSelected('all')
+  }, [sp])
 
   const requestTarget = React.useMemo<Target | undefined>(() => {
     if (hasUserTouchedFilter) {
@@ -225,14 +238,6 @@ export function ProductList({ category, target }: Props) {
 
   const makeKey = React.useCallback((p: ApiProduct) => `${p.manufacturer}__${p.name}`, [])
 
-  /**
-   * ✅ 핵심 변경(B안):
-   * - image는 로컬 매핑(getProductImageById) 대신 서버에서 내려준 imageUrl을 그대로 사용
-   * - p.imageUrl이 없으면 undefined 처리
-   *
-   * ⚠️ 만약 ProductItem.image 타입이 string을 허용하지 않으면,
-   * shared/types의 ProductItem.image 타입을 `string | StaticImageData | undefined` 형태로 확장해야 함.
-   */
   const sourceList: ProductItem[] = React.useMemo(() => {
     const allItems = allData?.items ?? []
     if (!allData) return []
@@ -243,7 +248,6 @@ export function ProductList({ category, target }: Props) {
         name: cleanText(p.name),
         brand: cleanText(p.manufacturer),
         tags: p.ingredients,
-        // ✅ 서버 이미지 사용
         image: p.imageUrl ?? undefined,
       }))
     }
@@ -265,7 +269,6 @@ export function ProductList({ category, target }: Props) {
           name: cleanText(p.name),
           brand: cleanText(p.manufacturer),
           tags: p.ingredients,
-          // ✅ 서버 이미지 사용
           image: p.imageUrl ?? undefined,
           status,
         }
@@ -377,10 +380,7 @@ export function ProductList({ category, target }: Props) {
   }, [sourceList, debouncedQ, compareForCurrentView, getRankScore])
 
   const shouldShowEmptyResult = !isLoading && filtered.length === 0
-  const visibleItems = React.useMemo(
-    () => filtered.slice(0, visibleCount),
-    [filtered, visibleCount],
-  )
+  const visibleItems = React.useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount])
 
   React.useEffect(() => {
     setVisibleCount(LOAD_STEP)
@@ -429,9 +429,25 @@ export function ProductList({ category, target }: Props) {
     setVisibleCount((prev) => Math.min(prev + LOAD_STEP, filtered.length))
   }
 
+  // ✅ 필터 선택 시 URL의 target도 함께 변경
   const handleSelect = (v: string) => {
     setHasUserTouchedFilter(true)
     setSelected(v as SelectedKey)
+
+    const params = new URLSearchParams(sp.toString())
+
+    if (v === 'all') {
+      params.delete('target')
+    } else if (v === 'pregnant') {
+      params.set('target', 'PREGNANT')
+    } else if (v === 'teen') {
+      params.set('target', 'TEEN')
+    } else if (v === 'dieter') {
+      params.set('target', 'DIETER')
+    }
+
+    const qs = params.toString()
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false })
   }
 
   const targetMessage = React.useMemo(() => getTargetMessage(selected), [selected])
