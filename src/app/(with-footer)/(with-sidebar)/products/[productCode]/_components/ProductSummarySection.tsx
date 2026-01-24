@@ -45,7 +45,7 @@ export default function ProductSummarySection({name, manufacturer, appearanceFor
       {/* 설명 */}
       <div className="flex flex-col gap-3 w-full">
         <div className="typo-b3 text-gray-700 desktop:typo-b2">
-          “SUNGSANG 원문” <br /> =&gt; ex) {text}
+         {text}
         </div>
       </div>
 

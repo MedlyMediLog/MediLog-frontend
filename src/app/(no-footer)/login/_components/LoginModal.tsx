@@ -38,9 +38,13 @@ export default function LoginModal({ onClose }: Props) {
         onClick={onClose}
       />
 
-      {/* content */}
-      <div className="relative z-[1000]">
-        <LoginContent onClose={onClose} />
+      <div className="h-full overflow-y-auto relative">
+        {/* content */}
+        <div className='flex items-center justify-center min-h-full'>
+          <div className="relative z-[1000] ">
+            <LoginContent onClose={onClose} />
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import comment_24 from '@/assets/comment_24.svg'
 import comment_32 from '@/assets/comment_32.svg'
-import profile from '@/assets/profile.png'
+import profile from '@/assets/profile.svg'
 import { Card, CardContent, CardHeader } from '@/app/_components/common/Card'
 import CardTitle from '@/app/_components/common/CardTitle/CardTitle'
 import Mention from '@/app/_components/common/Mention/Mention'

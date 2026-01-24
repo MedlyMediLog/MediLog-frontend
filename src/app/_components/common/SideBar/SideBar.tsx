@@ -7,9 +7,9 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useQueryClient } from '@tanstack/react-query'
 
-import profile from '@/assets/profile.png'
-import sidebar from '@/assets/sidebar.png'
-import home from '@/assets/home.png'
+import profile from '@/assets/profile.svg'
+import sidebar from '@/assets/sidebar.svg'
+import navigate from "@/assets/navigate.svg"
 import finding from '@/assets/finding.png'
 
 import { logout } from '@/lib/api/logout'
@@ -18,7 +18,7 @@ import { useMe } from '@/hooks/useMe'
 
 import ProfileMenuPopover from './ProfileMenuPopover'
 
-const NAV = [{ href: '/category', label: '홈', icon: home }] as const
+const NAV = [{ href: '/category', label: '건강주제 탐색하기', icon: navigate }] as const
 
 export default function SideBar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -121,7 +121,7 @@ export default function SideBar() {
         <button
           type="button"
           onClick={() => setIsOpen((v) => !v)}
-          className="p-2 gap-2"
+          className="p-2 gap-2 hover:bg-layer-secondary rounded-[12px] cursor-pointer"
           aria-expanded={isOpen}
           aria-label={isOpen ? '사이드바 닫기' : '사이드바 열기'}
         >
@@ -144,9 +144,9 @@ export default function SideBar() {
                 href={item.href}
                 aria-current={isActive ? 'page' : undefined}
                 className={clsx(
-                  'rounded-[12px] flex items-center transition-colors',
+                  'rounded-[12px] flex items-center transition-colors hover:bg-layer-secondary',
                   isOpen ? 'w-60 p-2 gap-2 justify-start' : 'w-10 h-10 justify-center',
-                  isActive ? 'bg-layer-secondary' : '',
+                  
                 )}
               >
                 <div className="w-6 h-6 relative shrink-0">
@@ -154,7 +154,7 @@ export default function SideBar() {
                 </div>
 
                 {isOpen && (
-                  <span className="min-w-0 truncate typo-h5 text-fg-basic-primary">
+                  <span className="min-w-0 truncate typo-h5 text-fg-basic-accent">
                     {item.label}
                   </span>
                 )}
@@ -226,7 +226,7 @@ export default function SideBar() {
                   {meLoading ? '불러오는 중…' : (me?.name ?? '게스트')}
               </div>
               <div className="text-fg-basic-primary typo-b5 truncate">
-                  {meLoading ? '' : (me?.email ?? me?.provider ?? '로그인이 필요해요')}
+                  {meLoading ? '' : '로그인 됨'}
               </div>
             </div>
           )}
