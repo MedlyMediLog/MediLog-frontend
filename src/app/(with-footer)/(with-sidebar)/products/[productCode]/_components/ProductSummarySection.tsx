@@ -1,7 +1,6 @@
 import Image, { type StaticImageData } from 'next/image'
 import bottle from '@/assets/bottle.png'
 import pill from '@/assets/pill.png'
-// import warning_fill from '@/assets/warning_fill.png' // 지금 여기선 안 쓰길래 일단 미사용
 import { Label } from '@/app/_components/common/Label/Label'
 
 type Props = {
@@ -15,9 +14,7 @@ type Props = {
 function getFallbackByAppearance(appearanceForm: string): StaticImageData {
   const key = (appearanceForm ?? '').trim()
 
-  // ✅ 너 프로젝트에 있는 기본 이미지 기준으로 매핑
-  // - pill.png: 정제/캡슐/환 같은 “알약류”
-  // - bottle.png: 그 외 기본
+
   if (/(정제|캡슐|환)/.test(key)) return pill
   return bottle
 }
@@ -35,7 +32,6 @@ export default function ProductSummarySection({
 }: Props) {
   const fallback = getFallbackByAppearance(appearanceForm)
 
-  // ✅ CloudFront 등 절대 URL이면 그대로, 아니면 fallback
   const src: string | StaticImageData =
     typeof imageUrl === 'string' && isValidHttpUrl(imageUrl) ? imageUrl : fallback
 
@@ -53,11 +49,9 @@ export default function ProductSummarySection({
               priority
               sizes="(min-width: 1380px) 623px, 100vw"
               className="rounded-[20px] object-cover"
-              // ✅ 원격 이미지 로드 실패 시 fallback으로 교체
+              
               onError={(e) => {
                 const img = e.currentTarget as unknown as HTMLImageElement
-                // next/image 내부 img에 직접 접근하는 방식이라 완벽하진 않지만,
-                // "진짜로 깨졌을 때 다른 이미지 뜨는" 상황을 최소화하는 응급처치로 쓸 수 있음
                 img.src = (fallback as unknown as { src: string }).src
               }}
             />
