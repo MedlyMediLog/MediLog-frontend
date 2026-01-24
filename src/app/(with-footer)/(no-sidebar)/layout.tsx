@@ -8,10 +8,10 @@ export default function WithFooterLayout({ children }: { children: ReactNode }) 
     <div className="min-h-screen flex flex-col">
       <main className="flex flex-col flex-1">
         <PageErrorBoundary>{children}</PageErrorBoundary>
-
-        {/* 🔑 핵심 */}
-        <Footer className="mt-auto" />
       </main>
+
+      {/* 🔑 핵심 */}
+      <Footer />
     </div>
   )
 }

@@ -68,8 +68,8 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
               <LandingMaskText
                 titleLines={['안심하고 판단할 수 있는', '건강기능식품 정보']}
                 subLines={[
-                  '식약처 공공데이터로 성분, 기능성부터',
-                  '섭취방법, 주의사항까지 한번에 확인해요.',
+                  '식약처 공공데이터로 성분∙기능성부터',
+                  '섭취방법∙주의사항까지 한번에 확인해요.',
                 ]}
               />
             </div>

@@ -16,7 +16,13 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
   const push = (message: string, type: ToastType) => {
     const id = crypto.randomUUID()
-    setToasts((prev) => [...prev, { id, message, type }])
+
+    setToasts((prev) => {
+      const alreadyExists = prev.some((t) => t.message === message && t.type === type)
+      if (alreadyExists) return prev
+
+      return [...prev, { id, message, type }]
+    })
 
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id))
