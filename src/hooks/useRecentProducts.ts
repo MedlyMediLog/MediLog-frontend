@@ -10,6 +10,9 @@ export function useRecentProducts(enabled = true) {
     queryKey: ['recent-products'],
     enabled,
     staleTime: 10_000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
     queryFn: async () => {
       const res = await fetch('/api/v1/products/users/me/recent-products', {
         method: 'GET',

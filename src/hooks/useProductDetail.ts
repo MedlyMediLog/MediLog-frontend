@@ -7,9 +7,13 @@ export function useProductDetail(params: { productCode: number; target?: Target 
   return useQuery({
     queryKey: ['productDetail', productCode, target ?? null],
     enabled: Number.isFinite(productCode),
-    staleTime: 30_000,
+    staleTime: Infinity,
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
     queryFn: async () => {
-      // ✅ 브라우저 → Next route.ts(/api) → 백엔드로 고정
+      // 브라우저 -> Next route.ts(/api) → 백엔드로 고정
       const path = target
         ? `/api/v1/products/${productCode}?target=${encodeURIComponent(target)}`
         : `/api/v1/products/${productCode}`
@@ -18,7 +22,6 @@ export function useProductDetail(params: { productCode: number; target?: Target 
         method: 'GET',
         credentials: 'include',
         headers: { accept: 'application/json' },
-        cache: 'no-store',
       })
 
       if (!res.ok) {

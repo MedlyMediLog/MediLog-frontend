@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import { Card, CardHeader, CardContent } from '@/app/_components/common/Card'
 import CardTitle from '@/app/_components/common/CardTitle/CardTitle'
-import caution_red_24 from "@/assets/caution_red_24.png"
-import caution_red_32 from "@/assets/caution_red_32.png"
+import caution_24 from "@/assets/caution_24.svg"
+import caution_32 from "@/assets/caution_32.svg"
 
 type Props = {
   cautionRaw: string[];
@@ -17,14 +17,14 @@ export default function SafetyGuideSection({cautionRaw}: Props) {
         icon={
           <>
             <Image
-              src={caution_red_24}
+              src={caution_24}
               width={24}
               height={24}
               alt="caution"
               className="desktop:hidden "
             />
             <Image
-              src={caution_red_32}
+              src={caution_32}
               width={32}
               height={32}
               alt="caution"

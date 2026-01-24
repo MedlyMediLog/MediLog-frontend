@@ -12,6 +12,9 @@ export function useMe() {
   return useQuery({
     queryKey: ['me'],
     staleTime: 30_000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
     queryFn: async () => {
       const res = await fetch('/api/auth/me', {
         method: 'GET',

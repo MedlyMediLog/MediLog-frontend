@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import profile from '@/assets/profile.png'
+import profile from '@/assets/profile.svg'
 import close from '@/assets/close.svg'
 import home from '@/assets/home.png'
 
@@ -126,7 +126,7 @@ export default function MobileSidebar({ open, onClose }: Props) {
                 {meLoading ? '불러오는 중…' : me?.name ?? '게스트'}
               </div>
               <div className="text-fg-basic-primary typo-b5 truncate">
-                {meLoading ? '' : me?.email ?? me?.provider ?? '로그인이 필요해요'}
+                {meLoading ? '' : me?.email ?? me?.provider ?? '둘러보는중'}
               </div>
             </div>
           </div>
