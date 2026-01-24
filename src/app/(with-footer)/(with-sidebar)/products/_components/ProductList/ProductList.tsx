@@ -483,17 +483,11 @@ export function ProductList({ category, target }: Props) {
           <div
             style={{
               position: 'absolute',
-              top: searchOverlayTop,
+              top: 58,
               left: 0,
               right: 0,
             }}
-            className={[
-              'flex flex-col',
-              'items-stretch',
-              'gap-[10px]',
-              'px-[20px]',
-              'py-[10px]',
-            ].join(' ')}
+            className={['flex flex-col', 'items-stretch', 'gap-[10px]', 'px-[20px]'].join(' ')}
             onClick={(e) => {
               e.stopPropagation()
             }}
