@@ -30,19 +30,18 @@ export default function MobileSidebar({ open, onClose }: Props) {
 
   const { data: me, isLoading: meLoading } = useMe()
 
-  // ✅ 모바일도 “열려있을 때 + 로그인일 때”만 최근본제품 fetch
   const canFetchRecent = open && !meLoading && !!me
   const { data: recent = [], isLoading: recentLoading } = useRecentProducts(canFetchRecent)
 
-  // ✅ 프로필 팝오버 상태/좌표
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
   const profileMenuWrapRef = useRef<HTMLDivElement | null>(null)
   const profileBtnRef = useRef<HTMLButtonElement | null>(null)
   const [menuPos, setMenuPos] = useState<{ right: number; top: number } | null>(null)
 
-  const closeProfileMenu = () => setIsProfileMenuOpen(false)
+  // 사이드바가 닫혀있으면(open=false) 팝오버는 "열려있지 않은 것"으로 취급
+  const effectiveProfileMenuOpen = open && isProfileMenuOpen
 
-  // ✅ 모바일: 열리면 body 스크롤 잠금 + ESC 닫기
+  // 모바일: 열리면 body 스크롤 잠금 + ESC 닫기
   useEffect(() => {
     if (!open) return
     const prev = document.body.style.overflow
@@ -59,22 +58,17 @@ export default function MobileSidebar({ open, onClose }: Props) {
     }
   }, [open, onClose])
 
-  // ✅ 사이드바 닫히면 프로필 메뉴도 닫기
-  useEffect(() => {
-    if (!open) closeProfileMenu()
-  }, [open])
 
-  // ✅ 메뉴 열릴 때 버튼 기준 좌표 계산 (모바일은 “버튼 바로 위/옆”에 뜨게)
+  // 메뉴 열릴 때 버튼 기준 좌표 계산
   useEffect(() => {
-    if (!isProfileMenuOpen) return
+    if (!effectiveProfileMenuOpen) return
     const btn = profileBtnRef.current
     if (!btn) return
 
     const update = () => {
       const r = btn.getBoundingClientRect()
-      // mobile sidebar가 right fixed라서 left는 “사이드바 내부 패딩 기준”으로 주는게 안전
       setMenuPos({
-        right: 28, // (너가 데스크탑에서 쓰던 값 유지)
+        right: 28,
         top: r.top - 10,
       })
     }
@@ -86,7 +80,7 @@ export default function MobileSidebar({ open, onClose }: Props) {
       window.removeEventListener('resize', update)
       window.removeEventListener('scroll', update, true)
     }
-  }, [isProfileMenuOpen])
+  }, [effectiveProfileMenuOpen])
 
   const onLogout = async () => {
     try {
@@ -95,7 +89,7 @@ export default function MobileSidebar({ open, onClose }: Props) {
       qc.removeQueries({ queryKey: ['recent-products'] })
       qc.removeQueries({ queryKey: ['productDetail'] })
 
-      closeProfileMenu()
+      setIsProfileMenuOpen(false)
       onClose()
       router.replace('/')
       router.refresh()
@@ -177,11 +171,7 @@ export default function MobileSidebar({ open, onClose }: Props) {
 
             <div className="flex flex-col text-fg-basic-primary typo-b3">
               {!meLoading && !me ? (
-                <Link
-                  href="/login"
-                  onClick={onClose}
-                  className="py-2.5 px-2 rounded-[8px] gap-2 typo-b3"
-                >
+                <Link href="/login" onClick={onClose} className="py-2.5 px-2 rounded-[8px] gap-2 typo-b3">
                   로그인하면 최근 본 제품이 보여요
                 </Link>
               ) : recentLoading ? (
@@ -212,19 +202,22 @@ export default function MobileSidebar({ open, onClose }: Props) {
           </div>
         </div>
 
-        {/* 하단: 데스크탑과 동일하게 “프로필 버튼 + 팝오버” */}
+        {/* 하단 */}
         <div className="absolute bottom-0 left-0 w-full border-t border-gray-300 px-2.5 py-2 flex flex-col gap-2 bg-[#edf2f6]">
           <div ref={profileMenuWrapRef} className="relative">
             <button
               ref={profileBtnRef}
               type="button"
-              onClick={() => setIsProfileMenuOpen((v) => !v)}
+              onClick={() => {
+                if (!open) return
+                setIsProfileMenuOpen((v) => !v)
+              }}
               className={clsx(
                 'w-full rounded-[8px] px-2 py-2.5 gap-3 flex items-center justify-start hover:bg-layer-secondary',
                 'focus:outline-none focus:ring-2 focus:ring-blue-500',
               )}
               aria-haspopup="menu"
-              aria-expanded={isProfileMenuOpen}
+              aria-expanded={effectiveProfileMenuOpen}
               aria-label="프로필 메뉴 열기"
             >
               <Image src={profile} width={40} height={40} alt="profile" className="shrink-0" />
@@ -240,12 +233,18 @@ export default function MobileSidebar({ open, onClose }: Props) {
             </button>
 
             <ProfileMenuPopover
-              open={isProfileMenuOpen}
+              open={effectiveProfileMenuOpen}
               pos={menuPos}
               meLoading={meLoading}
               me={(me as unknown) ?? null}
-              onClose={closeProfileMenu}
-              onLogout={onLogout} onLogin={() => router.push('/login')}            />
+              onClose={() => setIsProfileMenuOpen(false)}
+              onLogout={onLogout}
+              onLogin={() => {
+                setIsProfileMenuOpen(false)
+                onClose()
+                router.push('/login')
+              }}
+            />
           </div>
         </div>
       </aside>

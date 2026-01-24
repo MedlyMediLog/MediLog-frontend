@@ -102,7 +102,7 @@ export default function SideBar() {
 
 
       setMenuPos({
-        left: r.left + 8,
+        left: 8,
         top: r.top - 10,
       })
     }
