@@ -10,9 +10,9 @@
 .medly-filterbar.medly-filterbar--select {
   display: flex;
   width: 100%;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  padding: 6px var(--Number-16, 16px);
+  padding: 6px 0px;
   gap: var(--Number-12, 12px);
 }
 
