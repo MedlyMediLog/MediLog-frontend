@@ -40,7 +40,11 @@ export default function LandingMaskText({ titleLines, subLines }: Props) {
     <div ref={ref} className="mask-block">
       <div className="mask-block__title">
         {titleLines.map((line, i) => (
-          <h2 key={i} className="mask-fill mask-fill--title typo-d1" data-fill-text={line}>
+          <h2
+            key={i}
+            className="mask-fill mask-fill--title typo-h2 desktop:typo-d1"
+            data-fill-text={line}
+          >
             {line}
           </h2>
         ))}
@@ -50,7 +54,11 @@ export default function LandingMaskText({ titleLines, subLines }: Props) {
 
       <div className="mask-block__sub">
         {subLines.map((line, i) => (
-          <p key={i} className="mask-fill mask-fill--sub" data-fill-text={line}>
+          <p
+            key={i}
+            className="mask-fill mask-fill--sub typo-b3 desktop:text-[24px]"
+            data-fill-text={line}
+          >
             {line}
           </p>
         ))}

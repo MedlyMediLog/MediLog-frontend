@@ -17,7 +17,7 @@ import { CATEGORY_LIST } from './category.constants'
 export default function CategoryGrid() {
   return (
     <div
-      className="grid grid-cols-[repeat(auto-fill,160px)] gap-[16px] justify-center
+      className="grid grid-cols-[repeat(auto-fill,160px)] gap-[15px] justify-center
                         min-[740px]:grid-cols-[repeat(auto-fill,minmax(180px,200px))]"
     >
       {CATEGORY_LIST.map((category) => (
