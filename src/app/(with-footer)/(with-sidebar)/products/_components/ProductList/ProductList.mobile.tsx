@@ -141,7 +141,7 @@ export function ProductListMobile({
                       className="block"
                       aria-label={`${item.name} 상세로 이동`}
                     >
-                      <ProductCard item={item} showStatus={isFilterApplied} />
+                      <ProductCard item={item} showStatus={isFilterApplied} layout="mobile" />
                     </Link>
                   </li>
                 ))}

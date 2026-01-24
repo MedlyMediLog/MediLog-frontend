@@ -1,6 +1,6 @@
 // src/app/(with-footer)/(with-sidebar)/products/page.tsx
 import React from 'react'
-import { ProductListingTopBar } from './_components/ProductListingTopBar'
+import ProductListingTopBar from './_components/ProductListingTopBar'
 import { ProductList } from './_components/ProductList'
 import { CATEGORY_MAP } from '../category/_components/category.constants'
 import { Target } from '@/types/product'
@@ -29,7 +29,7 @@ export default async function ProductListingPage({ searchParams }: Props) {
   return (
     <main className="min-h-dvh">
       {/* 배경 레이어 */}
-      <div className="min-h-dvh bg-[linear-gradient(to_bottom,#EDF2F6_0%,#FFFFFF_100%)]">
+      <div className="bg-[linear-gradient(to_bottom,#EDF2F6_0%,#FFFFFF_100%)] relative">
         {/* A안: TopBar가 패딩/정렬을 자체로 책임 → 공통 컨테이너 밖 */}
         <ProductListingTopBar />
 
