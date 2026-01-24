@@ -8,7 +8,7 @@ import styles from './BasicTargetSummaryCard.module.css'
 import iconGuide from '@/assets/product-listing/icons/mobile/icon-guide.svg'
 import iconMore from '@/assets/product-listing/icons/mobile/icon-more.svg'
 
-import { getTargetSummaryContent } from '@/lib/utils/targetSummaryByCategory'
+import { getBasicTargetCardContent, type Target } from '@/types/targetSummaryContent'
 
 const CATEGORY_ALIAS: Record<string, string> = {
   EYE: '눈 건강',
@@ -29,6 +29,20 @@ function normalizeCategory(raw?: string | null) {
   return CATEGORY_ALIAS[v.toUpperCase()] ?? v
 }
 
+const TARGET_ALIAS: Record<string, Target> = {
+  ALL: '전체',
+  PREGNANT: '임산부',
+  TEEN: '청소년',
+  DIETER: '다이어터',
+ 
+}
+
+function normalizeTarget(raw?: string | null): Target {
+  const v = (raw ?? '').trim()
+  if (!v) return '전체'
+  return TARGET_ALIAS[v.toUpperCase()] ?? ((v as Target) || '전체')
+}
+
 type Props = {
   /** 외부에서 강제로 주고 싶으면 그대로 덮어쓸 수 있게 유지 */
   title?: string
@@ -36,7 +50,6 @@ type Props = {
   helperTitle?: string
   helperLabel?: string
   defaultOpen?: boolean
-
   withSlotPadding?: boolean
 }
 
@@ -50,20 +63,21 @@ export function BasicTargetSummaryCard({
 }: Props) {
   const sp = useSearchParams()
 
-  // URL에서 category 읽기 (없으면 null)
   const rawCategory = sp.get('category')
-  const normalizedCategory = normalizeCategory(rawCategory)
+  const category = normalizeCategory(rawCategory)
 
-  // 파일에 있는 매핑 데이터로 문구 가져오기
+  const rawTarget = sp.get('target')
+  const target = normalizeTarget(rawTarget)
+
+  // 분기 로직은 util에서 끝냄 (전체=summary, 타겟선택=override)
   const content = React.useMemo(() => {
-    return getTargetSummaryContent(normalizedCategory)
-  }, [normalizedCategory])
+    return getBasicTargetCardContent({ category, target })
+  }, [category, target])
 
-  // props가 들어오면 우선 사용, 없으면 content 사용
+  // props 우선, 없으면 content 사용
   const resolvedTitle = title ?? content.title
-  const resolvedSubtitle =
-    subtitle ?? `${content.sentenceIntro} ${content.sentenceNote}`
-  const resolvedHelperLabel = helperLabel ?? content.sentenceAvgComposition
+  const resolvedSubtitle = subtitle ?? content.subtitle
+  const resolvedHelperLabel = helperLabel ?? content.helperLabel
 
   const [open, setOpen] = React.useState(defaultOpen)
   const [isDesktop, setIsDesktop] = React.useState(false)
@@ -77,13 +91,9 @@ export function BasicTargetSummaryCard({
 
     const onChange = () => apply()
     mq.addEventListener('change', onChange)
-
-    return () => {
-      mq.removeEventListener('change', onChange)
-    }
+    return () => mq.removeEventListener('change', onChange)
   }, [])
 
-  // 데스크탑은 항상 열린 상태(설계 유지)
   const isOpen = isDesktop ? true : open
 
   const card = (
@@ -128,11 +138,7 @@ export function BasicTargetSummaryCard({
               {resolvedHelperLabel}
             </span>
 
-            {/* 필요하면 disclaimer도 여기 한 줄로 붙일 수 있음
-            <span className={`typo-b4 text-fg-basic-secondary ${styles.disclaimer}`}>
-              {content.disclaimer}
-            </span>
-            */}
+          
           </div>
         </div>
       )}
