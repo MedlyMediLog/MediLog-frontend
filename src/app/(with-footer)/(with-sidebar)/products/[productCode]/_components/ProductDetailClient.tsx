@@ -87,6 +87,7 @@ export default function ProductDetailClient({ productCode, target }: Props) {
                 manufacturer={data.manufacturer}
                 appearanceForm={data.appearanceForm}
                 text={data.text}
+                imageUrl={data.imageUrl}
               />
             </div>
 

@@ -13,7 +13,6 @@ import type { ToastItem as CommonToastItem } from '@/app/_components/common/type
 import { FloatingTopButton } from '../shared/FloatingTopButton/FloatingTopButton'
 import { useProductList } from '@/hooks/useProductList'
 import type { Category, Target } from '@/types/product'
-import { getProductImageById } from '../shared/productImages'
 
 import { ProductListMobile } from './ProductList.mobile'
 import { ProductListDesktop } from './ProductList.desktop'
@@ -134,7 +133,10 @@ export function ProductList({ category, target }: Props) {
       return () => mq.removeEventListener('change', onChange)
     }
 
+    // legacy safari
+    // eslint-disable-next-line deprecation/deprecation
     mq.addListener(onChange)
+    // eslint-disable-next-line deprecation/deprecation
     return () => mq.removeListener(onChange)
   }, [])
 
@@ -225,14 +227,16 @@ export function ProductList({ category, target }: Props) {
 
   const isFilterApplied = selected !== 'all'
 
-  const safeImage = (p: ApiProduct) => {
-    const n = Number(p.productCode)
-    if (Number.isFinite(n)) return getProductImageById(n)
-    return undefined
-  }
-
   const makeKey = React.useCallback((p: ApiProduct) => `${p.manufacturer}__${p.name}`, [])
 
+  /**
+   * ✅ 핵심 변경(B안):
+   * - image는 로컬 매핑(getProductImageById) 대신 서버에서 내려준 imageUrl을 그대로 사용
+   * - p.imageUrl이 없으면 undefined 처리
+   *
+   * ⚠️ 만약 ProductItem.image 타입이 string을 허용하지 않으면,
+   * shared/types의 ProductItem.image 타입을 `string | StaticImageData | undefined` 형태로 확장해야 함.
+   */
   const sourceList: ProductItem[] = React.useMemo(() => {
     const allItems = allData?.items ?? []
     if (!allData) return []
@@ -243,7 +247,8 @@ export function ProductList({ category, target }: Props) {
         name: cleanText(p.name),
         brand: cleanText(p.manufacturer),
         tags: p.ingredients,
-        image: safeImage(p),
+        // ✅ 서버 이미지 사용
+        image: p.imageUrl ?? undefined,
       }))
     }
 
@@ -264,7 +269,8 @@ export function ProductList({ category, target }: Props) {
           name: cleanText(p.name),
           brand: cleanText(p.manufacturer),
           tags: p.ingredients,
-          image: safeImage(p),
+          // ✅ 서버 이미지 사용
+          image: p.imageUrl ?? undefined,
           status,
         }
       })
@@ -456,9 +462,6 @@ export function ProductList({ category, target }: Props) {
     setIsSearchOverlayOpen(false)
   }, [])
 
-  // if (isLoading) return <div className="p-5">로딩중...</div>
-  //if (isError || !allData) return <div className="p-5">상세 정보를 불러오지 못했어요.</div>
-
   return (
     <>
       <FloatingTopButton visible={showTopButton} onClick={handleScrollToTop} />
@@ -481,7 +484,6 @@ export function ProductList({ category, target }: Props) {
       {/* Mobile Search Overlay */}
       {!isDesktopViewport && (
         <Overlay open={isSearchOverlayOpen} onClose={closeSearchOverlay} closeOnBackdrop>
-          {/* 오버레이에서 검색영역을 “원래 FilterBar가 있던 Y + offset”로 내림 */}
           <div
             style={{
               position: 'absolute',
@@ -497,7 +499,6 @@ export function ProductList({ category, target }: Props) {
               'py-[10px]',
             ].join(' ')}
             onClick={(e) => {
-              // 검색영역 클릭은 닫히지 않게(회색 영역만 닫힘)
               e.stopPropagation()
             }}
           >
