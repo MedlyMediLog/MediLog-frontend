@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     if (!be) return []
 
     return [
-      // ✅ OAuth 로그인 흐름만 백엔드로 직접 프록시
+      // OAuth 로그인 흐름만 백엔드로 직접 프록시
       { source: '/oauth2/:path*', destination: `${be}/oauth2/:path*` },
       { source: '/login/oauth2/:path*', destination: `${be}/login/oauth2/:path*` },
     ]

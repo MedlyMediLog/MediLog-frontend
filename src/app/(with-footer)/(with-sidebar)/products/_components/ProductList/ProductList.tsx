@@ -56,7 +56,7 @@ const TARGET_BY_SELECTED: Record<Exclude<SelectedKey, 'all'>, Target> = {
   dieter: 'DIETER',
 }
 
-/** ✅✅ 오버레이 검색창 위치 미세 조정용 상수
+/** 오버레이 검색창 위치 미세 조정용 상수
  *  - 값이 커질수록 아래로 내려감
  *  - 음수면 위로 올라감
  */
@@ -73,7 +73,7 @@ function useDebouncedValue<T>(value: T, delayMs: number) {
   return debounced
 }
 
-/** ✅ 상태 우선 정렬 */
+/** 상태 우선 정렬 */
 const STATUS_RANK: Record<string, number> = {
   '섭취 가능': 0,
   '섭취 고려': 1,
@@ -99,10 +99,10 @@ export function ProductList({ category, target }: Props) {
   const [q, setQ] = React.useState('')
   const debouncedQ = useDebouncedValue(q, 250)
 
-  // ✅ 모바일 검색은 오버레이로
+  //  모바일 검색은 오버레이로
   const [isSearchOverlayOpen, setIsSearchOverlayOpen] = React.useState(false)
 
-  // ✅ 오버레이 검색영역을 “원래 FilterBar 위치”에 띄우기 위한 앵커(top)
+  //  오버레이 검색영역을 “원래 FilterBar 위치”에 띄우기 위한 앵커(top)
   const [searchOverlayTop, setSearchOverlayTop] = React.useState<number>(0)
 
   const [visibleCount, setVisibleCount] = React.useState(LOAD_STEP)
@@ -434,7 +434,7 @@ export function ProductList({ category, target }: Props) {
 
   const targetMessage = React.useMemo(() => getTargetMessage(selected), [selected])
 
-  // ✅✅ 오버레이 열기 전에 “원래 FilterBar 위치(top)” 측정 (+ 상수 offset)
+  // 오버레이 열기 전에 “원래 FilterBar 위치(top)” 측정 (+ 상수 offset)
   const measureFilterBarTop = React.useCallback(() => {
     const root = mobileContentRef.current
     if (!root) return 0
@@ -478,10 +478,10 @@ export function ProductList({ category, target }: Props) {
         </div>
       )}
 
-      {/* ✅✅ Mobile Search Overlay */}
+      {/* Mobile Search Overlay */}
       {!isDesktopViewport && (
         <Overlay open={isSearchOverlayOpen} onClose={closeSearchOverlay} closeOnBackdrop>
-          {/* ✅ 오버레이에서 검색영역을 “원래 FilterBar가 있던 Y + offset”로 내림 */}
+          {/* 오버레이에서 검색영역을 “원래 FilterBar가 있던 Y + offset”로 내림 */}
           <div
             style={{
               position: 'absolute',
@@ -497,7 +497,7 @@ export function ProductList({ category, target }: Props) {
               'py-[10px]',
             ].join(' ')}
             onClick={(e) => {
-              // ✅ 검색영역 클릭은 닫히지 않게(회색 영역만 닫힘)
+              // 검색영역 클릭은 닫히지 않게(회색 영역만 닫힘)
               e.stopPropagation()
             }}
           >

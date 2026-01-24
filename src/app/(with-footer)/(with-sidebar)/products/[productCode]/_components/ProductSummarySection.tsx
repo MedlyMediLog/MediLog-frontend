@@ -17,7 +17,7 @@ export default function ProductSummarySection({name, manufacturer, appearanceFor
     <div className="flex flex-col gap-4 w-full desktop:w-[623px] desktop:gap-6">
       {/* 제품 */}
       <div className="flex flex-col w-full gap-2 desktop:gap-3">
-        {/* ✅ 히어로 카드: 가로는 w-full, 높이는 aspect로 결정 */}
+        {/* 히어로 카드: 가로는 w-full, 높이는 aspect로 결정 */}
         <div className="w-full aspect-[335/223.15] rounded-[20px] bg-[#fbfdfd] flex items-center justify-center">
           <div
             className="

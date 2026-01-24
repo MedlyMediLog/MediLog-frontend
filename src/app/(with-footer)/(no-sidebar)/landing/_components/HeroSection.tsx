@@ -46,7 +46,7 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
               alt="logo"
               width={57}
               height={20}
-              className="shrink-0 aspect-[57/20]"
+              className="shrink-0 aspect-[57/20] cursor-pointer"
               priority
             />
           </Link>
@@ -54,7 +54,7 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
           <Button
             variant="secondary"
             shape="rounded"
-            className="flex py-2 px-4 desktop:py-3 desktop:px-4 items-center justify-center"
+            className="flex py-2 px-4 desktop:py-3 desktop:px-4 items-center justify-center cursor-pointer"
             onClick={isLoggedIn ? onLogoutClick : onLoginClick}
           >
             {isLoggedIn ? '로그아웃' : '로그인'}

@@ -29,7 +29,7 @@ export async function GET(req: NextRequest, { params }: Ctx) {
     cache: 'no-store',
   })
 
-  // ✅ status + body 그대로 패스스루 (가장 안전)
+  // status + body 그대로 패스스루
   const text = await res.text().catch(() => '')
   return new NextResponse(text, {
     status: res.status,

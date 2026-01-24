@@ -88,7 +88,7 @@ export function ProductListMobile({
           </div>
 
           <div className="w-full">
-            {/* ✅ 기본 모바일 UI(아이콘 + 칩)만 노출 */}
+            {/* 기본 모바일 UI(아이콘 + 칩)만 노출 */}
             <FilterBar
               variant="mobile"
               isSearching={false}
@@ -100,7 +100,7 @@ export function ProductListMobile({
               onSearchChange={onSearchChange}
               onSearchSubmit={onSearchSubmit}
               searchPlaceholder="제조사/브랜드명으로 검색해보세요."
-              onIconClick={onSearchOpen} // ✅ 아이콘 클릭 => 오버레이 오픈
+              onIconClick={onSearchOpen} // 아이콘 클릭 => 오버레이 오픈
             />
           </div>
 

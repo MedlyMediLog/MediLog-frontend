@@ -13,6 +13,6 @@ const httpsOptions = {
 
 app.prepare().then(() => {
   createServer(httpsOptions, (req, res) => handle(req, res)).listen(3000, () => {
-    console.log("✅ HTTPS dev server running: https://localhost:3000");
+    console.log(" HTTPS dev server running: https://localhost:3000");
   });
 });

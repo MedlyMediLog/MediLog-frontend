@@ -42,15 +42,15 @@ export default function LandingPage() {
       window.matchMedia('(min-width: 740px)').matches
 
     if (isDesktop) {
-      setIsLoginOpen(true) // ✅ 데스크탑: 오버레이
+      setIsLoginOpen(true) // 데스크탑: 오버레이
     } else {
-      router.push('/login') // ✅ 모바일: /login 이동
+      router.push('/login') // 모바일: /login 이동
     }
   }
 
   const handleLogoutClick = async () => {
     try {
-      // ✅ 로그아웃 호출 (너희 프로젝트 경로에 맞게 수정)
+      // 로그아웃 호출 (너희 프로젝트 경로에 맞게 수정)
       await fetch('/api/auth/logout', {
         method: 'POST',
         cache: 'no-store',

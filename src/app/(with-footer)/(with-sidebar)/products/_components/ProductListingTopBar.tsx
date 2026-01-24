@@ -14,7 +14,7 @@ export function ProductListingTopBar() {
 
   return (
     <>
-      {/* ✅ Mobile (375~739): A안 - 탑바가 패딩/정렬을 전부 책임 */}
+      {/* Mobile (375~739): A안 - 탑바가 패딩/정렬을 전부 책임 */}
       <header className="desktop:hidden w-full bg-[var(--Color-gray-100,#EDF2F6)]">
         <div className="h-[56px] px-[16px] flex items-center">
           <div className="relative w-full flex items-center justify-between">
@@ -50,7 +50,7 @@ export function ProductListingTopBar() {
         </div>
       </header>
 
-      {/* ✅ Desktop (740~1380+): A안 - 탑바가 패딩/정렬을 전부 책임 */}
+      {/* Desktop (740~1380+): A안 - 탑바가 패딩/정렬을 전부 책임 */}
       <header className="hidden desktop:block w-full bg-layer-week">
         <div className="h-[64px] px-[20px] flex items-center">
           <Link href="/" className="flex items-center" aria-label="홈으로">
