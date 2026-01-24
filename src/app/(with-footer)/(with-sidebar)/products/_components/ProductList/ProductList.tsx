@@ -133,11 +133,7 @@ export function ProductList({ category, target }: Props) {
       return () => mq.removeEventListener('change', onChange)
     }
 
-    // legacy safari
-    // eslint-disable-next-line deprecation/deprecation
-    mq.addListener(onChange)
-    // eslint-disable-next-line deprecation/deprecation
-    return () => mq.removeListener(onChange)
+    
   }, [])
 
   const requestTarget = React.useMemo<Target | undefined>(() => {
