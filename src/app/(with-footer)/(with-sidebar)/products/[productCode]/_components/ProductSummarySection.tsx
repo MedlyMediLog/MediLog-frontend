@@ -1,55 +1,86 @@
-import Image from 'next/image'
+import Image, { type StaticImageData } from 'next/image'
 import bottle from '@/assets/bottle.png'
-import warning_fill from '@/assets/warning_fill.png'
 import pill from '@/assets/pill.png'
+// import warning_fill from '@/assets/warning_fill.png' // 지금 여기선 안 쓰길래 일단 미사용
 import { Label } from '@/app/_components/common/Label/Label'
 
 type Props = {
-  name: string;
-  manufacturer: string;
-  appearanceForm: string;
-  text: string;
-
+  name: string
+  manufacturer: string
+  appearanceForm: string
+  text: string
+  imageUrl?: string | null
 }
 
-export default function ProductSummarySection({name, manufacturer, appearanceForm, text}: Props) {
+function getFallbackByAppearance(appearanceForm: string): StaticImageData {
+  const key = (appearanceForm ?? '').trim()
+
+  // ✅ 너 프로젝트에 있는 기본 이미지 기준으로 매핑
+  // - pill.png: 정제/캡슐/환 같은 “알약류”
+  // - bottle.png: 그 외 기본
+  if (/(정제|캡슐|환)/.test(key)) return pill
+  return bottle
+}
+
+function isValidHttpUrl(url: string) {
+  return /^https?:\/\//i.test(url)
+}
+
+export default function ProductSummarySection({
+  name,
+  manufacturer,
+  appearanceForm,
+  text,
+  imageUrl,
+}: Props) {
+  const fallback = getFallbackByAppearance(appearanceForm)
+
+  // ✅ CloudFront 등 절대 URL이면 그대로, 아니면 fallback
+  const src: string | StaticImageData =
+    typeof imageUrl === 'string' && isValidHttpUrl(imageUrl) ? imageUrl : fallback
+
   return (
-    <div className="flex flex-col gap-4 w-full desktop:w-[623px] desktop:gap-6">
+    <div className="flex w-full flex-col gap-4 desktop:w-[623px] desktop:gap-6">
       {/* 제품 */}
-      <div className="flex flex-col w-full gap-2 desktop:gap-3">
-        {/* 히어로 카드: 가로는 w-full, 높이는 aspect로 결정 */}
-        <div className="w-full aspect-[335/223.15] rounded-[20px] bg-[#fbfdfd] flex items-center justify-center">
-          <div
-            className="
-              relative shrink-0
-              w-full h-full rounded-[20px]
-            "
-          >
-            <Image src={pill} fill alt="bottle" className=" rounded-[20px]" priority />
+      <div className="flex w-full flex-col gap-2 desktop:gap-3">
+        {/* 히어로 카드 */}
+        <div className="flex aspect-[335/223.15] w-full items-center justify-center rounded-[20px] bg-[#fbfdfd]">
+          <div className="relative h-full w-full shrink-0 overflow-hidden rounded-[20px]">
+            <Image
+              src={src}
+              fill
+              alt={name}
+              priority
+              sizes="(min-width: 1380px) 623px, 100vw"
+              className="rounded-[20px] object-cover"
+              // ✅ 원격 이미지 로드 실패 시 fallback으로 교체
+              onError={(e) => {
+                const img = e.currentTarget as unknown as HTMLImageElement
+                // next/image 내부 img에 직접 접근하는 방식이라 완벽하진 않지만,
+                // "진짜로 깨졌을 때 다른 이미지 뜨는" 상황을 최소화하는 응급처치로 쓸 수 있음
+                img.src = (fallback as unknown as { src: string }).src
+              }}
+            />
           </div>
         </div>
 
-        <div className="flex flex-col w-full gap-2">
-          <div className="flex flex-col gap-2 items-start">
+        <div className="flex w-full flex-col gap-2">
+          <div className="flex flex-col items-start gap-2">
             <div className="typo-b3 text-fg-basic-primary desktop:typo-h5">{manufacturer}</div>
 
-            <div className="typo-b1 text-fg-basic-accent desktop:typo-h2">
-              {name}
-            </div>
-            <Label variant="default" ><div className='text-fg-basic-accent typo-b5'>{appearanceForm}</div></Label>
-          </div>
+            <div className="typo-b1 text-fg-basic-accent desktop:typo-h2">{name}</div>
 
+            <Label variant="default">
+              <div className="typo-b5 text-fg-basic-accent">{appearanceForm}</div>
+            </Label>
+          </div>
         </div>
       </div>
 
       {/* 설명 */}
-      <div className="flex flex-col gap-3 w-full">
-        <div className="typo-b3 text-gray-700 desktop:typo-b2">
-         {text}
-        </div>
+      <div className="flex w-full flex-col gap-3">
+        <div className="typo-b3 text-gray-700 desktop:typo-b2">{text}</div>
       </div>
-
-      
     </div>
   )
 }
