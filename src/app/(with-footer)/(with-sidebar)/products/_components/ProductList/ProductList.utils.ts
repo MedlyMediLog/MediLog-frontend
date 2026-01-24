@@ -91,7 +91,7 @@ export function toSortKey(productName: string) {
 export const KO_COLLATOR = new Intl.Collator('ko', { sensitivity: 'base', numeric: true })
 
 /** -----------------------------
- * ✅ “현업형” 2단계 정렬: 그룹(한글/영문/숫자/기타) → 그룹 내 사전식
+ * “현업형” 2단계 정렬: 그룹(한글/영문/숫자/기타) → 그룹 내 사전식
  * ----------------------------- */
 export function getSortGroup(sortKey: string) {
   const first = sortKey.charAt(0)

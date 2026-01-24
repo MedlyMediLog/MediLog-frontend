@@ -127,7 +127,7 @@ export function ProductListDesktop({
           {isLoading ? (
             <LoadingSpinner />
           ) : shouldShowEmptyResult ? (
-            // ✅ Desktop: 중앙 정렬 + 여백(푸터/하단 영역 고려)
+            // Desktop: 중앙 정렬 + 여백(푸터/하단 영역 고려)
             <div className="w-full flex justify-center  pb-[120px]">
               <ErrorState
                 code="1XX errors"

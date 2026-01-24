@@ -35,7 +35,7 @@
   --text-b4: 13px;
   --text-b5: 12px;
 
-  /* ✅ Tailwind v4 breakpoint token (desktop:) */
+  /* Tailwind v4 breakpoint token (desktop:) */
   --breakpoint-desktop: 740px;
 
   /* Gray */

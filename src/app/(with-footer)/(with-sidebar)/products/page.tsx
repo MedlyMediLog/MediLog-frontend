@@ -30,10 +30,10 @@ export default async function ProductListingPage({ searchParams }: Props) {
     <main className="min-h-dvh">
       {/* 배경 레이어 */}
       <div className="min-h-dvh bg-[linear-gradient(to_bottom,#EDF2F6_0%,#FFFFFF_100%)]">
-        {/* ✅ A안: TopBar가 패딩/정렬을 자체로 책임 → 공통 컨테이너 밖 */}
+        {/* A안: TopBar가 패딩/정렬을 자체로 책임 → 공통 컨테이너 밖 */}
         <ProductListingTopBar />
 
-        {/* ✅ 리스트/본문만 가운데 정렬 컨테이너 */}
+        {/* 리스트/본문만 가운데 정렬 컨테이너 */}
         <div className="min-h-dvh flex justify-center">
           <div
             className={[

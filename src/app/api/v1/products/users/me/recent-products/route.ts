@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     cache: 'no-store',
   })
 
-  // ✅ 백엔드가 준 status 유지 + body 전달
+  // 백엔드가 준 status 유지 + body 전달
   const text = await res.text().catch(() => '')
   return new NextResponse(text, {
     status: res.status,

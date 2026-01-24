@@ -9,13 +9,13 @@ import dropper from '@/assets/product-listing/mock/dropper.png'
 import placeholderCard from '@/assets/product-listing/placeholder/product-listing.png'
 
 /**
- * ✅ mock 구성 원칙
+ * mock 구성 원칙
  * - 임산부(pregnant) / 청소년(teen): 여러 개 노출 (더보기/스크롤 테스트용 대량 생성)
  * - 다이어터(diet): 항상 EmptyResult 노출 유지(전부 '섭취 금지'로 두면 필터에서 제거됨)
  */
 
 /**
- * ✅ PNG + SVG 모두 커버하는 이미지 타입
+ * PNG + SVG 모두 커버하는 이미지 타입
  * - PNG 같은 정적 import: StaticImageData
  * - SVG가 문자열 URL로 들어오는 설정: string
  *
@@ -272,7 +272,7 @@ const baseProducts: ProductItemWithMeta[] = [
 ]
 
 /**
- * ✅ 추가 생성 데이터(더보기/스크롤 테스트용)
+ * 추가 생성 데이터(더보기/스크롤 테스트용)
  * - p13 ~ p72 까지 60개 생성
  * - targets는 pregnant/teen 위주로 분포
  * - status는 '섭취 가능/섭취 고려/주의사항'만 사용(금지 없음)

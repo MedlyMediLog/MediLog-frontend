@@ -4,14 +4,16 @@ import { createPortal } from 'react-dom'
 import clsx from 'clsx'
 import Link from 'next/link'
 
+type Pos = { left: number; top: number } | { right: number; top: number }
+
 type Props = {
   open: boolean
-  pos: { left: number; top: number } | null
+  pos: Pos | null
   meLoading: boolean
   me: unknown | null
   onClose: () => void
   onLogout: () => void
-  // 필요하면 메뉴 아이템/스타일 props로 더 뺄 수 있음
+  onLogin: () => void
 }
 
 export default function ProfileMenuPopover({
@@ -21,6 +23,7 @@ export default function ProfileMenuPopover({
   me,
   onClose,
   onLogout,
+  onLogin,
 }: Props) {
   if (!open || !pos) return null
 
@@ -35,11 +38,11 @@ export default function ProfileMenuPopover({
         'shadow-[0_4px_8px_rgba(50,60,72,0.08)]',
         'p-[10px] flex flex-col items-start gap-[8px]',
       )}
-      style={{
-        left: pos.left,
-        top: pos.top,
-        transform: 'translateY(-100%)',
-      }}
+      style={
+        'left' in pos
+          ? { top: pos.top, left: pos.left, transform: 'translateY(-100%)' }
+          : { top: pos.top, right: pos.right, transform: 'translateY(-100%)' }
+      }
     >
       <Link
         role="menuitem"
@@ -62,14 +65,17 @@ export default function ProfileMenuPopover({
           로그아웃
         </button>
       ) : (
-        <Link
+        <button
           role="menuitem"
-          href="/login"
+          type="button"
+          onClick={() => {
+            onClose()
+            queueMicrotask(onLogin)
+          }}
           className="w-full rounded-[12px] px-3 py-3 text-left typo-b3 text-fg-basic-primary hover:bg-layer-secondary"
-          onClick={onClose}
         >
           로그인
-        </Link>
+        </button>
       )}
     </div>,
     document.body,

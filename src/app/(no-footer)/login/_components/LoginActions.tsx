@@ -2,12 +2,16 @@ import Image from 'next/image'
 import Button from '@/app/_components/common/Button'
 
 import speech_bubble from '@/assets/login/speech_bubble.svg'
-import google from '@/assets/google.png'
+import google from '@/assets/google.svg'
 
 export default function LoginActions() {
 
     const handleGoogleLogin = () => {
   window.location.href = '/api/auth/login/google'
+}
+
+const handleGoTOCategory = () => {
+  window.location.href = '/category'
 }
 
     
@@ -19,7 +23,7 @@ export default function LoginActions() {
           variant="primary"
           shape="rounded"
           className="bg-layer-primary text-fg-basic-primary border border-[#dce4ed] w-full shadow-[0_0_8px_0_rgba(36,42,48,0.12)] h-12"
-          icon={<Image src={google} width={20} height={20} alt="google" />}
+          icon={<Image src={google} width={20} height={20} alt="google" className=''/>}
           onClick={handleGoogleLogin}
         >
           구글로 계속하기
@@ -32,7 +36,7 @@ export default function LoginActions() {
         <div className="w-full border-[0.5px] h-0 items-center text-fg-basic-week" />
       </div>
 
-      <Button variant="primary" shape="text">
+      <Button variant="primary" shape="text" onClick={handleGoTOCategory} className='cursor-pointer'>
         <div className="typo-b5 text-fg-basic-primary">먼저 둘러볼게요</div>
       </Button>
     </div>
