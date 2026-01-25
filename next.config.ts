@@ -27,6 +27,7 @@ const nextConfig: NextConfig = {
     return [
       { source: '/oauth2/:path*', destination: `${be}/oauth2/:path*` },
       { source: '/login/oauth2/:path*', destination: `${be}/login/oauth2/:path*` },
+      { source: '/funnel-sessions', destination: `${be}/funnel-sessions` },
     ]
   },
 }

@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { ProductCard } from './ProductCard'
 import type { ProductItem } from './shared/types'
+import { trackClick } from '@/lib/analytics/clickCounter'
 
 type Props = {
   items: ProductItem[]
@@ -34,6 +35,7 @@ export default function ProductGridDesktop({ items, showStatus = false }: Props)
           href={`/products/${item.id}`}
           className="block"
           aria-label={`${item.name} 상세로 이동`}
+          onClick={() => trackClick('product_card')}
         >
           <ProductCard item={item} showStatus={showStatus} />
         </Link>

@@ -16,7 +16,7 @@ export type TargetGuideOverride = {
 }
 
 /**
- * ✅ 카드 렌더링에 딱 필요한 값
+ * 카드 렌더링에 딱 필요한 값
  * - desktopSubtitle: 데스크탑에서 타이틀 밑에 보여줄 한 줄
  * - helperLabel: tipBox 안에 들어갈 문구(전체=avg, 타겟=caution)
  */
@@ -356,7 +356,7 @@ export const OVERRIDE_BY_CATEGORY_TARGET: Record<string, TargetGuideOverride> = 
 
 
 /**
- * ✅ 스샷 규칙에 맞춘 최종 조합
+ *  스샷 규칙에 맞춘 최종 조합
  * - 전체: desktopSubtitle = intro + note, helperLabel = avgComposition
  * - 타겟: desktopSubtitle = avgComposition(타겟 우선), helperLabel = caution(타겟 우선)
  */
@@ -379,7 +379,7 @@ export function getBasicTargetCardContent(params: {
     }
   }
 
-  // ✅ 전체(또는 타겟 미설정)
+  // 전체(또는 타겟 미설정)
   if (target === '전체') {
     return {
       title: base.title,
@@ -389,7 +389,7 @@ export function getBasicTargetCardContent(params: {
     }
   }
 
-  // ✅ 타겟 선택
+  // 타겟 선택
   const override = OVERRIDE_BY_CATEGORY_TARGET[`${category}__${target}`]
 
   // override 없으면 안전하게 전체 룰로 fallback
