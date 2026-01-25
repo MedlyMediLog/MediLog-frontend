@@ -89,7 +89,7 @@ export function ProductCard({ layout = 'desktop', item, showStatus = false }: Pr
             <p className="typo-b1 text-fg-basic-accent line-clamp-2">{item.name}</p>
           </div>
 
-          <div className="flex items-center gap-1 flex-nowrap">
+          <div className="flex flex-wrap gap-1">
             {visible.map((t, idx) => (
               <Label key={`${t}-${idx}`} variant="default">
                 <div className="typo-b5 text-fg-basic-accent">{t}</div>
@@ -126,17 +126,17 @@ export function ProductCard({ layout = 'desktop', item, showStatus = false }: Pr
         <p className={['typo-b1 text-fg-basic-accent', styles.clamp2].join(' ')}>{item.name}</p>
       </div>
 
-      <div className="flex items-center gap-1">
+      <div className="flex flex-wrap gap-1">
         {visible.map((label, idx) => (
           <span
             key={`${label}-${idx}`}
-            className="px-[10px] py-[3px] rounded-[8px] bg-layer-secondary typo-b5 text-fg-basic-accent"
+            className="max-w-full px-[10px] py-[3px] rounded-[8px] bg-layer-secondary typo-b5 text-fg-basic-accent whitespace-nowrap"
           >
             {label}
           </span>
         ))}
         {restCount > 0 && (
-          <span className="px-[12px] py-[3px] rounded-[8px] bg-layer-secondary typo-b5 text-fg-basic-week">
+          <span className="px-[12px] py-[3px] rounded-[8px] bg-layer-secondary typo-b5 text-fg-basic-week whitespace-nowrap">
             +{restCount}
           </span>
         )}
