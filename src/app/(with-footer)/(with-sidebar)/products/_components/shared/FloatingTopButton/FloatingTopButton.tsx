@@ -8,6 +8,7 @@ import styles from './FloatingTopButton.module.css'
 type Props = {
   visible: boolean
   onClick: () => void
+  mode?: 'fixed' | 'absolute'
 }
 
 /**
@@ -46,11 +47,11 @@ function ArrowUpIcon() {
   )
 }
 
-export function FloatingTopButton({ visible, onClick }: Props) {
+export function FloatingTopButton({ visible, onClick, mode = 'fixed' }: Props) {
   const [extraBottom, setExtraBottom] = React.useState(0)
 
   React.useEffect(() => {
-    if (!visible) return
+    if (!visible || mode !== 'fixed') return
 
     const update = () => {
       const footer = document.querySelector('footer')
@@ -74,15 +75,12 @@ export function FloatingTopButton({ visible, onClick }: Props) {
       window.removeEventListener('scroll', update)
       window.removeEventListener('resize', update)
     }
-  }, [visible])
+  }, [visible, mode])
 
   if (!visible) return null
 
   return (
-    <div
-      className={styles.wrapper}
-      style={{ '--floating-extra-bottom': `${extraBottom}px` } as React.CSSProperties}
-    >
+    <div className={styles.wrapper}>
       <button
         type="button"
         className={styles.button}

@@ -380,7 +380,10 @@ export function ProductList({ category, target }: Props) {
   }, [sourceList, debouncedQ, compareForCurrentView, getRankScore])
 
   const shouldShowEmptyResult = !isLoading && filtered.length === 0
-  const visibleItems = React.useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount])
+  const visibleItems = React.useMemo(
+    () => filtered.slice(0, visibleCount),
+    [filtered, visibleCount],
+  )
 
   React.useEffect(() => {
     setVisibleCount(LOAD_STEP)
@@ -476,7 +479,7 @@ export function ProductList({ category, target }: Props) {
 
   return (
     <>
-      <FloatingTopButton visible={showTopButton} onClick={handleScrollToTop} />
+      {/* <FloatingTopButton visible={showTopButton} onClick={handleScrollToTop} /> */}
 
       {toast && toastLeft !== null && (
         <div
@@ -529,6 +532,8 @@ export function ProductList({ category, target }: Props) {
 
       {isDesktopViewport ? (
         <ProductListDesktop
+          visible={showTopButton}
+          onClick={handleScrollToTop}
           contentRef={desktopContentRef}
           isScrolling={isScrolling}
           options={FILTER_OPTIONS}
@@ -555,6 +560,8 @@ export function ProductList({ category, target }: Props) {
         />
       ) : (
         <ProductListMobile
+          visible={showTopButton}
+          onClick={handleScrollToTop}
           contentRef={mobileContentRef}
           isScrolling={isScrolling}
           isSearching={false}

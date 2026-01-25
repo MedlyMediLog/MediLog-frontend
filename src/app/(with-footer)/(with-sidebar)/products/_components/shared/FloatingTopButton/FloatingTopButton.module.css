@@ -1,28 +1,22 @@
 /* src/app/(with-footer)/(with-sidebar)/products/_components/shared/FloatingTopButton/FloatingTopButton.module.css */
 
+/* 기존 fixed 유지 */
 .wrapper {
-  position: fixed;
-  z-index: 50;
+  position: sticky; /* ✅ 핵심 */
+  bottom: 20px; /* 그리드 하단 기준 */
+  margin-left: auto; /* 오른쪽 정렬 */
+  z-index: 10;
 
-  /**
-   * ✅ Figma content area 기준 정렬
-   * content max-width: 1300
-   * content padding-right: 20
-   * -> right = (100vw - 1300)/2 + 20
-   */
- /* 컨텐츠 영역 border-box right 끝에 맞춤 */
-right: calc(max(0px, (100vw - 1300px) / 2));
+  /* grid 안에서 오른쪽으로 */
+  display: flex;
+  justify-content: flex-end;
+}
 
-
-  /**
-   * ✅ Figma content area padding-bottom: 60
-   * -> bottom = 60 + safe-area + (footer overlap)
-   */
-  bottom: calc(
-    60px +
-    env(safe-area-inset-bottom, 0px) +
-    var(--floating-extra-bottom, 0px)
-  );
+/* ✅ Grid 내부용 */
+.absolute {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 }
 
 .button {
@@ -32,12 +26,10 @@ right: calc(max(0px, (100vw - 1300px) / 2));
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
 
-  border-radius: var(--Number-round-Ultra, 999px);
+  border-radius: 999px;
   background: var(--Color-Role-bg-layer-accent, #242a30);
-
-  box-shadow: 0 0 8px 0 rgba(36, 42, 48, 0.12);
+  box-shadow: 0 0 8px rgba(36, 42, 48, 0.12);
 
   border: 0;
   padding: 0;
