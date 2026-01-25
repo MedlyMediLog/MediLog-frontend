@@ -19,6 +19,14 @@ import { ErrorState } from '@/app/_components/common/ErrorState'
 import { getOrCreateAnonId } from '@/lib/analytics/identity'
 import { usePageDuration } from '@/hooks/usePageDuration'
 
+//  5-click: 상세 첫 도착 성공 전송
+import {
+  ensureFunnelSessionExists,
+  hasFlushed,
+  markReachedDetail,
+  flushFunnelSession,
+} from '@/lib/analytics/funnelSession'
+
 type Props = {
   productCode: number
   target: Target | null
@@ -30,6 +38,20 @@ export default function ProductDetailClient({ productCode, target }: Props) {
     getOrCreateAnonId()
   }, [])
 
+  // 5-click: 상세 "첫 도착" = 성공(세션당 1회 전송)
+  useEffect(() => {
+    ensureFunnelSessionExists()
+    if (hasFlushed()) return
+
+    const pc = String(productCode)
+    markReachedDetail(pc)
+
+    flushFunnelSession({
+      reachedDetail: true,
+      productCode: pc,
+    })
+  }, [productCode])
+
   // 체류시간 측정 & 백엔드 전송 (/v1/stay-time-events)
   usePageDuration({
     pageKey: `product_detail:${productCode}`,
@@ -38,7 +60,6 @@ export default function ProductDetailClient({ productCode, target }: Props) {
     onFlush: async (p) => {
       const anonId = getOrCreateAnonId()
 
-      // 백엔드 스펙에 맞춤
       await fetch('https://api.medilog.today/v1/stay-time-events', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },

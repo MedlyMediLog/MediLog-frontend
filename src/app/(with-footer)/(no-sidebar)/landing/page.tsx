@@ -5,15 +5,15 @@ import { useRouter } from 'next/navigation'
 import LoginModal from '@/app/(no-footer)/login/_components/LoginModal'
 import HeroSection from './_components/HeroSection'
 
+import { startFunnelSessionOnLanding } from '@/lib/analytics/funnelSession'
+
 export default function LandingPage() {
   const router = useRouter()
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
-  const [authLoading, setAuthLoading] = useState(true)
 
   const refreshAuth = useCallback(async () => {
-    setAuthLoading(true)
     try {
       const res = await fetch('/api/auth/me', {
         method: 'GET',
@@ -26,11 +26,17 @@ export default function LandingPage() {
     } catch {
       setIsLoggedIn(false)
     } finally {
-      setAuthLoading(false)
     }
   }, [])
 
   useEffect(() => {
+    // landing 진입 = 세션 시작점
+    // - sessionId 발급
+    // - startedAt 기록
+    // - clickCount 0 초기화
+    startFunnelSessionOnLanding()
+
+    // 로그인 상태 갱신
     refreshAuth()
   }, [refreshAuth])
 
@@ -50,14 +56,13 @@ export default function LandingPage() {
 
   const handleLogoutClick = async () => {
     try {
-      // 로그아웃 호출 (너희 프로젝트 경로에 맞게 수정)
       await fetch('/api/auth/logout', {
         method: 'POST',
         cache: 'no-store',
         credentials: 'include',
       })
     } catch {
-      // 네트워크 에러여도 일단 UI는 로그아웃처럼 처리
+      // ignore
     } finally {
       setIsLoginOpen(false)
       await refreshAuth()
@@ -80,7 +85,7 @@ export default function LandingPage() {
         isLoggedIn={isLoggedIn}
         onLoginClick={handleLoginClick}
         onLogoutClick={handleLogoutClick}
-      
+        
       />
     </>
   )

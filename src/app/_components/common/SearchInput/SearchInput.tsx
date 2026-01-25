@@ -1,9 +1,10 @@
-// src/app/_components/common/SearchInput/SearchInput.tsx
 'use client'
 
 import * as React from 'react'
 import Image from 'next/image'
 import searchIcon from '@/assets/search.png'
+
+import { trackClick } from '@/lib/analytics/clickCounter'
 
 export type SearchInputVariant = 'desktop' | 'mobile'
 
@@ -40,7 +41,6 @@ export function SearchInput({
 }: SearchInputProps) {
   const isMobile = variant === 'mobile'
 
-  // ✅ 모바일: “아이콘 버튼만” 제공 (오버레이 열기)
   if (isMobile) {
     return (
       <button
@@ -66,8 +66,7 @@ export function SearchInput({
     )
   }
 
-  // ✅ 데스크탑(= 입력 가능한 검색바)
-  // - ❗️여기서 width를 고정하지 않는다 (부모가 min/max/strech 제어)
+  // 데스크탑 검색바
   return (
     <div
       className={[
@@ -81,11 +80,16 @@ export function SearchInput({
         background: 'var(--Color-Role-bg-layer-primary, #FBFDFD)',
       }}
     >
+      {/* 검색 버튼 클릭 = search_submit */}
       <button
         type="button"
         aria-label="검색"
         disabled={disabled}
-        onClick={disabled ? undefined : onSubmit}
+        onClick={() => {
+          if (disabled) return
+          trackClick('search_submit')
+          onSubmit?.()
+        }}
         className={[
           'grid place-items-center w-8 h-8 rounded-[50px]',
           disabled ? 'cursor-not-allowed' : 'cursor-pointer',
@@ -105,7 +109,10 @@ export function SearchInput({
         enterKeyHint="search"
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' && !disabled) onSubmit?.()
+          if (e.key === 'Enter' && !disabled) {
+            trackClick('search_submit')
+            onSubmit?.()
+          }
         }}
         className={[
           'w-full bg-transparent outline-none typo-b3',
