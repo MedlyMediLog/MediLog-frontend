@@ -18,8 +18,11 @@ import { ScrollAwareBlock } from '../shared/ScrollAwareBlock/ScrollAwareBlock'
 import { QueryResult as QueryResultMobile } from '@/app/_components/common/QueryResult/QueryResult'
 import { ProductCard } from '../ProductCard'
 import LoadingSpinner from '@/app/_components/common/LoadingSpinner'
+import { FloatingTopButton } from '../shared/FloatingTopButton/FloatingTopButton'
 
 type Props = {
+  visible: boolean
+  onClick: () => void
   contentRef: React.RefObject<HTMLDivElement | null>
 
   isScrolling: boolean
@@ -50,6 +53,8 @@ type Props = {
 }
 
 export function ProductListMobile({
+  visible,
+  onClick,
   contentRef,
   isScrolling,
   isSearching, // (호환용) 현재 오버레이 방식에서는 사용 안 함
@@ -133,19 +138,24 @@ export function ProductListMobile({
             </div>
           ) : (
             <>
-              <ul className="flex flex-col items-start self-stretch w-full gap-[20px]">
-                {visibleItems.map((item) => (
-                  <li key={item.id} className="w-full">
-                    <Link
-                      href={`/products/${item.id}`}
-                      className="block"
-                      aria-label={`${item.name} 상세로 이동`}
-                    >
-                      <ProductCard item={item} showStatus={isFilterApplied} layout="mobile" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <div className="relative">
+                <ul className="flex flex-col items-start self-stretch w-full gap-[20px]">
+                  {visibleItems.map((item) => (
+                    <li key={item.id} className="w-full">
+                      <Link
+                        href={`/products/${item.id}`}
+                        className="block"
+                        aria-label={`${item.name} 상세로 이동`}
+                      >
+                        <ProductCard item={item} showStatus={isFilterApplied} layout="mobile" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+
+                <FloatingTopButton visible={visible} onClick={onClick} />
+                {/* <GridTopButton visible={visible} onClick={onClick} /> */}
+              </div>
 
               <LoadMoreSection
                 total={filteredCount}

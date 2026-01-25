@@ -1,14 +1,14 @@
-'use client';
+'use client'
 
-import React from 'react';
-import Image from 'next/image';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-import type { QueryResultProps } from './QueryResult.types';
-import refreshPng from '@/assets/icon_refresh.png';
+import React from 'react'
+import Image from 'next/image'
+import { clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+import type { QueryResultProps } from './QueryResult.types'
+import refreshPng from '@/assets/icon_refresh.svg'
 
 function cn(...inputs: Array<string | undefined | null | false>) {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
 }
 
 // NOTE:
@@ -27,21 +27,15 @@ export function QueryResult({
   iconSize = 20,
 }: QueryResultProps) {
   /** ✅ 새로고침 가능 여부 */
-  const canRefresh = !disabled && typeof onRefresh === 'function';
+  const canRefresh = !disabled && typeof onRefresh === 'function'
 
   /** ✅ 실제 클릭 핸들러 */
   const handleRefreshClick = () => {
-    if (!canRefresh) return;
-    onRefresh();
-  };
+    window.location.reload()
+  }
 
   return (
-    <div
-      className={cn(
-        'inline-flex items-center justify-end gap-[4px] py-[10px]',
-        className,
-      )}
-    >
+    <div className={cn('inline-flex items-center justify-end gap-[4px] py-[10px]', className)}>
       <span className="typo-b3 text-fg-basic-primary">
         {label} {count}
         {unit}
@@ -54,23 +48,17 @@ export function QueryResult({
           disabled={!canRefresh}
           aria-label={refreshAriaLabel}
           className={cn(
-            'inline-flex items-center justify-center',
-            'p-[2.5px] rounded-[5px]',
+            'inline-flex items-center justify-center cursor-pointer',
+            'rounded-[5px]',
             // tokens 기반 포커스
             'focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
             'focus-visible:outline-[color:var(--fg-basic-accent)]',
             !canRefresh && 'opacity-50 cursor-not-allowed',
           )}
         >
-          <Image
-            src={refreshPng}
-            alt=""
-            width={iconSize}
-            height={iconSize}
-            style={{ width: iconSize, height: iconSize }}
-          />
+          <Image src={refreshPng} alt="" width={iconSize} height={iconSize} />
         </button>
       )}
     </div>
-  );
+  )
 }
