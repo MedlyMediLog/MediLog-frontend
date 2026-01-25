@@ -18,8 +18,12 @@ import { QueryResult as QueryResultDesktop } from '@/app/_components/common/Quer
 
 import ProductGridDesktop from '../ProductGrid.desktop'
 import LoadingSpinner from '@/app/_components/common/LoadingSpinner'
+import { FloatingTopButton } from '../shared/FloatingTopButton/FloatingTopButton'
+import { GridTopButton } from '../shared/GridTopButton'
 
 type Props = {
+  visible: boolean
+  onClick: () => void
   contentRef: React.RefObject<HTMLDivElement | null>
 
   // UI 상태
@@ -49,6 +53,8 @@ type Props = {
 }
 
 export function ProductListDesktop({
+  visible,
+  onClick,
   contentRef,
   isScrolling,
   options,
@@ -95,7 +101,7 @@ export function ProductListDesktop({
                 searchValue={q}
                 onSearchChange={onSearchChange}
                 onSearchSubmit={() => {}}
-                searchPlaceholder="제조사/브랜드명으로 검색해보세요."
+                searchPlaceholder="제조사/제품명으로 검색해보세요."
               />
             </div>
 
@@ -140,7 +146,11 @@ export function ProductListDesktop({
             </div>
           ) : (
             <>
-              <ProductGridDesktop items={visibleItems} showStatus={isFilterApplied} />
+              <div className="relative">
+                <ProductGridDesktop items={visibleItems} showStatus={isFilterApplied} />
+                <FloatingTopButton visible={visible} onClick={onClick} />
+                {/* <GridTopButton visible={visible} onClick={onClick} /> */}
+              </div>
               <LoadMoreSection
                 total={filteredCount}
                 visible={visibleCount}
