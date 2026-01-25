@@ -101,7 +101,8 @@ export function ProductList({ category, target }: Props) {
 
   const [selected, setSelected] = React.useState<SelectedKey>(initialSelected)
 
-  const [q, setQ] = React.useState('')
+  const urlQuery = sp.get('search') ?? ''
+  const [q, setQ] = React.useState(urlQuery)
   const debouncedQ = useDebouncedValue(q, 250)
 
   //  모바일 검색은 오버레이로
@@ -128,6 +129,27 @@ export function ProductList({ category, target }: Props) {
   const [hasUserTouchedFilter, setHasUserTouchedFilter] = React.useState(false)
 
   const [isDesktopViewport, setIsDesktopViewport] = React.useState(false)
+
+  React.useEffect(() => {
+    const nextQ = sp.get('search') ?? ''
+    setQ((prev) => (prev === nextQ ? prev : nextQ))
+  }, [sp])
+  const handleSearchChange = (value: string) => {
+    setQ(value)
+
+    const params = new URLSearchParams(sp.toString())
+
+    if (value.trim()) {
+      params.set('search', value)
+    } else {
+      params.delete('search')
+    }
+
+    const qs = params.toString()
+    router.replace(qs ? `${pathname}?${qs}` : pathname, {
+      scroll: false,
+    })
+  }
 
   React.useEffect(() => {
     const mq = window.matchMedia('(min-width: 740px)')
@@ -519,7 +541,7 @@ export function ProductList({ category, target }: Props) {
               selectedValue={selected}
               onSelect={handleSelect}
               searchValue={q}
-              onSearchChange={setQ}
+              onSearchChange={handleSearchChange}
               onSearchSubmit={() => {
                 closeSearchOverlay()
               }}
@@ -548,7 +570,7 @@ export function ProductList({ category, target }: Props) {
           visibleCount={visibleCount}
           step={LOAD_STEP}
           onSelect={handleSelect}
-          onSearchChange={setQ}
+          onSearchChange={handleSearchChange}
           onRefresh={onRefresh}
           onLoadMore={handleLoadMoreDesktop}
           onResetEmpty={() => {
@@ -578,7 +600,7 @@ export function ProductList({ category, target }: Props) {
           visibleCount={visibleCount}
           step={LOAD_STEP}
           onSelect={handleSelect}
-          onSearchChange={setQ}
+          onSearchChange={handleSearchChange}
           onSearchOpen={openSearchOverlay}
           onSearchSubmit={() => {}}
           onRefresh={onRefresh}
