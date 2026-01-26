@@ -87,23 +87,13 @@ export function ProductListMobile({
         ref={contentRef}
         className={['w-full', 'flex flex-col items-start self-stretch', 'pb-[60px]'].join(' ')}
       >
-        {/* ✅ 1) 스크롤 시 숨길 건 TargetSummaryCard만 */}
         <ScrollAwareBlock hidden={isScrolling} className="w-full">
           <div className="w-full mb-[12px]">
             <BasicTargetSummaryCard withSlotPadding={false} />
           </div>
-        </ScrollAwareBlock>
 
-        {/*  모바일 필터/공지/조회결과는 sticky로 고정 (top-20) */}
-        <div
-          className={[
-            'z-[50]',
-            'w-full',
-            'pb-[12px]',
-            
-          ].join(' ')}
-        >
           <div className="w-full">
+            {/* 기본 모바일 UI(아이콘 + 칩)만 노출 */}
             <FilterBar
               variant="mobile"
               isSearching={false}
@@ -115,7 +105,7 @@ export function ProductListMobile({
               onSearchChange={onSearchChange}
               onSearchSubmit={onSearchSubmit}
               searchPlaceholder="제조사/브랜드명으로 검색해보세요."
-              onIconClick={onSearchOpen}
+              onIconClick={onSearchOpen} // 아이콘 클릭 => 오버레이 오픈
             />
           </div>
 
@@ -130,14 +120,13 @@ export function ProductListMobile({
               <QueryResultMobile count={filteredCount} onRefresh={onRefresh} />
             </div>
           )}
-        </div>
+        </ScrollAwareBlock>
 
-        {/* ✅ 3) 리스트 영역: sticky 아래라서 겹치지 않게 약간의 여백 */}
         <div className="mt-[16px] w-full">
           {isLoading ? (
             <LoadingSpinner />
           ) : shouldShowEmptyResult ? (
-            <div className="w-full flex justify-center pb-[120px]">
+            <div className="w-full flex justify-center  pb-[120px]">
               <ErrorState
                 code="1XX errors"
                 description={
