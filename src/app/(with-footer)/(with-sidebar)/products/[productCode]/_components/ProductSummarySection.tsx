@@ -36,7 +36,7 @@ export default function ProductSummarySection({
     typeof imageUrl === 'string' && isValidHttpUrl(imageUrl) ? imageUrl : fallback
 
   return (
-    <div className="flex w-full flex-col gap-4 desktop:w-[623px] desktop:gap-6">
+    <div className="flex w-full flex-col gap-4 desktop:w-[623px] desktop:gap-6 ">
       {/* 제품 */}
       <div className="flex w-full flex-col gap-2 desktop:gap-3">
         {/* 히어로 카드 */}
