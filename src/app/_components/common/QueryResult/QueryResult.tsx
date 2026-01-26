@@ -11,10 +11,6 @@ function cn(...inputs: Array<string | undefined | null | false>) {
   return twMerge(clsx(inputs))
 }
 
-// NOTE:
-// QueryResult는 페이지/섹션 배경 위에 사용되는 메타 정보 컴포넌트입니다.
-// 배경, 패딩, 레이아웃은 상위 컨테이너에서 처리하는 것을 전제로 합니다.
-
 export function QueryResult({
   count,
   label = '조회 결과',
@@ -26,10 +22,10 @@ export function QueryResult({
   refreshAriaLabel = '새로고침',
   iconSize = 20,
 }: QueryResultProps) {
-  /** ✅ 새로고침 가능 여부 */
   const canRefresh = !disabled && typeof onRefresh === 'function'
 
-  /** ✅ 실제 클릭 핸들러 */
+  const formattedCount = count.toLocaleString('ko-KR')
+
   const handleRefreshClick = () => {
     window.location.reload()
   }
@@ -37,7 +33,7 @@ export function QueryResult({
   return (
     <div className={cn('inline-flex items-center justify-end gap-[4px] py-[10px]', className)}>
       <span className="typo-b3 text-fg-basic-primary">
-        {label} {count}
+        {label} {formattedCount}
         {unit}
       </span>
 
@@ -50,7 +46,6 @@ export function QueryResult({
           className={cn(
             'inline-flex items-center justify-center cursor-pointer',
             'rounded-[5px]',
-            // tokens 기반 포커스
             'focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
             'focus-visible:outline-[color:var(--fg-basic-accent)]',
             !canRefresh && 'opacity-50 cursor-not-allowed',
