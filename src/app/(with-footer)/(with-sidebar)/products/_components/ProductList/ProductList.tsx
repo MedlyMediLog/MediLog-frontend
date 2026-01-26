@@ -545,7 +545,7 @@ export function ProductList({ category, target }: Props) {
               onSearchSubmit={() => {
                 closeSearchOverlay()
               }}
-              searchPlaceholder="제조사/브랜드명으로 검색해보세요."
+              searchPlaceholder="제조사/제품명으로 검색해보세요."
               autoFocusSearch={true}
             />
           </div>

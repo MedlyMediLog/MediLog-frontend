@@ -26,7 +26,7 @@ export default function ProductGridDesktop({ items, showStatus = false }: Props)
         'items-start',
 
         // 핵심: 남는 공간을 오른쪽에 몰지 않고 "그리드 전체를 가운데로"
-        'justify-center',
+        'justify-start',
       ].join(' ')}
     >
       {items.map((item) => (
