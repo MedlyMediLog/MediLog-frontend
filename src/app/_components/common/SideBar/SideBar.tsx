@@ -249,7 +249,7 @@ export default function SideBar() {
               {isOpen && (
                 <div className="flex flex-col min-w-0 text-left">
                   <div className="typo-b3 text-fg-basic-accent truncate">
-                    {meLoading ? '불러오는 중…' : me?.name ?? '게스트'}
+                    {meLoading ? '불러오는 중…' : (me?.name ?? '게스트')}
                   </div>
                   <div className="text-fg-basic-primary typo-b5 truncate">
                     {meLoading ? '' : isAuthed ? '로그인 됨' : '둘러보는중'}

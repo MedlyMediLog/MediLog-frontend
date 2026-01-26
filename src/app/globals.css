@@ -155,6 +155,7 @@
   --color-yellow-1000: var(--yellow-1000);
 }
 
+
 @media (min-width: 740px) {
   :root {
     --text-d1: 60px;
@@ -162,6 +163,7 @@
     --text-d3: 36px;
   }
 }
+
 
 :root {
   /* Background – Layer */
@@ -196,6 +198,7 @@
   --fg-info-secondary-week: #b4e1cb;
 }
 
+
 @layer base {
   html,
   body {
@@ -204,7 +207,12 @@
   button {
     @apply cursor-pointer;
   }
+  button {
+    @apply cursor-pointer;
+  }
+  
 }
+
 
 /* Typography */
 @utility typo {
