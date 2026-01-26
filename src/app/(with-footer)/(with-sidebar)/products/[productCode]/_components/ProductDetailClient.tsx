@@ -80,34 +80,6 @@ export default function ProductDetailClient({ productCode, target }: Props) {
   return (
     <div className="relative flex flex-col bg-[linear-gradient(to_bottom,#EDF2F6_0%,#FFFFFF_100%)]">
       <ProductDeatilHeader />
-      <div className="pt-[56px] desktop:pt-[80px]">
-        {isLoading ? (
-          <div className="w-full flex justify-center items-center py-[150px]">
-            <LoadingSpinner />
-          </div>
-        ) : isError || !data ? (
-          <div className="w-full flex justify-center pb-[120px]">
-            <ErrorState
-              code="1XX errors"
-              description={
-                '입력하신 조건으로는 결과를 찾지 못했어요.\n다른 키워드로 다시 검색해보세요.'
-              }
-              actionLabel="다시 찾아보기"
-              onAction={() => window.location.reload()}
-            />
-          </div>
-        ) : (
-          <div className="w-full flex flex-col pt-5 pb-15 gap-5 desktop:pt-0 items-center">
-            <div className="flex flex-col px-5 gap-5 desktop:flex-row desktop:gap-4">
-              <div>
-                <ProductSummarySection
-                  name={data.name}
-                  manufacturer={data.manufacturer}
-                  appearanceForm={data.appearanceForm}
-                  text={data.text}
-                  imageUrl={data.imageUrl}
-                />
-              </div>
 
       {isLoading ? (
         <div className="flex w-full items-center justify-center py-[150px]">
@@ -125,7 +97,7 @@ export default function ProductDetailClient({ productCode, target }: Props) {
           />
         </div>
       ) : (
-        <div className="flex w-full flex-col items-center gap-5 pt-5 pb-15 min-[1380px]:pt-0">
+        <div className="flex w-full flex-col items-center gap-5 pt-5 pb-15  desktop:pt-20">
           {/* ✅ 740~1379: 1열(모바일처럼) 유지 */}
           {/* ✅ 1380+: 예전 desktop 배치(2열) 그대로 */}
           <div className="flex flex-col gap-5 px-5 min-[1380px]:flex-row min-[1380px]:gap-4">
@@ -139,7 +111,7 @@ export default function ProductDetailClient({ productCode, target }: Props) {
               />
             </div>
 
-            <div className="flex flex-col gap-5 min-[1380px]:w-155">
+            <div className="flex flex-col gap-5 desktop:w-[620px]">
               <IngredientsSection ingredients={data.ingredients} />
               <GeneralUsageSection functionText={data.functionText} />
               <IntakeStorageSection
@@ -151,8 +123,8 @@ export default function ProductDetailClient({ productCode, target }: Props) {
               <ShareButton />
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

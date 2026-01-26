@@ -13,8 +13,6 @@ type Props = {
 
 function getFallbackByAppearance(appearanceForm: string): StaticImageData {
   const key = (appearanceForm ?? '').trim()
-
-
   if (/(정제|캡슐|환)/.test(key)) return pill
   return bottle
 }
@@ -36,9 +34,9 @@ export default function ProductSummarySection({
     typeof imageUrl === 'string' && isValidHttpUrl(imageUrl) ? imageUrl : fallback
 
   return (
-    <div className="flex w-full flex-col gap-4 desktop:w-[623px] desktop:gap-6 ">
+    <div className="flex w-full flex-col gap-4 desktop:w-[620px] min-[1380px]:gap-6">
       {/* 제품 */}
-      <div className="flex w-full flex-col gap-2 desktop:gap-3">
+      <div className="flex w-full flex-col gap-2 min-[1380px]:gap-3">
         {/* 히어로 카드 */}
         <div className="flex aspect-[335/223.15] w-full items-center justify-center rounded-[20px] bg-[#fbfdfd]">
           <div className="relative h-full w-full shrink-0 overflow-hidden rounded-[20px]">
@@ -47,10 +45,10 @@ export default function ProductSummarySection({
               fill
               alt={name}
               priority
-              sizes="(min-width: 1380px) 623px, 100vw"
+              sizes="(min-width: 1380px) 623px"
               className="rounded-[20px] object-cover"
-              
               onError={(e) => {
+                // next/image 에러 시 fallback 강제 (remote 이미지가 깨지는 경우)
                 const img = e.currentTarget as unknown as HTMLImageElement
                 img.src = (fallback as unknown as { src: string }).src
               }}
@@ -60,9 +58,11 @@ export default function ProductSummarySection({
 
         <div className="flex w-full flex-col gap-2">
           <div className="flex flex-col items-start gap-2">
-            <div className="typo-b3 text-fg-basic-primary desktop:typo-h5">{manufacturer}</div>
+            <div className="typo-b3 text-fg-basic-primary min-[1380px]:typo-h5">
+              {manufacturer}
+            </div>
 
-            <div className="typo-b1 text-fg-basic-accent desktop:typo-h2">{name}</div>
+            <div className="typo-b1 text-fg-basic-accent min-[1380px]:typo-h2">{name}</div>
 
             <Label variant="default">
               <div className="typo-b5 text-fg-basic-accent">{appearanceForm}</div>
@@ -73,7 +73,7 @@ export default function ProductSummarySection({
 
       {/* 설명 */}
       <div className="flex w-full flex-col gap-3">
-        <div className="typo-b3 text-gray-700 desktop:typo-b2">{text}</div>
+        <div className="typo-b3 text-gray-700 min-[1380px]:typo-b2">{text}</div>
       </div>
     </div>
   )
