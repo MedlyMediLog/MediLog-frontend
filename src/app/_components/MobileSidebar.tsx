@@ -58,7 +58,6 @@ export default function MobileSidebar({ open, onClose }: Props) {
     }
   }, [open, onClose])
 
-
   // 메뉴 열릴 때 버튼 기준 좌표 계산
   useEffect(() => {
     if (!effectiveProfileMenuOpen) return
@@ -159,7 +158,9 @@ export default function MobileSidebar({ open, onClose }: Props) {
                   <div className="w-6 h-6 relative shrink-0">
                     <Image src={item.icon} fill alt={item.label} className="object-contain" />
                   </div>
-                  <span className="min-w-0 truncate typo-h5 text-fg-basic-accent">{item.label}</span>
+                  <span className="min-w-0 truncate typo-h5 text-fg-basic-accent">
+                    {item.label}
+                  </span>
                 </Link>
               )
             })}
@@ -171,9 +172,20 @@ export default function MobileSidebar({ open, onClose }: Props) {
 
             <div className="flex flex-col text-fg-basic-primary typo-b3">
               {!meLoading && !me ? (
-                <Link href="/login" onClick={onClose} className="py-2.5 px-2 rounded-[8px] gap-2 typo-b3">
-                  로그인하면 최근 본 제품이 보여요
-                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsProfileMenuOpen(false)
+                    onClose()
+                    router.push('/login')
+                  }}
+                  className="py-2.5 px-2 typo-b3 text-left"
+                >
+                  <span className="underline underline-offset-2 hover:opacity-80 cursor-pointer">
+                    로그인
+                  </span>{' '}
+                  후 확인할 수 있어요
+                </button>
               ) : recentLoading ? (
                 <div className="py-2.5 px-2 text-fg-basic-secondary">불러오는 중…</div>
               ) : recent.length === 0 ? (
@@ -224,7 +236,7 @@ export default function MobileSidebar({ open, onClose }: Props) {
 
               <div className="flex flex-col min-w-0 text-left">
                 <div className="typo-b3 text-fg-basic-accent truncate">
-                  {meLoading ? '불러오는 중…' : (me?.name ?? '게스트')}
+                  {meLoading ? '불러오는 중…' : me?.name ?? '게스트'}
                 </div>
                 <div className="text-fg-basic-primary typo-b5 truncate">
                   {meLoading ? '' : me ? '로그인 됨' : '둘러보는중'}

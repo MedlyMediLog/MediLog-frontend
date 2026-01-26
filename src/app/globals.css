@@ -37,7 +37,7 @@
 
   /* Tailwind v4 breakpoint token (desktop:) */
   --breakpoint-desktop: 740px;
-  --breakpoint-desktop-lg:1380px;
+  --breakpoint-desktop-lg: 1380px;
 
   /* Gray */
   --gray-0: #fbfdfd;
@@ -215,7 +215,6 @@
   html,
   body {
     font-family: var(--font-sans);
-    
   }
 }
 
@@ -391,4 +390,30 @@
 }
 @utility bg-fg-danger-secondary-week {
   background-color: var(--fg-danger-secondary-week);
+}
+
+@utility animate-toast-slide {
+  animation: toast-slide-up-down 3s ease-in-out forwards;
+}
+
+@keyframes toast-slide-up-down {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+
+  15% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  85% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
 }

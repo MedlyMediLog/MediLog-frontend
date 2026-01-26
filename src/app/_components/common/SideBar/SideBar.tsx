@@ -1,3 +1,4 @@
+//sidebar.tsx
 'use client'
 
 import { createPortal } from 'react-dom'
@@ -152,7 +153,7 @@ export default function SideBar() {
 
         {/* 메뉴/본문 */}
         <div className={clsx('px-3 gap-10 flex flex-col', 'pb-[96px]')}>
-          <nav className="flex flex-col gap-2 items-center">
+          <nav className={clsx('flex flex-col gap-2', !isOpen && 'items-center')}>
             {NAV.map((item) => {
               const isActive = pathname === item.href
               return (
@@ -190,9 +191,12 @@ export default function SideBar() {
                     <button
                       type="button"
                       onClick={handleLoginClick}
-                      className="py-2.5 px-2 rounded-[8px] gap-2 typo-b3 text-left hover:bg-layer-secondary"
+                      className="py-2.5 px-2 typo-b3 text-left"
                     >
-                      로그인하면 최근 본 제품이 보여요
+                      <span className="underline underline-offset-2 hover:opacity-80 cursor-pointer">
+                        로그인
+                      </span>{' '}
+                      후 확인할 수 있어요
                     </button>
                   ) : recentLoading ? (
                     <div className="py-2.5 px-2 text-fg-basic-secondary">불러오는 중…</div>

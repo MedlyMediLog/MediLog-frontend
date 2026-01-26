@@ -1,3 +1,4 @@
+//profilemenupopover.tsx
 'use client'
 
 import { createPortal } from 'react-dom'
@@ -60,7 +61,7 @@ export default function ProfileMenuPopover({
           role="menuitem"
           type="button"
           onClick={onLogout}
-          className="w-full rounded-[12px] px-3 py-3 text-left typo-b3 text-fg-basic-primary hover:bg-layer-secondary"
+          className="w-full rounded-[12px] px-3 py-3 text-left typo-b3 text-fg-basic-primary hover:bg-layer-secondary cursor-pointer"
         >
           로그아웃
         </button>
@@ -72,7 +73,7 @@ export default function ProfileMenuPopover({
             onClose()
             queueMicrotask(onLogin)
           }}
-          className="w-full rounded-[12px] px-3 py-3 text-left typo-b3 text-fg-basic-primary hover:bg-layer-secondary"
+          className="w-full rounded-[12px] px-3 py-3 text-left typo-b3 text-fg-basic-primary hover:bg-layer-secondary cursor-pointer"
         >
           로그인
         </button>
