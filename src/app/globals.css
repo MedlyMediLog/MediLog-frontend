@@ -1,8 +1,5 @@
 @import 'tailwindcss';
 
-/* =========================
-   1) Design Tokens
-========================= */
 @theme {
   --font-sans: 'Pretendard', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
@@ -158,10 +155,7 @@
   --color-yellow-1000: var(--yellow-1000);
 }
 
-/* =========================
-   2) Responsive token override (Display only)
-   - 너가 원래 하던 방식 유지하되, 중괄호 정상화
-========================= */
+
 @media (min-width: 740px) {
   :root {
     --text-d1: 60px;
@@ -170,11 +164,7 @@
   }
 }
 
-/* =========================
-   3) Color tokens on :root
-   - (원래 너 코드가 :root가 @media 밖에 따로 있었는데
-     구조가 깨져있어서 그냥 정상 위치로 정리)
-========================= */
+
 :root {
   /* Background – Layer */
   --bg-layer-week: #edf2f6;
@@ -208,23 +198,21 @@
   --fg-info-secondary-week: #b4e1cb;
 }
 
-/* =========================
-   4) Base
-========================= */
+
 @layer base {
   html,
   body {
     font-family: var(--font-sans);
     
   }
+  button {
+    @apply cursor-pointer;
+  }
+  
 }
 
-/* =========================
-   5) Utilities (Tailwind v4 @utility)
-   - 여기부터가 핵심: variants(desktop:, hover:)가 커스텀 유틸에도 적용됨
-========================= */
 
-/* -------- Typography -------- */
+/* Typography */
 @utility typo {
   line-height: var(--leading-default);
   letter-spacing: var(--tracking-tight);
@@ -314,7 +302,7 @@
   letter-spacing: var(--tracking-tight);
 }
 
-/* -------- Background: Layer -------- */
+/* Background: Layer */
 @utility bg-layer-week {
   background-color: var(--bg-layer-week);
 }
@@ -334,7 +322,7 @@
   background-color: var(--bg-layer-modal);
 }
 
-/* -------- Foreground: Basic -------- */
+/* Foreground: Basic */
 @utility text-fg-basic-week {
   color: var(--fg-basic-week);
 }
@@ -348,7 +336,7 @@
   color: var(--fg-basic-accent);
 }
 
-/* -------- Foreground: Danger -------- */
+/* Foreground: Danger */
 @utility text-fg-danger-primary-week {
   color: var(--fg-danger-primary-week);
 }
@@ -365,7 +353,7 @@
   color: var(--fg-danger-secondary-accent);
 }
 
-/* -------- Foreground: Info -------- */
+/* Foreground: Info */
 @utility text-fg-info-primary-week {
   color: var(--fg-info-primary-week);
 }
@@ -385,7 +373,7 @@
   color: var(--fg-info-secondary-week);
 }
 
-/* -------- Background helpers (너가 쓰던 이름 유지) -------- */
+/* Background helpers */
 @utility bg-fg-info-secondary-week {
   background-color: var(--fg-info-secondary-week);
 }
