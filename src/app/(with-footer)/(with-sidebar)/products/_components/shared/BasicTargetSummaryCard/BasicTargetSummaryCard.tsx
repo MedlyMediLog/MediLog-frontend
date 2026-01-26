@@ -35,10 +35,10 @@ const TARGET_ALIAS: Record<string, Target> = {
   TEEN: '청소년',
   DIETER: '다이어터',
 
-  '전체': '전체',
-  '임산부': '임산부',
-  '청소년': '청소년',
-  '다이어터': '다이어터',
+  전체: '전체',
+  임산부: '임산부',
+  청소년: '청소년',
+  다이어터: '다이어터',
 }
 
 function normalizeTarget(raw?: string | null): Target {
@@ -104,9 +104,7 @@ export function BasicTargetSummaryCard({
       <div className={styles.content}>
         {isDesktop ? (
           <div className={styles.header}>
-            <span className={`typo-h3 text-fg-basic-accent ${styles.title}`}>
-              {resolvedTitle}
-            </span>
+            <span className={`typo-h3 text-fg-basic-accent ${styles.title}`}>{resolvedTitle}</span>
           </div>
         ) : (
           <button
@@ -115,21 +113,16 @@ export function BasicTargetSummaryCard({
             onClick={() => setOpen((v) => !v)}
             aria-expanded={isOpen}
           >
-            <span className={`typo-h5 text-fg-basic-accent ${styles.title}`}>
-              {resolvedTitle}
-            </span>
+            <span className={`typo-h5 text-fg-basic-accent ${styles.title}`}>{resolvedTitle}</span>
 
-            <span
-              className={isOpen ? styles.moreIconOpen : styles.moreIcon}
-              aria-hidden="true"
-            >
+            <span className={isOpen ? styles.moreIconOpen : styles.moreIcon} aria-hidden="true">
               <Image src={iconMore} alt="" width={24} height={24} />
             </span>
           </button>
         )}
 
         {/* intro/note(또는 타겟 avgComposition)는 데스크탑에서만 보여야 함 */}
-        {isDesktop && (
+        {(isDesktop || isOpen) && (
           <span className={`typo-b3 text-fg-basic-primary ${styles.subtitle}`}>
             {resolvedDesktopSubtitle}
           </span>
@@ -137,26 +130,20 @@ export function BasicTargetSummaryCard({
       </div>
 
       {isOpen && (
-  
-        
         <div className={styles.tipBox}>
-          
           <Image src={iconGuide} alt="" width={20} height={20} />
 
           <div className={styles.tipTexts}>
             <span className={`typo-b3 text-fg-info-primary ${styles.helperTitle}`}>
               {helperTitle}
             </span>
-            
 
             <span className={`typo-b4 text-fg-basic-accent ${styles.helperLabel}`}>
               {resolvedHelperLabel}
             </span>
-
-          
           </div>
         </div>
-    )}
+      )}
     </section>
   )
 

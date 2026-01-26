@@ -34,7 +34,7 @@ export default async function ProductListingPage({ searchParams }: Props) {
         <ProductListingTopBar />
 
         {/* 리스트/본문만 가운데 정렬 컨테이너 */}
-        <div className="min-h-dvh flex justify-center">
+        <div className="min-h-dvh flex justify-center pt-[56px] desktop:pt-[64px]">
           <div
             className={[
               'w-full',

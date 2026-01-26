@@ -9,7 +9,7 @@ import Link from 'next/link'
 export default function PrivacyHeader() {
   const [open, setOpen] = useState(false)
   return (
-    <div className="w-full flex h-[56px] p-[16px]  bg-gray-100 gap-30 desktop:py-4 desktop:px-5 desktop:h-auto">
+    <div className="sticky top-0 z-40 w-full flex h-[56px] p-[16px]  bg-gray-100 gap-30 desktop:py-4 desktop:px-5 desktop:h-auto">
       <div className="w-full flex justify-between items-center desktop:p-1">
         <Link href={'/'}>
           <Image

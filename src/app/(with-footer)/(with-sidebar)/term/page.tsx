@@ -2,7 +2,7 @@ import TermHeader from './_components/TermHeader'
 
 export default function Page() {
   return (
-    <div className="flex flex-col items-center bg-gradient-to-b from-[#EDF2F6] to-white relative">
+    <div className="flex flex-col items-center bg-gradient-to-b from-[#EDF2F6] to-white">
       <TermHeader />
       <div className="w-full mx-auto flex min-w-[630px] max-w-[900px] pt-[30px] px-[20px] pb-[60px] flex-col items-center gap-[30px]">
         <div className="w-full typo-h2 text-fg-basic-accent">{'딱!(ttak!) 서비스 이용 약관'}</div>
@@ -199,7 +199,7 @@ export default function Page() {
         <div className="flex flex-col items-start gap-1 w-full">
           <div className="typo-b1 text-fg-basic-accent">{'부칙'}</div>
           <div className="typo-b2 text-fg-basic-primary">
-            본 약관은 <strong className="font-semibold">2026년 1월 12일부터 시행</strong>됩니다.
+            본 약관은 <strong className="font-semibold">2026년 1월 28일부터 시행</strong>됩니다.
           </div>
         </div>
       </div>
