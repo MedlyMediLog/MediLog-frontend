@@ -13,7 +13,7 @@ type Props = {
 export default function GeneralUsageSection({functionText}: Props) {
   return (
     <>
-      <Card className="flex flex-col gap-5 rounded-[20px] py-5 px-4 desktop:px-6 desktop:py-7.5 desktop:gap-6">
+      <Card className="flex flex-col gap-5 rounded-[20px] py-5 px-4 desktop:px-6 desktop:py-7.5 desktop:gap-6 shadow-[0_0_54px_rgba(0,0,0,0.06)]">
         <CardHeader className="flex gap-2">
           <CardTitle
             icon={
@@ -34,7 +34,7 @@ export default function GeneralUsageSection({functionText}: Props) {
                 />
               </>
             }
-            title="일반적으로 이런 목적으로 취급돼요."
+            title="일반적으로 이런 기능이 언급돼요"
           />
         </CardHeader>
         <CardContent className="gap-5 flex flex-col desktop:gap-6 ">
