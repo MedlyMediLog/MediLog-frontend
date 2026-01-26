@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Logo from '@/assets/logo.png'
 import check_20 from '@/assets/check_20.png'
+import MaskedTextSlider from './MaskedTextSlider'
 
 function BenefitItem({ children }: { children: React.ReactNode }) {
   return (
@@ -15,7 +16,15 @@ export default function LoginBenefits() {
   return (
     <div className="flex flex-col gap-14 items-start">
       <div className="flex gap-3 flex-col">
-        <div className="flex typo-h2 text-fg-basic-accent">내 건강 고민에 맞게</div>
+
+        <MaskedTextSlider
+          phrases={['내 건강 고민에 맞게', '판단에 필요한 정보만', '필터링으로 찾기 쉽게']}
+          delay={1000}
+          duration={1600}
+          hold={1000}
+          widthClassName="w-[280px]" 
+        />
+
         <Image src={Logo} width={102} height={36} alt="logo" />
       </div>
 
