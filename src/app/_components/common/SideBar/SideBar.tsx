@@ -41,6 +41,15 @@ export default function SideBar() {
     router.refresh()
   }, [router])
 
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
+  const profileMenuWrapRef = useRef<HTMLDivElement | null>(null)
+  const profileBtnRef = useRef<HTMLButtonElement | null>(null)
+  const [menuPos, setMenuPos] = useState<
+    { left: number; top: number } | { right: number; top: number } | null
+  >(null)
+
+  const closeProfileMenu = () => setIsProfileMenuOpen(false)
+
   const handleLoginClick = useCallback(() => {
     console.warn('login click reached')
 
@@ -56,15 +65,6 @@ export default function SideBar() {
       router.push('/login')
     }
   }, [router])
-
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
-  const profileMenuWrapRef = useRef<HTMLDivElement | null>(null)
-  const profileBtnRef = useRef<HTMLButtonElement | null>(null)
-  const [menuPos, setMenuPos] = useState<
-    { left: number; top: number } | { right: number; top: number } | null
-  >(null)
-
-  const closeProfileMenu = () => setIsProfileMenuOpen(false)
 
   const canFetchRecent = isOpen && isAuthed
   const { data: recent = [], isLoading: recentLoading } = useRecentProducts(canFetchRecent)
@@ -153,7 +153,8 @@ export default function SideBar() {
 
         {/* 메뉴/본문 */}
         <div className={clsx('px-3 gap-10 flex flex-col', 'pb-[96px]')}>
-          <nav className={clsx('flex flex-col gap-2', !isOpen && 'items-center')}>
+          {/*  열렸을 땐 좌측 정렬, 닫혔을 땐 중앙 정렬 */}
+          <nav className={clsx('flex flex-col gap-2', isOpen ? 'items-stretch' : 'items-center')}>
             {NAV.map((item) => {
               const isActive = pathname === item.href
               return (
@@ -163,8 +164,8 @@ export default function SideBar() {
                   aria-current={isActive ? 'page' : undefined}
                   className={clsx(
                     'rounded-[12px] flex items-center transition-colors hover:bg-layer-secondary',
-                    isOpen ? 'w-60 p-2 gap-2 justify-start' : 'w-10 h-10 justify-center',
-                    // isActive && 'bg-layer-secondary',
+
+                    isOpen ? 'w-full p-2 gap-2 justify-start' : 'w-10 h-10 justify-center',
                   )}
                 >
                   <div className="w-6 h-6 relative shrink-0">

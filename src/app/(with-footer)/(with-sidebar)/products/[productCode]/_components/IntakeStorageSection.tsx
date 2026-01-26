@@ -19,7 +19,7 @@ export default function IntakeStorageSection({howToEat, expiration, storageMetho
   return (
     
     <>
-      <Card className="flex-col flex rounded-[20px] py-5 px-4 gap-4  desktop:py-7.5 desktop:px-6 desktop:gap-6">
+      <Card className="flex-col flex rounded-[20px] py-5 px-4 gap-4  desktop:py-7.5 desktop:px-6 desktop:gap-6 shadow-[0_0_54px_rgba(0,0,0,0.06)]">
         <CardTitle
         icon={
           <>
@@ -39,7 +39,7 @@ export default function IntakeStorageSection({howToEat, expiration, storageMetho
             />
           </>
         }
-        title="섭취 ∙ 보관 방법"
+        title="이렇게 섭취하고 보관해요"
        
       />
         <CardContent className="gap-3 flex flex-col">

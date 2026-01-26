@@ -152,7 +152,7 @@ export default function MobileSidebar({ open, onClose }: Props) {
                   className={clsx(
                     'w-full rounded-[12px] flex items-center p-2 gap-2 justify-start',
                     'transition-colors hover:bg-layer-secondary',
-                    isActive && 'bg-layer-secondary',
+                    // isActive && 'bg-layer-secondary',
                   )}
                 >
                   <div className="w-6 h-6 relative shrink-0">

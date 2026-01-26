@@ -45,16 +45,7 @@ export default function ProfileMenuPopover({
           : { top: pos.top, right: pos.right, transform: 'translateY(-100%)' }
       }
     >
-      <Link
-        role="menuitem"
-        href="/profile/edit"
-        className="w-full rounded-[12px] px-3 py-3 text-left typo-b3 text-fg-basic-primary hover:bg-layer-secondary"
-        onClick={onClose}
-      >
-        프로필 수정
-      </Link>
-
-      <div className="w-full h-px bg-layer-secondary" />
+      
 
       {!meLoading && me ? (
         <button

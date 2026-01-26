@@ -3,6 +3,7 @@
 import * as React from 'react'
 import Image from 'next/image'
 import searchIcon from '@/assets/search.png'
+import close from '@/assets/close.svg'
 
 import { trackClick } from '@/lib/analytics/clickCounter'
 
@@ -30,7 +31,7 @@ export function SearchInput({
   variant = 'desktop',
   value = '',
   onChange = () => {},
-  placeholder = '제조사/브랜드명으로 검색해보세요.',
+  placeholder = '제조사/제조명으로 검색해보세요.',
   disabled = false,
   onSubmit,
   onOpen,
@@ -120,6 +121,16 @@ export function SearchInput({
           inputClassName,
         ].join(' ')}
       />
+      {value && !disabled && (
+        <button
+          type="button"
+          aria-label="검색어 삭제"
+          onClick={() => onChange('')}
+          className="grid place-items-center w-8 h-8 rounded-full hover:bg-gray-100"
+        >
+          <Image src={close} alt="삭제" width={16} height={16} />
+        </button>
+      )}
     </div>
   )
 }
