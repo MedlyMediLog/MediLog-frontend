@@ -87,46 +87,47 @@ export function ProductListMobile({
         ref={contentRef}
         className={['w-full', 'flex flex-col items-start self-stretch', 'pb-[60px]'].join(' ')}
       >
+        {/* TargetSummaryCard만 스크롤 시 숨김 */}
         <ScrollAwareBlock hidden={isScrolling} className="w-full">
           <div className="w-full mb-[12px]">
             <BasicTargetSummaryCard withSlotPadding={false} />
           </div>
-
-          <div className="w-full">
-            {/* 기본 모바일 UI(아이콘 + 칩)만 노출 */}
-            <FilterBar
-              variant="mobile"
-              isSearching={false}
-              hideOptionsWhenSearching={false}
-              options={options}
-              selectedValue={selected}
-              onSelect={onSelect}
-              searchValue={q}
-              onSearchChange={onSearchChange}
-              onSearchSubmit={onSearchSubmit}
-              searchPlaceholder="제조사/브랜드명으로 검색해보세요."
-              onIconClick={onSearchOpen} // 아이콘 클릭 => 오버레이 오픈
-            />
-          </div>
-
-          {isFilterApplied && (
-            <div className="mt-[8px] w-full">
-              <TargetNotice message={targetMessage} />
-            </div>
-          )}
-
-          {!shouldShowEmptyResult && (
-            <div className="mt-[16px] w-full flex justify-end">
-              <QueryResultMobile count={filteredCount} onRefresh={onRefresh} />
-            </div>
-          )}
         </ScrollAwareBlock>
+
+        <div className="w-full">
+          {/* 기본 모바일 UI(아이콘 + 칩)만 노출 */}
+          <FilterBar
+            variant="mobile"
+            isSearching={false}
+            hideOptionsWhenSearching={false}
+            options={options}
+            selectedValue={selected}
+            onSelect={onSelect}
+            searchValue={q}
+            onSearchChange={onSearchChange}
+            onSearchSubmit={onSearchSubmit}
+            searchPlaceholder="제조사/브랜드명으로 검색해보세요."
+            onIconClick={onSearchOpen} // 아이콘 클릭 => 오버레이 오픈
+          />
+        </div>
+
+        {isFilterApplied && (
+          <div className="mt-[8px] w-full">
+            <TargetNotice message={targetMessage} />
+          </div>
+        )}
+
+        {!shouldShowEmptyResult && (
+          <div className="mt-[16px] w-full flex justify-end">
+            <QueryResultMobile count={filteredCount} onRefresh={onRefresh} />
+          </div>
+        )}
 
         <div className="mt-[16px] w-full">
           {isLoading ? (
             <LoadingSpinner />
           ) : shouldShowEmptyResult ? (
-            <div className="w-full flex justify-center  pb-[120px]">
+            <div className="w-full flex justify-center pb-[120px]">
               <ErrorState
                 code="1XX errors"
                 description={
@@ -154,7 +155,7 @@ export function ProductListMobile({
                 </ul>
 
                 <FloatingTopButton visible={visible} onClick={onClick} />
-                {/* <GridTopButton visible={visible} onClick={onClick} /> */}
+          
               </div>
 
               <LoadMoreSection

@@ -82,11 +82,11 @@ export default function ProductDetailClient({ productCode, target }: Props) {
       <ProductDeatilHeader />
 
       {isLoading ? (
-        <div className="flex w-full items-center justify-center py-[150px]">
+        <div className="flex w-full items-center justify-center py-[170px]">
           <LoadingSpinner />
         </div>
       ) : isError || !data ? (
-        <div className="flex w-full justify-center pb-[120px]">
+        <div className="flex w-full justify-center pt-[56px] desktop:pt-[80px] pb-[120px]">
           <ErrorState
             code="1XX errors"
             description={

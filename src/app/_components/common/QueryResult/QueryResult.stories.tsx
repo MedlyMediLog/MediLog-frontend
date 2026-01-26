@@ -1,4 +1,3 @@
-//src/app/_components/common/QueryResult/QueryResult.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { QueryResult } from './QueryResult';
 
@@ -12,8 +11,6 @@ const meta: Meta<typeof QueryResult> = {
     label: '조회 결과',
     unit: '개',
     onRefresh: () => {
-      // ✅ actions addon 없이도 확인 가능
-      // 스토리북 콘솔(브라우저 devtools)에서 로그 확인
       console.log('[QueryResult] refresh click');
     },
   },

@@ -5,16 +5,18 @@ import error from '@/assets/error.png'
 import Image from 'next/image'
 import CategoryHeader from '../category/_components/CategoryHeader'
 import { ErrorState } from '@/app/_components/common/ErrorState'
+import { useRouter } from 'next/navigation'
 export default function Page() {
+  const router = useRouter()
   return (
     <>
       <div className="flex flex-col bg-gray-100 relative">
         <CategoryHeader />
         <div className="w-full">
-          <div className="w-full max-w-[1300px] mx-auto px-[20px] py-[17px] gap-[10px] flex items-center">
-            <div className="typo-d2 text-fg-basic-accent whitespace-pre-line">
+          <div className="w-full pt-[80px] max-w-[1300px] mx-auto px-[20px] py-[17px] gap-[10px] flex items-center">
+            {/* <div className="typo-d2 text-fg-basic-accent whitespace-pre-line">
               {'어떤 종류의 제품 정보를 \n확인하고 싶으신가요?'}
-            </div>
+            </div> */}
           </div>
           <div className="w-full flex justify-center min-h-[745px]">
             {/* <div className="w-full flex flex-col items-center py-[60px] gap-[24px] max-w-[295px] rounded-[12px]">
@@ -38,6 +40,7 @@ export default function Page() {
               code={'5XX errors'}
               description={'카테고리 정보를 불러올 수 없어요.\n잠시 후 다시 시도해주세요.'}
               actionLabel={'다시 시도하기'}
+              onAction={() => router.push('/category')}
             />
           </div>
         </div>
