@@ -46,6 +46,44 @@ function normalizeTarget(raw?: string | null): Target {
   return TARGET_ALIAS[v.toUpperCase()] ?? ((v as Target) || '전체')
 }
 
+type ToggleButtonProps = {
+  placement: 'top' | 'bottom'
+  isOpen: boolean
+  onToggle: () => void
+}
+
+function ToggleButton({ placement, isOpen, onToggle }: ToggleButtonProps) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-expanded={isOpen}
+      className={[
+        'flex items-center gap-[6px]',
+        'h-[24px]',
+        'bg-transparent border-0 p-0',
+        'text-left cursor-pointer',
+        placement === 'bottom' ? 'self-start' : '',
+      ].join(' ')}
+    >
+      <span className="typo-b4 text-fg-basic-primary">
+        {isOpen ? '숨기기' : '자세히보기'}
+      </span>
+
+      <span
+        aria-hidden="true"
+        className={[
+          'flex items-center justify-center flex-none',
+          'transition-transform duration-[160ms] ease-[ease]',
+          isOpen ? 'rotate-180' : 'rotate-0',
+        ].join(' ')}
+      >
+        <Image src={iconMore} alt="" width={24} height={24} />
+      </span>
+    </button>
+  )
+}
+
 type Props = {
   title?: string
   subtitle?: string
@@ -88,36 +126,6 @@ export function BasicTargetSummaryCard({
 
   const isOpen = isDesktop ? true : open
 
-  const ToggleButton = ({ placement }: { placement: 'top' | 'bottom' }) => (
-    <button
-      type="button"
-      onClick={() => setOpen((v) => !v)}
-      aria-expanded={isOpen}
-      className={[
-        'flex items-center gap-[6px]',
-        'h-[24px]',
-        'bg-transparent border-0 p-0',
-        'text-left cursor-pointer',
-        placement === 'bottom' ? 'self-start' : '',
-      ].join(' ')}
-    >
-      <span className="typo-b4 text-fg-basic-primary">
-        {isOpen ? '숨기기' : '자세히보기'}
-      </span>
-
-      <span
-        aria-hidden="true"
-        className={[
-          'flex items-center justify-center flex-none',
-          'transition-transform duration-[160ms] ease-[ease]',
-          isOpen ? 'rotate-180' : 'rotate-0',
-        ].join(' ')}
-      >
-        <Image src={iconMore} alt="" width={24} height={24} />
-      </span>
-    </button>
-  )
-
   const card = (
     <section
       aria-label="기본 및 대상 요약"
@@ -132,7 +140,13 @@ export function BasicTargetSummaryCard({
             <span className="typo-h2 text-gray-1000">{resolvedTitle}</span>
           </div>
 
-          {!isDesktop && !isOpen && <ToggleButton placement="top" />}
+          {!isDesktop && !isOpen && (
+            <ToggleButton
+              placement="top"
+              isOpen={isOpen}
+              onToggle={() => setOpen((v) => !v)}
+            />
+          )}
         </div>
 
         {(isDesktop || isOpen) && (
@@ -161,7 +175,13 @@ export function BasicTargetSummaryCard({
         </div>
       )}
 
-      {!isDesktop && isOpen && <ToggleButton placement="bottom" />}
+      {!isDesktop && isOpen && (
+        <ToggleButton
+          placement="bottom"
+          isOpen={isOpen}
+          onToggle={() => setOpen((v) => !v)}
+        />
+      )}
     </section>
   )
 
