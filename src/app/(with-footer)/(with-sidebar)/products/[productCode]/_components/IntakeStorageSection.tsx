@@ -19,7 +19,7 @@ export default function IntakeStorageSection({howToEat, expiration, storageMetho
   return (
     
     <>
-      <Card className="flex-col flex rounded-[20px] py-5 px-4 gap-4  desktop:py-7.5 desktop:px-6 desktop:gap-6">
+      <Card className="flex-col flex rounded-[20px] py-5 px-4 gap-4  desktop:py-7.5 desktop:px-6 desktop:gap-6 shadow-[0_0_54px_rgba(0,0,0,0.06)]">
         <CardTitle
         icon={
           <>

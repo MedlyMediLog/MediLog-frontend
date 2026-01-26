@@ -13,7 +13,7 @@ type Props = {
 export default function GeneralUsageSection({functionText}: Props) {
   return (
     <>
-      <Card className="flex flex-col gap-5 rounded-[20px] py-5 px-4 desktop:px-6 desktop:py-7.5 desktop:gap-6">
+      <Card className="flex flex-col gap-5 rounded-[20px] py-5 px-4 desktop:px-6 desktop:py-7.5 desktop:gap-6 shadow-[0_0_54px_rgba(0,0,0,0.06)]">
         <CardHeader className="flex gap-2">
           <CardTitle
             icon={

@@ -10,7 +10,7 @@ type Props = {
 
 export default function SafetyGuideSection({cautionRaw}: Props) {
   return (
-    <Card className="flex flex-col gap-4 py-5 px-4 desktop:py-7.5 desktop:px-6 desktop:gap-6">
+    <Card className="flex flex-col gap-4 py-5 px-4 desktop:py-7.5 desktop:px-6 desktop:gap-6 shadow-[0_0_54px_rgba(0,0,0,0.06)]">
       {/* Header */}
       <CardHeader className="gap-2">
         <CardTitle
