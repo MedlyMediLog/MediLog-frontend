@@ -4,7 +4,7 @@ import type { Category, Target, ProductListResponse } from '@/types/product'
 export function useProductList(params: { category: Category; target?: Target }) {
   const { category, target } = params
 
-  return useQuery({
+  return useQuery<ProductListResponse>({
     queryKey: ['productList', category, target ?? null],
 
     queryFn: async () => {
@@ -12,13 +12,22 @@ export function useProductList(params: { category: Category; target?: Target }) 
       url.searchParams.set('category', category)
       if (target) url.searchParams.set('target', target)
 
-      const res = await fetch(url.toString())
-      if (!res.ok) {
-        throw new Error('Failed to fetch product list')
-      }
-      return res.json()
+      const res = await fetch(url.toString(), {
+      
+      })
+      if (!res.ok) throw new Error('Failed to fetch product list')
+      return (await res.json()) as ProductListResponse
     },
-    // throwOnError: true,
+
+    // 자동 리패치 트리거 전부 끄기
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+
+    staleTime: Infinity,
+
+    gcTime: Infinity, 
+
     retry: false,
   })
 }

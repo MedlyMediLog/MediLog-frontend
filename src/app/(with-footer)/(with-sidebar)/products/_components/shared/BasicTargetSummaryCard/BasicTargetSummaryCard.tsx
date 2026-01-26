@@ -3,7 +3,6 @@
 import React from 'react'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
-import styles from './BasicTargetSummaryCard.module.css'
 
 import iconGuide from '@/assets/product-listing/icons/mobile/icon-guide.svg'
 import iconMore from '@/assets/product-listing/icons/mobile/icon-more.svg'
@@ -47,17 +46,49 @@ function normalizeTarget(raw?: string | null): Target {
   return TARGET_ALIAS[v.toUpperCase()] ?? ((v as Target) || '전체')
 }
 
+type ToggleButtonProps = {
+  placement: 'top' | 'bottom'
+  isOpen: boolean
+  onToggle: () => void
+}
+
+function ToggleButton({ placement, isOpen, onToggle }: ToggleButtonProps) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-expanded={isOpen}
+      className={[
+        'flex items-center gap-[6px]',
+        'h-[24px]',
+        'bg-transparent border-0 p-0',
+        'text-left cursor-pointer',
+        placement === 'bottom' ? 'self-start' : '',
+      ].join(' ')}
+    >
+      <span className="typo-b4 text-fg-basic-primary">
+        {isOpen ? '숨기기' : '자세히보기'}
+      </span>
+
+      <span
+        aria-hidden="true"
+        className={[
+          'flex items-center justify-center flex-none',
+          'transition-transform duration-[160ms] ease-[ease]',
+          isOpen ? 'rotate-180' : 'rotate-0',
+        ].join(' ')}
+      >
+        <Image src={iconMore} alt="" width={24} height={24} />
+      </span>
+    </button>
+  )
+}
+
 type Props = {
   title?: string
-
-  /** 강제로 주면 desktopSubtitle을 통째로 대체 */
   subtitle?: string
-
   helperTitle?: string
-
-  /** 강제로 주면 tipBox 문구를 통째로 대체 */
   helperLabel?: string
-
   defaultOpen?: boolean
   withSlotPadding?: boolean
 }
@@ -71,7 +102,6 @@ export function BasicTargetSummaryCard({
   withSlotPadding = false,
 }: Props) {
   const sp = useSearchParams()
-
   const category = normalizeCategory(sp.get('category'))
   const target = normalizeTarget(sp.get('target'))
 
@@ -87,66 +117,74 @@ export function BasicTargetSummaryCard({
   const [isDesktop, setIsDesktop] = React.useState(false)
 
   React.useEffect(() => {
-    if (typeof window === 'undefined') return
     const mq = window.matchMedia('(min-width: 740px)')
     const apply = () => setIsDesktop(mq.matches)
     apply()
-
-    const onChange = () => apply()
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
   }, [])
 
   const isOpen = isDesktop ? true : open
 
   const card = (
-    <section className={styles.card} aria-label="기본 및 대상 요약">
-      <div className={styles.content}>
-        {isDesktop ? (
-          <div className={styles.header}>
-            <span className={`typo-h3 text-fg-basic-accent ${styles.title}`}>{resolvedTitle}</span>
+    <section
+      aria-label="기본 및 대상 요약"
+      className={[
+        'flex w-full max-w-full min-w-0 flex-col items-start justify-center',
+        'box-border py-[10px] gap-[12px] rounded-[12px]',
+      ].join(' ')}
+    >
+      <div className="flex w-full min-w-0 flex-col items-start gap-[4px]">
+        <div className="flex flex-col w-full min-w-0 gap-[6px]">
+          <div className="flex w-full items-center">
+            <span className="typo-h2 text-gray-1000">{resolvedTitle}</span>
           </div>
-        ) : (
-          <button
-            type="button"
-            className={styles.header}
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={isOpen}
-          >
-            <span className={`typo-h5 text-fg-basic-accent ${styles.title}`}>{resolvedTitle}</span>
 
-            <span className={isOpen ? styles.moreIconOpen : styles.moreIcon} aria-hidden="true">
-              <Image src={iconMore} alt="" width={24} height={24} />
-            </span>
-          </button>
-        )}
+          {!isDesktop && !isOpen && (
+            <ToggleButton
+              placement="top"
+              isOpen={isOpen}
+              onToggle={() => setOpen((v) => !v)}
+            />
+          )}
+        </div>
 
-        {/* intro/note(또는 타겟 avgComposition)는 데스크탑에서만 보여야 함 */}
         {(isDesktop || isOpen) && (
-          <span className={`typo-b3 text-fg-basic-primary ${styles.subtitle}`}>
+          <span className="typo-b3 text-fg-basic-primary min-w-0 self-stretch block overflow-visible">
             {resolvedDesktopSubtitle}
           </span>
         )}
       </div>
 
       {isOpen && (
-        <div className={styles.tipBox}>
+        <div
+          className={[
+            'flex w-full min-w-0 items-start self-stretch bg-blue-200',
+            'px-[8px] py-[10px] gap-[4px] rounded-[8px]',
+          ].join(' ')}
+        >
           <Image src={iconGuide} alt="" width={20} height={20} />
-
-          <div className={styles.tipTexts}>
-            <span className={`typo-b3 text-fg-info-primary ${styles.helperTitle}`}>
+          <div className="flex flex-1 min-w-0 flex-col items-start gap-[4px]">
+            <span className="typo-b3 text-fg-info-primary min-w-0">
               {helperTitle}
             </span>
-
-            <span className={`typo-b4 text-fg-basic-accent ${styles.helperLabel}`}>
+            <span className="typo-b4 text-fg-basic-accent min-w-0 self-stretch overflow-hidden max-h-[42px]">
               {resolvedHelperLabel}
             </span>
           </div>
         </div>
       )}
+
+      {!isDesktop && isOpen && (
+        <ToggleButton
+          placement="bottom"
+          isOpen={isOpen}
+          onToggle={() => setOpen((v) => !v)}
+        />
+      )}
     </section>
   )
 
   if (!withSlotPadding) return card
-  return <div className={styles.slot}>{card}</div>
+  return <div className="w-full box-border">{card}</div>
 }
