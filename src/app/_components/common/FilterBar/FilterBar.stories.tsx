@@ -3,10 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 import { FilterBar, type FilterBarProps } from './FilterBar'
 
-// ✅ Storybook에서 CSS 변경이 누락/캐시되는 경우를 대비한 “보험”
-// (컴포넌트 내부에서도 import 하지만, SB 환경에서 누락되는 케이스가 있어 중복 로드해도 안전)
-import './FilterBar.css'
-
 const meta: Meta<typeof FilterBar> = {
   title: 'COMMON/FilterBar',
   component: FilterBar,
@@ -37,7 +33,6 @@ export default meta
 
 type Story = StoryObj<typeof FilterBar>
 
-/** ✅ Hook은 컴포넌트에서만 */
 function Controlled(args: FilterBarProps & { initialSearch?: string }) {
   const [selected, setSelected] = React.useState(args.selectedValue)
   const [q, setQ] = React.useState(args.initialSearch ?? (args.searchValue ?? ''))
