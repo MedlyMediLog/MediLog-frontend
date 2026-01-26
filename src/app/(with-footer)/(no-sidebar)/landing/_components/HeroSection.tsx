@@ -1,8 +1,11 @@
+'use client'
+
 import Button from '@/app/_components/common/Button'
 import logo from '@/assets/logo.png'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import LandingMaskText from './LandingMaskText'
 
 type HeroSectionProps = {
@@ -13,33 +16,25 @@ type HeroSectionProps = {
 
 export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }: HeroSectionProps) {
   const router = useRouter()
+  const [scrolled, setScrolled] = useState(false)
+
+  // 스크롤 시 헤더 스타일 변경 (선택)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
-    <div className="relative w-full flex-1 px-5 overflow-hidden">
-      {/* Desktop video (≥ 740px) */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover -z-10 hidden desktop:block"
-        autoPlay
-        muted
-        loop
-        playsInline
-      >
-        <source src="/video/landing_desktop.mp4" type="video/mp4" />
-      </video>
+    <div className="relative w-full flex-1 overflow-hidden">
+      {/* ================= 헤더 (fixed) ================= */}
+      <header
+        className={`
+          fixed top-0 left-0 right-0 z-50 desktop:px-5 bg-white
 
-      {/* Mobile video (375–739px) */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover -z-10 block desktop:hidden"
-        autoPlay
-        muted
-        loop
-        playsInline
+        `}
       >
-        <source src="/video/landing_mobile.mp4" type="video/mp4" />
-      </video>
-
-      <div className="relative z-10">
-        {/* 헤더 */}
-        <div className="mx-auto flex items-center justify-between max-w-[1300px] py-4 px-5">
+        <div className="mx-auto flex items-center justify-between max-w-[1300px] py-4 px-4 desktop:px-5">
           <Link href="/" className="flex items-center w-[80px] h-[40px]" aria-label="홈으로 이동">
             <Image
               src={logo}
@@ -54,14 +49,42 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
           <Button
             variant="secondary"
             shape="rounded"
-            className="flex py-2 px-4 desktop:py-3 desktop:px-4 items-center justify-center cursor-pointer"
+            className="flex py-2 px-4 desktop:py-3 desktop:px-4 items-center justify-center"
             onClick={isLoggedIn ? onLogoutClick : onLoginClick}
           >
             {isLoggedIn ? '로그아웃' : '로그인'}
           </Button>
         </div>
+      </header>
 
-        {/* Hero 내용 */}
+      {/* ===== 헤더 높이만큼 spacer (필수) ===== */}
+      <div className="h-[64px] desktop:h-[72px]" />
+
+      {/* ================= 배경 비디오 ================= */}
+      {/* Desktop */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover -z-10 hidden desktop:block"
+        autoPlay
+        muted
+        loop
+        playsInline
+      >
+        <source src="/video/landing_desktop.mp4" type="video/mp4" />
+      </video>
+
+      {/* Mobile */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover -z-10 block desktop:hidden"
+        autoPlay
+        muted
+        loop
+        playsInline
+      >
+        <source src="/video/landing_mobile.mp4" type="video/mp4" />
+      </video>
+
+      {/* ================= Hero 콘텐츠 ================= */}
+      <div className="relative z-10 desktop:px-5">
         <div className="mx-auto max-w-[1300px] h-[1000px] desktop:pt-[200px] pt-[80px] px-5">
           <div className="flex flex-col items-center desktop:items-start gap-[30px] desktop:gap-[60px]">
             <div className="flex flex-col text-center items-center desktop:text-left desktop:items-start gap-[12px]">
@@ -73,10 +96,11 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
                 ]}
               />
             </div>
+
             <Button
               variant="primary"
               shape="rounded"
-              className="flex py-3 px-5 justify-center items-center gap-[8px] cursor-pointer"
+              className="flex py-3 px-5 justify-center items-center gap-[8px]"
               onClick={() => router.push('/category')}
             >
               제품 정보 확인하기

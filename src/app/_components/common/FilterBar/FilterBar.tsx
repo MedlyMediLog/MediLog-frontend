@@ -48,7 +48,7 @@ export function FilterBar({
   searchValue = '',
   onSearchChange,
   onSearchSubmit,
-  searchPlaceholder = '제조사/브랜드명으로 검색해보세요.',
+  searchPlaceholder = '제조사/제조명으로 검색해보세요.',
   disabled = false,
   onIconClick,
   autoFocusSearch = false,
@@ -155,7 +155,11 @@ export function FilterBar({
     <div className={`medly-filterbar medly-filterbar--mobile ${className}`}>
       <div className="medly-filterbar__icon">
         {/* ❌ 검색창 열기(onOpen)는 클릭 카운트에 포함하지 않음 */}
-        <SearchInput variant="mobile" disabled={disabled} onOpen={disabled ? undefined : onIconClick} />
+        <SearchInput
+          variant="mobile"
+          disabled={disabled}
+          onOpen={disabled ? undefined : onIconClick}
+        />
       </div>
 
       <div className="medly-filtergroup medly-filtergroup--fixed" aria-label="필터 선택">

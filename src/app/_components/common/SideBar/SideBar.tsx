@@ -56,7 +56,6 @@ export default function SideBar() {
     }
   }, [router])
 
-
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
   const profileMenuWrapRef = useRef<HTMLDivElement | null>(null)
   const profileBtnRef = useRef<HTMLButtonElement | null>(null)
@@ -87,7 +86,6 @@ export default function SideBar() {
     }
   }, [qc, router])
 
-
   useEffect(() => {
     if (!isOpen) closeProfileMenu()
   }, [isOpen])
@@ -99,7 +97,6 @@ export default function SideBar() {
 
     const update = () => {
       const r = btn.getBoundingClientRect()
-
 
       setMenuPos({
         left: 8,
@@ -166,7 +163,7 @@ export default function SideBar() {
                   className={clsx(
                     'rounded-[12px] flex items-center transition-colors hover:bg-layer-secondary',
                     isOpen ? 'w-60 p-2 gap-2 justify-start' : 'w-10 h-10 justify-center',
-                    isActive && 'bg-layer-secondary',
+                    // isActive && 'bg-layer-secondary',
                   )}
                 >
                   <div className="w-6 h-6 relative shrink-0">
@@ -229,7 +226,6 @@ export default function SideBar() {
         {/* 하단 */}
         <div className="absolute bottom-0 left-0 w-full border-t border-gray-300 px-2.5 py-2 flex flex-col gap-2 bg-[#edf2f6]">
           <div ref={profileMenuWrapRef} className="relative">
-
             <button
               ref={profileBtnRef}
               type="button"
@@ -248,7 +244,7 @@ export default function SideBar() {
               {isOpen && (
                 <div className="flex flex-col min-w-0 text-left">
                   <div className="typo-b3 text-fg-basic-accent truncate">
-                    {meLoading ? '불러오는 중…' : (me?.name ?? '게스트')}
+                    {meLoading ? '불러오는 중…' : me?.name ?? '게스트'}
                   </div>
                   <div className="text-fg-basic-primary typo-b5 truncate">
                     {meLoading ? '' : isAuthed ? '로그인 됨' : '둘러보는중'}

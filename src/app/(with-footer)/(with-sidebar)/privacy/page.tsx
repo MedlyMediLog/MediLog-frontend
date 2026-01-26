@@ -19,7 +19,7 @@ export default function Page() {
               }
             </div>
 
-            <ul className="list-disc pl-[22px] space-y-1">
+            <ul className="list-disc pl-[45px] space-y-1">
               <li>수집 항목: 접속 로그, 접속 IP 정보, 쿠키(Cookie), 서비스 이용 기록</li>
               <li>
                 수집 목적: 서비스 접속 현황 분석 및 품질 개선, 비정상적 접근 및 부정 이용 방지, 보안
@@ -39,7 +39,7 @@ export default function Page() {
               수단으로 사용합니다. 로그인 이용 시 다음과 같은 정보가 수집될 수 있습니다.
             </div>
 
-            <ul className="list-disc pl-[22px] space-y-1">
+            <ul className="list-disc pl-[45px] space-y-1">
               <li>필수 수집 항목: 이메일 주소, 이름, 프로필 이미지 (사용자 식별 목적)</li>
               <li>선택 수집 항목: 관심 카테고리, 사용자 유형 선택</li>
             </ul>
@@ -56,7 +56,7 @@ export default function Page() {
               요청할 수 있습니다.
             </div>
 
-            <ul className="list-disc pl-[22px] space-y-2">
+            <ul className="list-disc pl-[45px] space-y-2">
               <li>
                 관심 카테고리
                 <ul className="list-disc pl-6 mt-1 space-y-1">
@@ -119,7 +119,7 @@ export default function Page() {
             </div>
             <div>다만, 다음의 경우는 예외로 합니다.</div>
 
-            <ul className="list-disc pl-[22px] space-y-1">
+            <ul className="list-disc pl-[45px] space-y-1">
               <li>법령에 근거한 수사기관의 정당한 요청이 있는 경우</li>
               <li>법원의 명령, 관계 법령에 따른 제출 의무가 발생한 경우</li>
             </ul>
@@ -143,7 +143,7 @@ export default function Page() {
           <div className="flex flex-col typo-b2 text-fg-basic-primary">
             <div>이용자는 다음과 같은 권리를 행사할 수 있습니다.</div>
 
-            <ul className="list-disc pl-[22px] space-y-1">
+            <ul className="list-disc pl-[45px] space-y-1">
               <li>웹브라우저 설정을 통해 쿠키 저장 거부 또는 삭제</li>
               <li>로그인 이용자의 경우, 계정 정보 열람 및 수정</li>
             </ul>
@@ -168,7 +168,7 @@ export default function Page() {
             <div className="typo-b1 text-fg-basic-accent">개인정보 보호책임자</div>
           </div>
           <div className="flex flex-col typo-b2 text-fg-basic-primary">
-            <ul className="list-disc pl-[22px] space-y-1">
+            <ul className="list-disc pl-[45px] space-y-1">
               <li>성명/닉네임: 메들리 @Medly</li>
               <li>문의처: ttak105@gmail.com</li>
             </ul>
@@ -199,7 +199,7 @@ export default function Page() {
               서비스 내 공지사항을 통해 사전에 안내합니다.
             </div>
 
-            <ul className="list-disc pl-[22px] space-y-1">
+            <ul className="list-disc pl-[45px] space-y-1">
               <li>
                 공고일자: <strong className="font-semibold">2026년 1월 12일</strong>
               </li>
