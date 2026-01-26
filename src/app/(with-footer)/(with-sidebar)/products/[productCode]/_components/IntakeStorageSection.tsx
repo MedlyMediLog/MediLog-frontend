@@ -39,7 +39,7 @@ export default function IntakeStorageSection({howToEat, expiration, storageMetho
             />
           </>
         }
-        title="섭취 ∙ 보관 방법"
+        title="이렇게 섭취하고 보관해요"
        
       />
         <CardContent className="gap-3 flex flex-col">

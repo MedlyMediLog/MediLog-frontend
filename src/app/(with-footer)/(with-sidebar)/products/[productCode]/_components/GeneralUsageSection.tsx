@@ -34,7 +34,7 @@ export default function GeneralUsageSection({functionText}: Props) {
                 />
               </>
             }
-            title="일반적으로 이런 목적으로 취급돼요."
+            title="일반적으로 이런 기능이 언급돼요"
           />
         </CardHeader>
         <CardContent className="gap-5 flex flex-col desktop:gap-6 ">
