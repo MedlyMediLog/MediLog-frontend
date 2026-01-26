@@ -99,6 +99,7 @@ export function FilterBar({
                 variant={active ? 'primary' : 'secondary'}
                 disabled={disabled}
                 onClick={() => handleSelect(opt.value)}
+                className="cursor-pointer"
               >
                 {opt.label}
               </Button>
@@ -139,6 +140,7 @@ export function FilterBar({
                     variant={active ? 'primary' : 'secondary'}
                     disabled={disabled}
                     onClick={() => handleSelect(opt.value)}
+                    className="cursor-pointer"
                   >
                     {opt.label}
                   </Button>
@@ -172,6 +174,7 @@ export function FilterBar({
               variant={active ? 'primary' : 'secondary'}
               disabled={disabled}
               onClick={() => handleSelect(opt.value)}
+              className="cursor-pointer"
             >
               {opt.label}
             </Button>

@@ -454,7 +454,7 @@ export function ProductList({ category, target }: Props) {
     setVisibleCount((prev) => Math.min(prev + LOAD_STEP, filtered.length))
   }
 
-  // ✅ 필터 선택 시 URL의 target도 함께 변경
+  // 필터 선택 시 URL의 target도 함께 변경
   const handleSelect = (v: string) => {
     setHasUserTouchedFilter(true)
     setSelected(v as SelectedKey)
@@ -501,7 +501,6 @@ export function ProductList({ category, target }: Props) {
 
   return (
     <>
-      {/* <FloatingTopButton visible={showTopButton} onClick={handleScrollToTop} /> */}
 
       {toast && toastLeft !== null && (
         <div
@@ -545,7 +544,7 @@ export function ProductList({ category, target }: Props) {
               onSearchSubmit={() => {
                 closeSearchOverlay()
               }}
-              searchPlaceholder="제조사/브랜드명으로 검색해보세요."
+              searchPlaceholder="제조사/제품명으로 검색해보세요."
               autoFocusSearch={true}
             />
           </div>

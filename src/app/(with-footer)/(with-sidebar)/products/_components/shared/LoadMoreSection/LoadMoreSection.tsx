@@ -15,19 +15,14 @@ type Props = {
   step?: number
 }
 
-export function LoadMoreSection({
-  total,
-  visible,
-  onLoadMore,
-  step = 20,
-}: Props) {
+export function LoadMoreSection({ total, visible, onLoadMore, step = 20 }: Props) {
   const canLoadMore = visible < total
 
   if (!canLoadMore) return null
 
   return (
     <div
-      className={[  
+      className={[
         // ✅ 피그마(제품 더보기 영역)
         // display:flex; padding-top:24px; flex-direction:column;
         // justify-content:center; align-items:center; align-self:stretch;
@@ -44,6 +39,7 @@ export function LoadMoreSection({
         shape="rounded"
         onClick={onLoadMore}
         aria-label={`제품 더보기 (추가 ${step}개)`}
+        className="cursor-pointer"
       >
         제품 더보기
       </Button>

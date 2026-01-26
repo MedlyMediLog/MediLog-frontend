@@ -19,7 +19,7 @@ import { QueryResult as QueryResultDesktop } from '@/app/_components/common/Quer
 import ProductGridDesktop from '../ProductGrid.desktop'
 import LoadingSpinner from '@/app/_components/common/LoadingSpinner'
 import { FloatingTopButton } from '../shared/FloatingTopButton/FloatingTopButton'
-import { GridTopButton } from '../shared/GridTopButton'
+// import { GridTopButton } from '../shared/GridTopButton'
 
 type Props = {
   visible: boolean
@@ -85,12 +85,23 @@ export function ProductListDesktop({
           'pb-[120px]',
         ].join(' ')}
       >
+        {/* 스크롤 시 숨길 건 TargetSummaryCard만 */}
         <ScrollAwareBlock hidden={isScrolling} className="w-full">
           <div className="w-full flex flex-col items-start pt-0 pb-[20px]">
             <div className="w-full mb-[12px]">
               <BasicTargetSummaryCard withSlotPadding={false} />
             </div>
+          </div>
+        </ScrollAwareBlock>
 
+        {/* 필터 + 조회결과 영역은 sticky로 항상 상단 고정 */}
+        <div
+          className={[
+            'w-full',
+            'pt-0 pb-[20px]',
+          ].join(' ')}
+        >
+          <div className="w-full flex flex-col items-start">
             <div className="w-full">
               <FilterBar
                 variant="select"
@@ -127,14 +138,14 @@ export function ProductListDesktop({
               )}
             </div>
           </div>
-        </ScrollAwareBlock>
+        </div>
 
+        {/*  그리드/결과 영역 */}
         <div className="w-full">
           {isLoading ? (
             <LoadingSpinner />
           ) : shouldShowEmptyResult ? (
-            // Desktop: 중앙 정렬 + 여백(푸터/하단 영역 고려)
-            <div className="w-full flex justify-center  pb-[120px]">
+            <div className="w-full flex justify-center pb-[120px]">
               <ErrorState
                 code="1XX errors"
                 description={
@@ -149,8 +160,9 @@ export function ProductListDesktop({
               <div className="relative">
                 <ProductGridDesktop items={visibleItems} showStatus={isFilterApplied} />
                 <FloatingTopButton visible={visible} onClick={onClick} />
-                {/* <GridTopButton visible={visible} onClick={onClick} /> */}
+      
               </div>
+
               <LoadMoreSection
                 total={filteredCount}
                 visible={visibleCount}

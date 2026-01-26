@@ -24,8 +24,6 @@
   align-self: stretch;
 
   border-radius: var(--Number-round-M, 12px);
-  border: 1px solid var(--Color-blue-400, #a1c7f8);
-  background: var(--Color-blue-200, #dbe8fb);
 
   box-sizing: border-box;
 }
@@ -40,6 +38,7 @@
   min-width: 0;
 }
 
+/* ✅ (기존) header: 예전 "타이틀 옆 토글" 구조용. 이제는 미사용
 .header {
   display: flex;
   justify-content: space-between;
@@ -53,12 +52,42 @@
   border: 0;
   padding: 0;
   text-align: left;
-  cursor: pointer;
+}
+*/
+
+/* ✅ 새 구조: 타이틀만 있는 행 */
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-self: stretch;
+
+  width: 100%;
+  min-width: 0;
 }
 
 .title {
   flex: 1 1 auto;
   min-width: 0;
+}
+
+/* ✅ 새 구조: 타이틀 아래 토글 행 (높이 안맞음 이슈 해결용으로 height 고정) */
+.toggleRow {
+  height: 24px; /* ✅ 핵심 */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin-top: 8px; /* 필요하면 6px로 */
+  text-align: left;
+  cursor: pointer;
+}
+
+.toggleText {
+  line-height: 1; /* ✅ typo line-height 영향 제거 */
 }
 
 .moreIcon,
@@ -111,7 +140,7 @@
   align-self: stretch;
 
   border-radius: var(--Number-round-S, 8px);
-  background: var(--Color-blue-100, #f1f7fe);
+  background: var(--Color-blue-200, #DBE8FB);
 }
 
 .tipTexts {

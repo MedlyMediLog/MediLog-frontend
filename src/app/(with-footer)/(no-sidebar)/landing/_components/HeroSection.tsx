@@ -49,7 +49,7 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
           <Button
             variant="secondary"
             shape="rounded"
-            className="flex py-2 px-4 desktop:py-3 desktop:px-4 items-center justify-center"
+            className="flex py-2 px-4 desktop:py-3 desktop:px-4 items-center justify-center cursor-pointer"
             onClick={isLoggedIn ? onLogoutClick : onLoginClick}
           >
             {isLoggedIn ? '로그아웃' : '로그인'}
@@ -100,7 +100,7 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
             <Button
               variant="primary"
               shape="rounded"
-              className="flex py-3 px-5 justify-center items-center gap-[8px]"
+              className="flex py-3 px-5 justify-center items-center gap-[8px] cursor-pointer"
               onClick={() => router.push('/category')}
             >
               제품 정보 확인하기
