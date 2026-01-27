@@ -1,4 +1,3 @@
-//toast.tsx
 import { cn } from '@/lib/utils'
 import { ToastItem as ToastItemType } from './types'
 
@@ -17,7 +16,6 @@ export default function Toast({ toast }: Props) {
       className={cn(
         'px-[10px] py-[8px] rounded-[8px]',
         'animate-toast-slide',
-        // 'animate-slide-in',
         toastStyles[toast.type],
       )}
     >

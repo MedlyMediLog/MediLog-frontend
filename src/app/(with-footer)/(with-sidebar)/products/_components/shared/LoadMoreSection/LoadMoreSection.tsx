@@ -1,4 +1,3 @@
-// src/app/product-listing/_components/shared/LoadMoreSection/LoadMoreSection.tsx
 'use client'
 
 import React from 'react'
@@ -23,14 +22,12 @@ export function LoadMoreSection({ total, visible, onLoadMore, step = 20 }: Props
   return (
     <div
       className={[
-        // ✅ 피그마(제품 더보기 영역)
-        // display:flex; padding-top:24px; flex-direction:column;
-        // justify-content:center; align-items:center; align-self:stretch;
+        // 피그마(제품 더보기 영역)
         'flex flex-col justify-center items-center self-stretch',
         'pt-[24px]',
       ].join(' ')}
     >
-      {/* ✅ 버튼: 공통 Button 사용 (secondary / rounded)
+      {/* 버튼: 공통 Button 사용 (secondary / rounded)
           - 공통 Button의 rounded가 피그마와 동일하게
             px 20 / py 12 / gap 8 / radius 999 로 이미 정의되어 있음
       */}

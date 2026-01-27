@@ -1,4 +1,3 @@
-// src/lib/analytics/identity.ts
 const ANON_KEY = 'ml_anon_id'
 const SESSION_KEY = 'ml_session_id'
 

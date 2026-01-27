@@ -1,5 +1,3 @@
-// src/app/(with-footer)/(with-sidebar)/products/_components/shared/FloatingTopButton/FloatingTopButton.tsx
-
 'use client'
 
 import React from 'react'
@@ -12,7 +10,7 @@ type Props = {
 }
 
 /**
- * ✅ footer가 버튼과 겹치기 시작하면
+ * footer가 버튼과 겹치기 시작하면
  * 겹치는 만큼만 위로 올려서 “피그마처럼” footer 위에 떠있게 함
  */
 const FOOTER_SAFE_GAP = 20

@@ -1,7 +1,6 @@
-// src/app/product-listing/_components/shared/productImages.ts
 import type { StaticImageData } from 'next/image'
 
-// ✅ 프로젝트에 이미 있던 mock 이미지 4개 (경로는 네 프로젝트에서 쓰던 걸로)
+// 프로젝트에 이미 있던 mock 이미지 4개
 import bottleCapsules from '@/assets/product-listing/mock/bottle-capsules.png'
 import bottleTablets from '@/assets/product-listing/mock/bottle-tablets.png'
 import boxStick from '@/assets/product-listing/mock/box-stick.png'
@@ -30,7 +29,7 @@ export function getProductImageById(productId: number | string | undefined | nul
 
   if (!Number.isFinite(n) || n <= 0) return placeholder
 
-  // ✅ 1번 상품은 0번 인덱스부터 시작하도록 -1
+  // 1번 상품은 0번 인덱스부터 시작하도록 -1
   const idx = (n - 1) % ROTATE_IMAGES.length
   return ROTATE_IMAGES[idx] ?? placeholder
 }

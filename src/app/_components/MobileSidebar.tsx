@@ -15,6 +15,7 @@ import { logout } from '@/lib/api/logout'
 import { useRecentProducts } from '@/hooks/useRecentProducts'
 import { useMe } from '@/hooks/useMe'
 import ProfileMenuPopover from './common/SideBar/ProfileMenuPopover'
+import { useLogout } from '@/hooks/useLogout'
 
 const NAV = [{ href: '/category', label: '건강주제 탐색하기', icon: navigate }] as const
 
@@ -81,26 +82,18 @@ export default function MobileSidebar({ open, onClose }: Props) {
     }
   }, [effectiveProfileMenuOpen])
 
-  const onLogout = async () => {
-    try {
-      await logout()
-      qc.removeQueries({ queryKey: ['me'] })
-      qc.removeQueries({ queryKey: ['recent-products'] })
-      qc.removeQueries({ queryKey: ['productDetail'] })
-
+  const onLogout = useLogout({
+    onAfterSuccess: () => {
       setIsProfileMenuOpen(false)
       onClose()
-      router.replace('/')
-      router.refresh()
-    } catch (e) {
-      console.error(e)
-      alert('로그아웃에 실패했어요')
-    }
-  }
+    },
+
+    refresh: true,
+  })
 
   return (
     <>
-      {/* 🌫 Dim */}
+      {/* Dim */}
       <button
         type="button"
         className={clsx(
@@ -111,7 +104,7 @@ export default function MobileSidebar({ open, onClose }: Props) {
         aria-label="메뉴 닫기"
       />
 
-      {/* 📱 Sidebar */}
+      {/* Sidebar */}
       <aside
         className={clsx(
           'fixed top-0 right-0 h-full w-[320px] bg-[#edf2f6] z-50 flex flex-col',

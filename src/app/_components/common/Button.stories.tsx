@@ -9,7 +9,6 @@ const meta: Meta<typeof Button> = {
 export default meta
 type Story = StoryObj<typeof Button>
 
-// OK: 스토리 이름 변경
 export const Primary: Story = {
   args: {
     children: '버튼',

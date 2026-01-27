@@ -1,8 +1,5 @@
-// src/app/(with-footer)/(with-sidebar)/products/_components/productList.utils.ts
 
-/** -----------------------------
- * A) 표시 문자열 정리 유틸
- * ----------------------------- */
+/* 표시 문자열 정리 유틸 */
 export function cleanText(input: unknown) {
   const s = String(input ?? '')
 
@@ -23,9 +20,7 @@ export function cleanText(input: unknown) {
   return out
 }
 
-/** -----------------------------
- * 검색 유틸: 한글 초성 추출
- * ----------------------------- */
+/* 검색 유틸: 한글 초성 추출 */
 const CHO = [
   'ㄱ',
   'ㄲ',
@@ -76,9 +71,7 @@ export function containsJamo(q: string) {
   return /[ㄱ-ㅎㅏ-ㅣ]/.test(q)
 }
 
-/** -----------------------------
- * 사전식 정렬키 (제품명 기준)
- * ----------------------------- */
+/* 사전식 정렬키 (제품명 기준) */
 export function toSortKey(productName: string) {
   const t = cleanText(productName)
   const stripped = t.replace(
@@ -90,9 +83,7 @@ export function toSortKey(productName: string) {
 
 export const KO_COLLATOR = new Intl.Collator('ko', { sensitivity: 'base', numeric: true })
 
-/** -----------------------------
- * “현업형” 2단계 정렬: 그룹(한글/영문/숫자/기타) → 그룹 내 사전식
- * ----------------------------- */
+/* 2단계 정렬: 그룹(한글/영문/숫자/기타) → 그룹 내 사전식 */
 export function getSortGroup(sortKey: string) {
   const first = sortKey.charAt(0)
   if (!first) return 9

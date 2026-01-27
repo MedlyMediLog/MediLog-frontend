@@ -1,4 +1,3 @@
-//src/app/product-listing/_compnents/TargetNotice.tsx
 import Image from 'next/image'
 import infoPng from '@/assets/product-listing/icons/icon-info.png'
 

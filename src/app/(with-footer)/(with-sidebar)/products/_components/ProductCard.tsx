@@ -1,4 +1,3 @@
-// src/app/(with-footer)/(with-sidebar)/products/_components/ProductCard.tsx
 import React from 'react'
 import Image from 'next/image'
 import type { ProductItem, ProductStatus } from './shared/types'
@@ -106,9 +105,7 @@ export function ProductCard({ layout = 'desktop', item, showStatus = false }: Pr
     )
   }
 
-  /* =========================
-      Desktop
-     ========================= */
+  /* Desktop */
   return (
     <article className="flex w-[302px] flex-col gap-4">
       <div className="relative h-[202px] w-[302px] overflow-hidden rounded-[12px] bg-layer-primary">

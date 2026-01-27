@@ -18,9 +18,7 @@ const meta: Meta<typeof LoadMoreSection> = {
 export default meta
 type Story = StoryObj<typeof LoadMoreSection>
 
-/* =========================
- * 기본 상태
- * ========================= */
+/* 기본 상태 */
 export const Default: Story = {
   args: {
     total: 100,
@@ -30,9 +28,7 @@ export const Default: Story = {
   },
 }
 
-/* =========================
- * 더 이상 불러올 수 없는 상태
- * ========================= */
+/* 더 이상 불러올 수 없는 상태 */
 export const NoMore: Story = {
   args: {
     total: 20,
@@ -41,9 +37,7 @@ export const NoMore: Story = {
   },
 }
 
-/* =========================
- * 실제 UX 테스트용 (상태 포함)
- * ========================= */
+/* 실제 UX 테스트용 (상태 포함) */
 function InteractiveDemo() {
   const TOTAL = 73
   const STEP = 20
