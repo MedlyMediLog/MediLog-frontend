@@ -1,4 +1,3 @@
-//src/app/(with-footer)/(with-sidebar)/products/_components/shared/EmptyResult.tsx
 'use client'
 
 import React from 'react'

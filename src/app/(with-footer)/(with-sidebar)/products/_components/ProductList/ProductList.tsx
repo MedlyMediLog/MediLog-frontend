@@ -1,4 +1,3 @@
-// src/app/(with-footer)/(with-sidebar)/products/_components/ProductList/ProductList.tsx
 'use client'
 
 import React from 'react'
@@ -87,7 +86,7 @@ function getStatusRank(status?: ProductStatus) {
 }
 
 export function ProductList({ category, target }: Props) {
-  // ✅ Next navigation
+  // Next navigation
   const router = useRouter()
   const pathname = usePathname()
   const sp = useSearchParams()
@@ -162,7 +161,7 @@ export function ProductList({ category, target }: Props) {
     }
   }, [])
 
-  // ✅ (권장) URL ↔ selected 동기화: 뒤로가기/공유 링크에도 동작하게
+  // URL ↔ selected 동기화: 뒤로가기/공유 링크에도 동작하게
   React.useEffect(() => {
     const t = sp.get('target')
     if (t === 'PREGNANT') setSelected('pregnant')

@@ -1,4 +1,3 @@
-// src/app/(with-footer)/(with-sidebar)/products/_components/ProductList/ProductList.desktop.tsx
 'use client'
 
 import React from 'react'
@@ -19,7 +18,6 @@ import { QueryResult as QueryResultDesktop } from '@/app/_components/common/Quer
 import ProductGridDesktop from '../ProductGrid.desktop'
 import LoadingSpinner from '@/app/_components/common/LoadingSpinner'
 import { FloatingTopButton } from '../shared/FloatingTopButton/FloatingTopButton'
-// import { GridTopButton } from '../shared/GridTopButton'
 
 type Props = {
   visible: boolean

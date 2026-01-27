@@ -4,7 +4,6 @@ import { SearchInput } from '@/app/_components/common/SearchInput'
 import type { SearchInputProps } from '@/app/_components/common/SearchInput'
 import Button from '@/app/_components/common/Button'
 
-// ✅ 추가
 import { trackClick } from '@/lib/analytics/clickCounter'
 
 export type FilterBarVariant = 'select' | 'mobile' | 'searching'
@@ -31,7 +30,7 @@ export type FilterBarProps = {
   disabled?: boolean
   onIconClick?: () => void
 
-  /** ✅ 오버레이 열릴 때 바로 포커스 */
+  /**  오버레이 열릴 때 바로 포커스 */
   autoFocusSearch?: boolean
 
   ariaLabelSearch?: SearchInputProps['aria-label']
@@ -57,7 +56,7 @@ export function FilterBar({
 }: FilterBarProps) {
   const shouldShowSearching = variant === 'searching' || (variant === 'mobile' && isSearching)
 
-  // ✅ 필터 버튼 클릭 시: 값이 "변경"될 때만 카운트
+  // 필터 버튼 클릭 시: 값이 "변경"될 때만 카운트
   const handleSelect = (value: string) => {
     if (disabled) return
     if (value !== selectedValue) {
@@ -67,7 +66,7 @@ export function FilterBar({
   }
 
   /**
-   * ✅ Select에서 쓰는 “desktop SearchInput”을 공통화
+   * Select에서 쓰는 “desktop SearchInput”을 공통화
    * - Searching에서도 동일 JSX를 그대로 사용
    * - 차이는 autoFocus만 옵션으로 제어
    */
@@ -156,7 +155,7 @@ export function FilterBar({
   return (
     <div className={`medly-filterbar medly-filterbar--mobile ${className}`}>
       <div className="medly-filterbar__icon">
-        {/* ❌ 검색창 열기(onOpen)는 클릭 카운트에 포함하지 않음 */}
+        {/*  검색창 열기(onOpen)는 클릭 카운트에 포함하지 않음 */}
         <SearchInput
           variant="mobile"
           disabled={disabled}

@@ -18,7 +18,7 @@ export default function Overlay({
   closeOnBackdrop = true,
   className = '',
 }: OverlayProps) {
-  // ✅ body 스크롤 잠금
+
   React.useEffect(() => {
     if (!open) return
     const prev = document.body.style.overflow
@@ -28,7 +28,6 @@ export default function Overlay({
     }
   }, [open])
 
-  // ✅ ESC로 닫기
   React.useEffect(() => {
     if (!open) return
     const onKeyDown = (e: KeyboardEvent) => {
@@ -42,7 +41,6 @@ export default function Overlay({
 
   return (
     <div className={['fixed inset-0 z-[9999]', className].join(' ')} role="dialog" aria-modal="true">
-      {/* ✅ Backdrop: 화면 전체 클릭 영역 */}
       <button
         type="button"
         aria-label="오버레이 닫기"
@@ -53,7 +51,6 @@ export default function Overlay({
         }}
       />
 
-      {/* ✅ Content Layer: children만 클릭 가능하게 */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="pointer-events-auto">{children}</div>
       </div>

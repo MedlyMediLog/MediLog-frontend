@@ -1,4 +1,3 @@
-// src/app/(with-footer)/(with-sidebar)/products/page.tsx
 import React from 'react'
 import ProductListingTopBar from './_components/ProductListingTopBar'
 import { ProductList } from './_components/ProductList'

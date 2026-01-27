@@ -1,4 +1,3 @@
-//src/app/_components/common/InfoMessage/InfoMessage.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { InfoMessage } from './InfoMessage';
 
