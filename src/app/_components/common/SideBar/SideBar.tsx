@@ -23,8 +23,7 @@ import { useLogout } from '@/hooks/useLogout'
 const NAV = [{ href: '/category', label: '건강주제 탐색하기', icon: navigate }] as const
 
 export default function SideBar() {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
+  const mounted = typeof window !== 'undefined'
 
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
@@ -70,13 +69,10 @@ export default function SideBar() {
   const { data: recent = [], isLoading: recentLoading } = useRecentProducts(canFetchRecent)
 
   const onLogout = useLogout({
-  onAfterSuccess: () => closeProfileMenu(),
-})
+    onAfterSuccess: () => closeProfileMenu(),
+  })
 
-
-  useEffect(() => {
-    if (!isOpen) closeProfileMenu()
-  }, [isOpen])
+  // (닫힐 때 메뉴 닫기는 토글 onClick에서 처리)
 
   useEffect(() => {
     if (!isProfileMenuOpen) return
@@ -125,7 +121,14 @@ export default function SideBar() {
         <div className="py-4 px-5 h-20 w-full flex items-center justify-end shrink-0">
           <button
             type="button"
-            onClick={() => setIsOpen((v) => !v)}
+     
+            onClick={() =>
+              setIsOpen((v) => {
+                const next = !v
+                if (!next) closeProfileMenu()
+                return next
+              })
+            }
             className="p-2 gap-2 hover:bg-layer-secondary rounded-[12px] cursor-pointer"
             aria-expanded={isOpen}
             aria-label={isOpen ? '사이드바 닫기' : '사이드바 열기'}
