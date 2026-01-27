@@ -1,11 +1,6 @@
-// src/app/_components/common/FilterBar/FilterBar.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 import { FilterBar, type FilterBarProps } from './FilterBar'
-
-// Storybook에서 CSS 변경이 누락/캐시되는 경우를 대비한 “보험”
-// (컴포넌트 내부에서도 import 하지만, SB 환경에서 누락되는 케이스가 있어 중복 로드해도 안전)
-import './FilterBar.css'
 
 const meta: Meta<typeof FilterBar> = {
   title: 'COMMON/FilterBar',
