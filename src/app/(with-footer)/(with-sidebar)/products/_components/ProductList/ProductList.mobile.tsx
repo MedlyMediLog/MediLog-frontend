@@ -1,4 +1,3 @@
-// src/app/(with-footer)/(with-sidebar)/products/_components/ProductList/ProductList.mobile.tsx
 'use client'
 
 import React from 'react'

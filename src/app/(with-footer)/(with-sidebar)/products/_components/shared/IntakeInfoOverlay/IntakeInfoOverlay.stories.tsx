@@ -25,7 +25,7 @@ export const Closed: Story = {
   },
 }
 
-/** ✅ Hooks는 "컴포넌트" 안에서만 사용 */
+/** Hooks는 "컴포넌트" 안에서만 사용 */
 function InteractiveDemo() {
   const [open, setOpen] = React.useState(true)
 
@@ -41,7 +41,7 @@ function InteractiveDemo() {
 }
 
 /**
- * ✅ 실제 UX 테스트용
+ * 실제 UX 테스트용
  * - backdrop 클릭
  * - 닫기 버튼
  * - ESC 키

@@ -1,4 +1,3 @@
-// src/app/(with-footer)/(with-sidebar)/products/_components/shared/BasicTargetSummaryCard/BasicTargetSummaryCard.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/react'
 import { BasicTargetSummaryCard } from './BasicTargetSummaryCard'

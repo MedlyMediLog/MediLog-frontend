@@ -1,4 +1,3 @@
-// src/app/(with-footer)/(with-sidebar)/products/_components/ProductList/ProductList.types.ts
 import type { Target } from '@/types/product'
 
 export type ApiProduct = {

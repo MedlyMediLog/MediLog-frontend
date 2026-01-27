@@ -1,4 +1,3 @@
-//src/app/(with-footer)/(with-sidebar)/products/_components/shared/IntakeInfoOverlay/IntakeInfoOverlay.tsx
 'use client'
 
 import React from 'react'
@@ -14,7 +13,7 @@ type Props = {
 }
 
 export function IntakeInfoOverlay({ open, onClose }: Props) {
-  // ✅ ESC로 닫기
+  // ESC로 닫기
   React.useEffect(() => {
     if (!open) return
 
@@ -26,7 +25,7 @@ export function IntakeInfoOverlay({ open, onClose }: Props) {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [open, onClose])
 
-  // ✅ 열려있을 때 body 스크롤 잠금(모바일 UX)
+  // 열려있을 때 body 스크롤 잠금(모바일 UX)
   React.useEffect(() => {
     if (!open) return
     const prev = document.body.style.overflow
@@ -39,9 +38,9 @@ export function IntakeInfoOverlay({ open, onClose }: Props) {
   if (!open) return null
 
   return (
-    // ✅ 모바일에서만 렌더링
+    // 모바일에서만 렌더링
     <div className="md:hidden fixed inset-0 z-[100]">
-      {/* ✅ Frame 112: overlay 배경 (피그마 토큰/값 반영) */}
+      {/* Frame 112: overlay 배경 (피그마 토큰/값 반영) */}
       <button
         type="button"
         aria-label="닫기"
@@ -51,7 +50,7 @@ export function IntakeInfoOverlay({ open, onClose }: Props) {
 
       {/* Center */}
       <div className="absolute inset-0 flex items-center justify-center px-[35px]">
-        {/* ✅ 안내 문구 영역(피그마: 305x197 / radius 20 / bg primary) */}
+        {/* 안내 문구 영역(피그마: 305x197 / radius 20 / bg primary) */}
         <div
           className={[
             'w-[305px] h-[197px]',
@@ -63,13 +62,13 @@ export function IntakeInfoOverlay({ open, onClose }: Props) {
         >
           {/* 상단: 아이콘 + 텍스트 */}
           <div className="w-full px-[20px] pb-[16px] flex flex-col items-center">
-            {/* ✅ 아이콘 영역 (피그마: 아이콘 32x32 / padding 상하 8, 좌우 24) */}
+            {/* 아이콘 영역 (피그마: 아이콘 32x32 / padding 상하 8, 좌우 24) */}
             <div className="flex items-center justify-center px-[24px] py-[8px] gap-[8px]">
               <Image src={iconSafe} alt="섭취 가능" width={32} height={32} />
               <Image src={iconCaution} alt="섭취 고려" width={32} height={32} />
             </div>
 
-            {/* ✅ 텍스트(피그마 B3) + '섭취 가능'만 bold */}
+            {/* 텍스트(피그마 B3) + '섭취 가능'만 bold */}
             <p
               className={[
                 'self-stretch',
@@ -87,7 +86,7 @@ export function IntakeInfoOverlay({ open, onClose }: Props) {
             </p>
           </div>
 
-          {/* ✅ 버튼 영역(피그마: height 65 / padding 10 / gap 12 / border 0.5 / stretch) */}
+          {/* 버튼 영역(피그마: height 65 / padding 10 / gap 12 / border 0.5 / stretch) */}
           <div
             className={[
               'w-full',
@@ -101,7 +100,7 @@ export function IntakeInfoOverlay({ open, onClose }: Props) {
               'shadow-[inset_0_0.5px_0_var(--Color-gray-200,#DCE4ED)]',
             ].join(' ')}
           >
-            {/* ✅ 버튼(공통 Button: primary + square) → 피그마 값과 일치 */}
+            {/* 버튼(공통 Button: primary + square) → 피그마 값과 일치 */}
             <Button variant="primary" shape="square" onClick={onClose}>
               닫기
             </Button>

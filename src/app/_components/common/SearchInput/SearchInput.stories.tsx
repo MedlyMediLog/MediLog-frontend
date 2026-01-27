@@ -1,4 +1,3 @@
-//src/app/_components/common/SearchInput/SearchInput.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 import { SearchInput, type SearchInputProps } from './SearchInput'
@@ -20,7 +19,6 @@ export default meta
 
 type Story = StoryObj<typeof SearchInput>
 
-/** ✅ Desktop controlled wrapper */
 function DesktopControlled(args: SearchInputProps & { initialValue?: string }) {
   const [value, setValue] = React.useState(args.initialValue ?? '')
 
@@ -36,15 +34,13 @@ function DesktopControlled(args: SearchInputProps & { initialValue?: string }) {
         }}
         onSubmit={() => {
           args.onSubmit?.()
-          // 필요하면 확인용 콘솔
-          // console.log('[SearchInput] submit:', value)
         }}
       />
     </div>
   )
 }
 
-/** ✅ 1) Desktop 기본 */
+/** 1) Desktop 기본 */
 export const Desktop: Story = {
   args: {
     variant: 'desktop',
@@ -52,7 +48,7 @@ export const Desktop: Story = {
   render: (args) => <DesktopControlled {...args} initialValue="" />,
 }
 
-/** ✅ 2) Desktop / WithValue */
+/**  2) Desktop / WithValue */
 export const WithValue: Story = {
   args: {
     variant: 'desktop',
@@ -60,7 +56,7 @@ export const WithValue: Story = {
   render: (args) => <DesktopControlled {...args} initialValue="오메가3" />,
 }
 
-/** ✅ 3) Desktop / LongText */
+/**  3) Desktop / LongText */
 export const LongText: Story = {
   args: {
     variant: 'desktop',
@@ -73,7 +69,7 @@ export const LongText: Story = {
   ),
 }
 
-/** ✅ 4) Desktop / Submit */
+/**  4) Desktop / Submit */
 export const Submit: Story = {
   args: {
     variant: 'desktop',
@@ -81,7 +77,7 @@ export const Submit: Story = {
   render: (args) => <DesktopControlled {...args} initialValue="비타민" />,
 }
 
-/** ✅ 5) Mobile (아이콘만) */
+/** 5) Mobile (아이콘만) */
 export const Mobile: Story = {
   args: {
     variant: 'mobile',
@@ -101,7 +97,7 @@ export const Mobile: Story = {
   ),
 }
 
-/** ✅ 6) Disabled */
+/**  6) Disabled */
 export const Disabled: Story = {
   args: {
     variant: 'desktop',
