@@ -1,9 +1,7 @@
 import React from 'react'
-import './FilterBar.css'
 import { SearchInput } from '@/app/_components/common/SearchInput'
 import type { SearchInputProps } from '@/app/_components/common/SearchInput'
 import Button from '@/app/_components/common/Button'
-
 import { trackClick } from '@/lib/analytics/clickCounter'
 
 export type FilterBarVariant = 'select' | 'mobile' | 'searching'
@@ -30,7 +28,6 @@ export type FilterBarProps = {
   disabled?: boolean
   onIconClick?: () => void
 
-  /**  오버레이 열릴 때 바로 포커스 */
   autoFocusSearch?: boolean
 
   ariaLabelSearch?: SearchInputProps['aria-label']
@@ -56,7 +53,6 @@ export function FilterBar({
 }: FilterBarProps) {
   const shouldShowSearching = variant === 'searching' || (variant === 'mobile' && isSearching)
 
-  // 필터 버튼 클릭 시: 값이 "변경"될 때만 카운트
   const handleSelect = (value: string) => {
     if (disabled) return
     if (value !== selectedValue) {
@@ -65,11 +61,7 @@ export function FilterBar({
     onSelect(value)
   }
 
-  /**
-   * Select에서 쓰는 “desktop SearchInput”을 공통화
-   * - Searching에서도 동일 JSX를 그대로 사용
-   * - 차이는 autoFocus만 옵션으로 제어
-   */
+ 
   const renderDesktopSearchInput = (opts?: { autoFocus?: boolean }) => {
     return (
       <SearchInput
@@ -85,10 +77,24 @@ export function FilterBar({
     )
   }
 
-  if (variant === 'select') {
+ if (variant === 'select') {
     return (
-      <div className={`medly-filterbar medly-filterbar--select ${className}`}>
-        <div className="medly-filtergroup">
+      <div
+        className={[
+          'box-border w-full',
+          'flex w-full justify-between items-center py-[6px] gap-[var(--Number-12,12px)]',
+          className,
+        ].join(' ')}
+      >
+         <div
+        className={[
+          'flex items-center min-w-0',
+          'py-[var(--Number-10,10px)] pr-[10px]',
+          'gap-[8px]',
+          'rounded-[var(--Number-gap-12,12px)]',
+          '[&>button]:whitespace-nowrap [&>button]:flex-none',
+        ].join(' ')}
+      >
           {options.map((opt) => {
             const active = opt.value === selectedValue
             return (
@@ -98,7 +104,6 @@ export function FilterBar({
                 variant={active ? 'primary' : 'secondary'}
                 disabled={disabled}
                 onClick={() => handleSelect(opt.value)}
-                className="cursor-pointer"
               >
                 {opt.label}
               </Button>
@@ -106,56 +111,85 @@ export function FilterBar({
           })}
         </div>
 
-        <div className="medly-filterbar__search medly-filterbar__search--select">
+        <div
+        className={[
+          'min-w-0',
+          'min-w-0 max-w-[350px] flex-1',
+        ].join(' ')}
+      >
           {renderDesktopSearchInput()}
         </div>
       </div>
     )
   }
 
-  if (shouldShowSearching) {
-    return (
-      <div
-        className={[
-          'medly-filterbar',
-          'medly-filterbar--searching',
-          variant === 'mobile' && isSearching ? 'medly-filterbar--mobileSearching' : '',
-          className,
-        ].join(' ')}
-      >
-        <div className="medly-filterbar__searchRow">
-          <div className="medly-filterbar__search medly-filterbar__search--searching">
-            {renderDesktopSearchInput({ autoFocus: autoFocusSearch })}
-          </div>
-
-          {!hideOptionsWhenSearching && (
-            <div className="medly-filtergroup medly-filtergroup--fixed" aria-label="필터 선택">
-              {options.map((opt) => {
-                const active = opt.value === selectedValue
-                return (
-                  <Button
-                    key={opt.value}
-                    shape="square"
-                    variant={active ? 'primary' : 'secondary'}
-                    disabled={disabled}
-                    onClick={() => handleSelect(opt.value)}
-                    className="cursor-pointer"
-                  >
-                    {opt.label}
-                  </Button>
-                )
-              })}
-            </div>
-          )}
-        </div>
-      </div>
-    )
-  }
+ if (shouldShowSearching) {
+  const isMobileSearching = variant === 'mobile' && isSearching
 
   return (
-    <div className={`medly-filterbar medly-filterbar--mobile ${className}`}>
-      <div className="medly-filterbar__icon">
-        {/*  검색창 열기(onOpen)는 클릭 카운트에 포함하지 않음 */}
+    <div className={['box-border w-full', className].join(' ')}>
+      <div
+        className={[
+          'items-center gap-[var(--Number-12,12px)] flex-[1_0_0] min-w-0',
+          isMobileSearching ? 'inline-flex w-full' : 'flex justify-center',
+        ].join(' ')}
+      >
+        <div
+          className={[
+            'min-w-0',
+            'max-w-[560px] flex-1',
+            isMobileSearching ? 'w-[330px]' : 'self-stretch',
+          ].join(' ')}
+        >
+          {renderDesktopSearchInput({ autoFocus: autoFocusSearch })}
+        </div>
+
+        {!hideOptionsWhenSearching && (
+          <div
+            className={[
+              'flex items-center min-w-0',
+              'py-[var(--Number-10,10px)] pr-[10px]',
+              'gap-[8px]',
+              'rounded-[var(--Number-gap-12,12px)]',
+              '[&>button]:whitespace-nowrap [&>button]:flex-none',
+              'flex-none min-w-0',
+              'overflow-x-auto overflow-y-hidden',
+              '[-webkit-overflow-scrolling:touch]',
+              '[scrollbar-width:none]',
+              '[&::-webkit-scrollbar]:hidden',
+            ].join(' ')}
+            aria-label="필터 선택"
+          >
+            {options.map((opt) => {
+              const active = opt.value === selectedValue
+              return (
+                <Button
+                  key={opt.value}
+                  shape="square"
+                  variant={active ? 'primary' : 'secondary'}
+                  disabled={disabled}
+                  onClick={() => handleSelect(opt.value)}
+                >
+                  {opt.label}
+                </Button>
+              )
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+
+  return (
+    <div
+      className={[
+        'box-border w-full flex items-center gap-[var(--Number-12,12px)]',
+        className,
+      ].join(' ')}
+    >
+      <div>
         <SearchInput
           variant="mobile"
           disabled={disabled}
@@ -163,7 +197,16 @@ export function FilterBar({
         />
       </div>
 
-      <div className="medly-filtergroup medly-filtergroup--fixed" aria-label="필터 선택">
+      <div className="
+            flex items-center min-w-0
+            py-[var(--Number-10,10px)] pr-[10px]
+            gap-[8px] rounded-[var(--Number-gap-12,12px)]
+            [&>button]:whitespace-nowrap [&>button]:flex-none
+            flex-none overflow-x-auto overflow-y-hidden
+            [-webkit-overflow-scrolling:touch]
+            [scrollbar-width:none]
+            [&::-webkit-scrollbar]:hidden
+          " aria-label="필터 선택">
         {options.map((opt) => {
           const active = opt.value === selectedValue
           return (
@@ -173,7 +216,6 @@ export function FilterBar({
               variant={active ? 'primary' : 'secondary'}
               disabled={disabled}
               onClick={() => handleSelect(opt.value)}
-              className="cursor-pointer"
             >
               {opt.label}
             </Button>
