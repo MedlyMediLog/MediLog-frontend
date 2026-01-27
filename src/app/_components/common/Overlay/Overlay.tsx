@@ -1,4 +1,3 @@
-//src/app/_components/common/Overlay/Overlay.tsx
 'use client'
 
 import React from 'react'

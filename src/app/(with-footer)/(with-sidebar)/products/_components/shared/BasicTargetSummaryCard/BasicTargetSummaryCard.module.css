@@ -1,13 +1,10 @@
 
-/* slot은 "옵션 wrapper"로만 유지 (페이지 컨테이너 padding과 충돌 방지) */
+/* 페이지 컨테이너 padding과 충돌 방지 */
 .slot {
   width: 100%;
   box-sizing: border-box;
 }
 
-/* 카드: 모바일~데스크탑(740~1380+) 모두 100% 폭을 따라감
-   - max-width를 고정하지 않음 (page 컨테이너가 max-width를 관리)
-*/
 .card {
   display: flex;
   width: 100%;
@@ -37,22 +34,6 @@
   min-width: 0;
 }
 
-/* (기존) header: 예전 "타이틀 옆 토글" 구조용. 이제는 미사용
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-self: stretch;
-
-  width: 100%;
-  min-width: 0;
-
-  background: transparent;
-  border: 0;
-  padding: 0;
-  text-align: left;
-}
-*/
 
 /* 새 구조: 타이틀만 있는 행 */
 .titleRow {
@@ -70,9 +51,8 @@
   min-width: 0;
 }
 
-/*  새 구조: 타이틀 아래 토글 행 (높이 안맞음 이슈 해결용으로 height 고정) */
 .toggleRow {
-  height: 24px; /*  핵심 */
+  height: 24px; 
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -80,13 +60,13 @@
   background: transparent;
   border: 0;
   padding: 0;
-  margin-top: 8px; /* 필요하면 6px로 */
+  margin-top: 8px; 
   text-align: left;
   cursor: pointer;
 }
 
 .toggleText {
-  line-height: 1; /* typo line-height 영향 제거 */
+  line-height: 1; 
 }
 
 .moreIcon,
@@ -105,18 +85,6 @@
 .moreIconOpen {
   transform: rotate(180deg);
 }
-
-/* .subtitle {
-  min-width: 0;
-
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  align-self: stretch;
-} */
 
 .subtitle {
   min-width: 0;

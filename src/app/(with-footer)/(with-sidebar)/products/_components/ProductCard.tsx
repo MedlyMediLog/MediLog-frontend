@@ -105,9 +105,7 @@ export function ProductCard({ layout = 'desktop', item, showStatus = false }: Pr
     )
   }
 
-  /* =========================
-      Desktop
-     ========================= */
+  /* Desktop */
   return (
     <article className="flex w-[302px] flex-col gap-4">
       <div className="relative h-[202px] w-[302px] overflow-hidden rounded-[12px] bg-layer-primary">

@@ -24,8 +24,3 @@ export default function Page() {
     </div>
   )
 }
-// export default function Page() {
-//   throw new Error('강제로 에러 발생')
-
-//   return <div>절대 안 보임</div>
-// }

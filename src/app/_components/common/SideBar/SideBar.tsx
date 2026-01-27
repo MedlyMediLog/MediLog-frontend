@@ -1,4 +1,3 @@
-//sidebar.tsx
 'use client'
 
 import { createPortal } from 'react-dom'
@@ -19,6 +18,7 @@ import { useMe } from '@/hooks/useMe'
 
 import ProfileMenuPopover from './ProfileMenuPopover'
 import LoginModal from '@/app/(no-footer)/login/_components/LoginModal'
+import { useLogout } from '@/hooks/useLogout'
 
 const NAV = [{ href: '/category', label: '건강주제 탐색하기', icon: navigate }] as const
 
@@ -69,23 +69,10 @@ export default function SideBar() {
   const canFetchRecent = isOpen && isAuthed
   const { data: recent = [], isLoading: recentLoading } = useRecentProducts(canFetchRecent)
 
-  const onLogout = useCallback(async () => {
-    try {
-      await logout()
-      qc.removeQueries({ queryKey: ['me'] })
-      qc.removeQueries({ queryKey: ['recent-products'] })
-      qc.removeQueries({ queryKey: ['productDetail'] })
+  const onLogout = useLogout({
+  onAfterSuccess: () => closeProfileMenu(),
+})
 
-      closeProfileMenu()
-      router.replace('/')
-      router.refresh()
-    } catch (e) {
-      console.error(e)
-      alert('로그아웃에 실패했어요')
-    } finally {
-      setIsProfileMenuOpen(false)
-    }
-  }, [qc, router])
 
   useEffect(() => {
     if (!isOpen) closeProfileMenu()

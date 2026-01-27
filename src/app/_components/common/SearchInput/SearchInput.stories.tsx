@@ -90,7 +90,7 @@ export const Mobile: Story = {
         variant="mobile"
         onSubmit={() => {
           args.onSubmit?.()
-          // console.log('[SearchInput] mobile submit')
+      
         }}
       />
     </div>

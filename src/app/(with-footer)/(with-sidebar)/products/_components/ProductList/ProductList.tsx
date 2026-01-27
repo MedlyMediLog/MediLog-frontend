@@ -17,7 +17,7 @@ import type { Category, Target } from '@/types/product'
 import { ProductListMobile } from './ProductList.mobile'
 import { ProductListDesktop } from './ProductList.desktop'
 
-import type { ApiProduct, ProductListApiResponse } from './ProductList.types'
+import type { ApiProduct, ProductListApiResponse } from '../../../../../../types/ProductList.types'
 import {
   cleanText,
   getChosung,
@@ -27,7 +27,7 @@ import {
   toSortKey,
   KO_COLLATOR,
   getSortGroup,
-} from './ProductList.utils'
+} from '../../../../../../utils/ProductList.utils'
 
 import { FilterBar } from '@/app/_components/common/FilterBar'
 import Overlay from '@/app/_components/common/Overlay/Overlay'
@@ -55,7 +55,7 @@ const TARGET_BY_SELECTED: Record<Exclude<SelectedKey, 'all'>, Target> = {
   dieter: 'DIETER',
 }
 
-/** 오버레이 검색창 위치 미세 조정용 상수
+/* 오버레이 검색창 위치 미세 조정용 상수
  *  - 값이 커질수록 아래로 내려감
  *  - 음수면 위로 올라감
  */
@@ -72,7 +72,7 @@ function useDebouncedValue<T>(value: T, delayMs: number) {
   return debounced
 }
 
-/** 상태 우선 정렬 */
+/* 상태 우선 정렬 */
 const STATUS_RANK: Record<string, number> = {
   '섭취 가능': 0,
   '섭취 고려': 1,

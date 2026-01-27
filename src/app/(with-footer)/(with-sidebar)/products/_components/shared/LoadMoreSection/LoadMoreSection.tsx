@@ -1,4 +1,3 @@
-// src/app/product-listing/_components/shared/LoadMoreSection/LoadMoreSection.tsx
 'use client'
 
 import React from 'react'
@@ -24,8 +23,6 @@ export function LoadMoreSection({ total, visible, onLoadMore, step = 20 }: Props
     <div
       className={[
         // 피그마(제품 더보기 영역)
-        // display:flex; padding-top:24px; flex-direction:column;
-        // justify-content:center; align-items:center; align-self:stretch;
         'flex flex-col justify-center items-center self-stretch',
         'pt-[24px]',
       ].join(' ')}
