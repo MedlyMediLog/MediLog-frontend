@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import styles from './FloatingTopButton.module.css'
 
 type Props = {
   visible: boolean
@@ -9,16 +8,13 @@ type Props = {
   mode?: 'fixed' | 'absolute'
 }
 
-/**
- * footer가 버튼과 겹치기 시작하면
- * 겹치는 만큼만 위로 올려서 “피그마처럼” footer 위에 떠있게 함
- */
+
 const FOOTER_SAFE_GAP = 20
 
 function ArrowUpIcon() {
   return (
     <svg
-      className={styles.icon}
+      className="w-6 h-6 shrink-0 block"
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
@@ -61,7 +57,6 @@ export function FloatingTopButton({ visible, onClick, mode = 'fixed' }: Props) {
       const rect = footer.getBoundingClientRect()
       const overlap = window.innerHeight - rect.top
 
-      // footer가 화면에 들어오면 overlap > 0
       setExtraBottom(Math.max(0, overlap + FOOTER_SAFE_GAP))
     }
 
@@ -78,10 +73,20 @@ export function FloatingTopButton({ visible, onClick, mode = 'fixed' }: Props) {
   if (!visible) return null
 
   return (
-    <div className={styles.wrapper}>
+    <div className="sticky bottom-5 ml-auto z-10 flex justify-end">
       <button
         type="button"
-        className={styles.button}
+        className="
+          w-12 h-12
+          flex items-center justify-center
+          rounded-full
+          bg-[var(--Color-Role-bg-layer-accent,#242a30)]
+          shadow-[0_0_8px_rgba(36,42,48,0.12)]
+          border-0 p-0
+          cursor-pointer
+          focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+          focus-visible:outline-[rgba(251,253,253,0.6)]
+        "
         onClick={onClick}
         aria-label="최상단으로 이동"
       >
