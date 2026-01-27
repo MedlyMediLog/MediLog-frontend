@@ -18,7 +18,6 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
   const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
 
-  // 스크롤 시 헤더 스타일 변경 (선택)
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll)
@@ -27,7 +26,6 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
 
   return (
     <div className="relative w-full flex-1 overflow-hidden">
-      {/* ================= 헤더 (fixed) ================= */}
       <header
         className={`
           fixed top-0 left-0 right-0 z-50 desktop:px-5 bg-white
@@ -57,11 +55,8 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
         </div>
       </header>
 
-      {/* ===== 헤더 높이만큼 spacer (필수) ===== */}
       <div className="h-[64px] desktop:h-[72px]" />
 
-      {/* ================= 배경 비디오 ================= */}
-      {/* Desktop */}
       <video
         className="absolute inset-0 w-full h-full object-cover -z-10 hidden desktop:block"
         autoPlay
@@ -72,7 +67,6 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
         <source src="/video/landing_desktop.mp4" type="video/mp4" />
       </video>
 
-      {/* Mobile */}
       <video
         className="absolute inset-0 w-full h-full object-cover -z-10 block desktop:hidden"
         autoPlay
@@ -83,7 +77,6 @@ export default function HeroSection({ isLoggedIn, onLoginClick, onLogoutClick }:
         <source src="/video/landing_mobile.mp4" type="video/mp4" />
       </video>
 
-      {/* ================= Hero 콘텐츠 ================= */}
       <div className="relative z-10 desktop:px-5">
         <div className="mx-auto max-w-[1300px] h-[1000px] desktop:pt-[200px] pt-[80px] px-5">
           <div className="flex flex-col items-center desktop:items-start gap-[30px] desktop:gap-[60px]">

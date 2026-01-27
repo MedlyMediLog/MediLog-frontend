@@ -1,21 +1,4 @@
-// src/app/api/v1/products/route.ts
 import { NextResponse } from 'next/server'
-import { MOCK_PRODUCTS, type Category } from '@/types/product'
-
-// function isCategory(v: string | null): v is Category {
-//   return (
-//     v === 'EYE' ||
-//     v === 'BONE' ||
-//     v === 'IMMUNE' ||
-//     v === 'ENERGY' ||
-//     v === 'STRESS' ||
-//     v === 'GUT' ||
-//     v === 'BLOOD' ||
-//     v === 'SKIN' ||
-//     v === 'MUSCLE' ||
-//     v === 'LIVER'
-//   )
-// }
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)

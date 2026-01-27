@@ -19,7 +19,7 @@ export default function LoadingSpinner({
         if (prev === '..') return '...'
         return ''
       })
-    }, 500) // 👈 0.5초
+    }, 500)
 
     return () => clearInterval(interval)
   }, [])

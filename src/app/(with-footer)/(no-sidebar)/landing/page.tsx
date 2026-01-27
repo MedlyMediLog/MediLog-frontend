@@ -30,13 +30,7 @@ export default function LandingPage() {
   }, [])
 
   useEffect(() => {
-    // landing 진입 = 세션 시작점
-    // - sessionId 발급
-    // - startedAt 기록
-    // - clickCount 0 초기화
     startFunnelSessionOnLanding()
-
-    // 로그인 상태 갱신
     refreshAuth()
   }, [refreshAuth])
 
@@ -48,9 +42,9 @@ export default function LandingPage() {
       window.matchMedia('(min-width: 740px)').matches
 
     if (isDesktop) {
-      setIsLoginOpen(true) // 데스크탑: 오버레이
+      setIsLoginOpen(true)
     } else {
-      router.push('/login') // 모바일: /login 이동
+      router.push('/login')
     }
   }
 
@@ -62,7 +56,6 @@ export default function LandingPage() {
         credentials: 'include',
       })
     } catch {
-      // ignore
     } finally {
       setIsLoginOpen(false)
       await refreshAuth()
@@ -78,7 +71,6 @@ export default function LandingPage() {
 
   return (
     <>
-      {/* 로그인 모달 */}
       {isLoginOpen && <LoginModal onClose={handleCloseLogin} />}
 
       <HeroSection
